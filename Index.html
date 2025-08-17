@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo Red Pilar</title>
+    <style>
+        /* --- ESTILOS GENERALES (TEMA PREDETERMINADO) --- */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            transition: color 0.5s ease;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            transition: color 0.5s ease;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+        }
+        #numbers-container {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            max-height: 250px;
+            overflow-y: auto;
+            transition: border-color 0.5s ease, background-color 0.5s ease;
+        }
+        .number-box {
+            background-color: #e9e9e9;
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s, color 0.2s, border 0.2s ease;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .number-box:hover {
+            background-color: #ddd;
+        }
+        .number-box.selected {
+            background-color: #4CAF50;
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .number-box.assigned {
+            background-color: #ccc;
+            text-decoration: line-through;
+            color: #777;
+            cursor: not-allowed;
+        }
+        .button-group, .add-numbers-group, #theme-toggle-group, .range-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .add-numbers-group, .range-buttons {
+            margin-top: 10px;
+        }
+        .range-buttons button {
+            flex-grow: 1;
+            margin-right: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            flex-grow: 1;
+            margin: 0 5px;
+        }
+        button:first-child { margin-left: 0; }
+        button:last-child { margin-right: 0; }
+        #add-button { background-color: #4CAF50; }
+        #add-button:hover { background-color: #45a049; }
+        #clear-button { background-color: #f44336; }
+        #clear-button:hover { background-color: #da190b; }
+        #sorteo-button { background-color: #007BFF; }
+        #sorteo-button:hover { background-color: #0056b3; }
+        .add-numbers-group button, .range-buttons button { background-color: #17a2b8; }
+        .add-numbers-group button:hover, .range-buttons button:hover { background-color: #138496; }
+        #results-container, #history-container {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+        }
+        .person-entry, .history-entry {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border-color 0.5s ease;
+        }
+        .person-entry:last-child, .history-entry:last-child {
+            border-bottom: none;
+        }
+        .person-info {
+            flex-grow: 1;
+        }
+        .person-name {
+            font-weight: bold;
+            color: #007BFF;
+            margin-bottom: 5px;
+            transition: color 0.5s ease;
+        }
+        .person-numbers {
+            font-size: 14px;
+        }
+        .person-actions {
+            margin-left: 10px;
+        }
+        .action-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-left: 5px;
+            color: #777;
+            transition: color 0.2s;
+        }
+        .action-button:hover {
+            color: #000;
+        }
+        .edit-mode .person-info, .edit-mode .person-actions {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .edit-mode .person-info {
+            width: 100%;
+        }
+        .edit-mode .person-name {
+            margin-bottom: 10px;
+        }
+        .edit-mode .person-actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+        .edit-mode .person-actions button {
+            margin-left: 10px;
+        }
+        .edit-mode .person-numbers-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        .edit-mode .person-number-chip {
+            background-color: #e9e9e9;
+            padding: 5px 8px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .edit-mode .person-number-chip button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            color: #f44336;
+            margin-left: 5px;
+            padding: 0;
+        }
+        .edit-mode .person-number-chip button:hover {
+            color: #da190b;
+        }
+        /* ESTILOS DEL BOTÓN ACTUALIZADO EN MODO EDICIÓN */
+        .edit-mode #add-number-btn { background-color: #007BFF; }
+        .edit-mode #add-number-btn:hover { background-color: #0056b3; }
+        .edit-mode #update-name-btn { background-color: #4CAF50; color: #fff; }
+        .edit-mode #update-name-btn:hover { background-color: #45a049; }
+
+
+        #ganador-container {
+            margin-top: 20px;
+            text-align: center;
+            position: relative;
+        }
+        #ganador-container h2 {
+            color: #ffc107;
+            transition: color 0.5s ease;
+        }
+        #ganador-nombre, #ganador-numero {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007BFF;
+            transition: transform 0.5s ease-in-out, color 0.5s ease;
+            min-height: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #ganador-numero {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            transition: color 0.5s ease;
+        }
+        .sorteo-running {
+            animation: spin 0.025s linear infinite;
+        }
+        .ganador-zoom {
+            animation: winnerZoom 1s ease-in-out;
+        }
+        @keyframes winnerZoom {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        #countdown-timer {
+            font-size: 3em;
+            font-weight: bold;
+            color: #f44336;
+            margin-top: 20px;
+            transition: color 0.5s ease;
+        }
+        .confetti {
+            width: 10px;
+            height: 10px;
+            background-color: #f06;
+            position: absolute;
+            top: -10px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        @keyframes fall {
+            to {
+                top: 105%;
+                transform: translate(-50%, 0) rotateZ(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* --- ESTILOS TEMA COSMIC --- */
+        body.cosmic-theme {
+            background: #00001a;
+            color: #e0e0ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container.cosmic-theme {
+            background-color: #1a0033;
+            box-shadow: 0 0 20px rgba(70, 0, 100, 0.8), inset 0 0 10px rgba(100, 0, 150, 0.5);
+            border: 2px solid #5d00a0;
+        }
+        .cosmic-theme h1 {
+            color: #d495ff;
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+        }
+        .cosmic-theme label {
+            color: #b3a0d3;
+        }
+        .cosmic-theme input[type="text"] {
+            background-color: #220044;
+            color: #a0d4ff;
+            border-color: #4b0082;
+            box-shadow: inset 0 0 5px rgba(160, 212, 255, 0.5);
+        }
+        .cosmic-theme #numbers-container {
+            background-color: #220044;
+            border-color: #4b0082;
+            box-shadow: inset 0 0 10px rgba(160, 212, 255, 0.3);
+        }
+        .cosmic-theme .number-box {
+            background-color: #330066;
+            color: #e0e0ff;
+            border: 1px solid #5d00a0;
+        }
+        .cosmic-theme .number-box:hover {
+            background-color: #5d00a0;
+            color: #fff;
+            box-shadow: 0 0 5px #d495ff;
+        }
+        .cosmic-theme .number-box.selected {
+            background-color: #8a2be2;
+            color: #fff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+        .cosmic-theme .number-box.assigned {
+            background-color: #330044;
+            color: #663399;
+            text-decoration-color: #9966cc;
+        }
+        .cosmic-theme #add-button { background-color: #483d8b; }
+        .cosmic-theme #add-button:hover { background-color: #6a5acd; }
+        .cosmic-theme #sorteo-button { background-color: #d495ff; color: #000; }
+        .cosmic-theme #sorteo-button:hover { background-color: #b56eff; }
+        .cosmic-theme #clear-button { background-color: #e30022; }
+        .cosmic-theme #clear-button:hover { background-color: #a30019; }
+        .cosmic-theme .add-numbers-group button, .cosmic-theme .range-buttons button { background-color: #00aaff; }
+        .cosmic-theme .add-numbers-group button:hover, .cosmic-theme .range-buttons button:hover { background-color: #0077cc; }
+        .cosmic-theme #results-container, .cosmic-theme #history-container {
+            background-color: #220044;
+            border-color: #4b0082;
+            box-shadow: inset 0 0 10px rgba(160, 212, 255, 0.3);
+        }
+        .cosmic-theme .person-entry, .cosmic-theme .history-entry {
+            border-bottom: 1px solid #5d00a0;
+        }
+        .cosmic-theme .person-name {
+            color: #a0d4ff;
+        }
+        .cosmic-theme .action-button {
+            color: #b3a0d3;
+        }
+        .cosmic-theme .action-button:hover {
+            color: #fff;
+        }
+        .cosmic-theme .edit-mode input[type="text"] {
+            background-color: #330066;
+            color: #a0d4ff;
+            border-color: #5d00a0;
+        }
+        .cosmic-theme .edit-mode .person-number-chip {
+            background-color: #5d00a0;
+            color: #e0e0ff;
+        }
+        .cosmic-theme .edit-mode .person-number-chip button {
+            color: #d495ff;
+        }
+        .cosmic-theme .edit-mode #add-number-btn { background-color: #00aaff; color: #fff; }
+        .cosmic-theme .edit-mode #add-number-btn:hover { background-color: #0077cc; }
+        .cosmic-theme .edit-mode #update-name-btn { background-color: #483d8b; color: #fff; }
+        .cosmic-theme .edit-mode #update-name-btn:hover { background-color: #6a5acd; }
+        .cosmic-theme #ganador-container h2 {
+            color: #d495ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        .cosmic-theme #ganador-nombre {
+            color: #a0d4ff;
+            text-shadow: 0 0 10px #a0d4ff;
+        }
+        .cosmic-theme #ganador-numero {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        .cosmic-theme #countdown-timer {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* --- ESTILOS TEMA NEON PARTY --- */
+        body.neon-theme {
+            background-color: #0a0a1a;
+            color: #f0f0f0;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        .container.neon-theme {
+            background-color: #1a1a2a;
+            box-shadow: 0 0 20px 5px rgba(100, 255, 255, 0.4);
+            border: 1px solid #64ffda;
+        }
+        .neon-theme h1 {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        .neon-theme label {
+            color: #f0f0f0;
+        }
+        .neon-theme input[type="text"] {
+            background-color: #333344;
+            color: #64ffda;
+            border: 1px solid #64ffda;
+            box-shadow: 0 0 5px #64ffda;
+        }
+        .neon-theme #numbers-container {
+            background-color: #1a1a2a;
+            border: 1px solid #64ffda;
+            box-shadow: inset 0 0 5px #64ffda;
+        }
+        .neon-theme .number-box {
+            background-color: #333344;
+            color: #64ffda;
+            border: 1px solid #64ffda;
+        }
+        .neon-theme .number-box:hover {
+            background-color: #ff00ff;
+            color: #000;
+            box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+        }
+        .neon-theme .number-box.selected {
+            background-color: #00ffff;
+            color: #000;
+            box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+        }
+        .neon-theme .number-box.assigned {
+            background-color: #222233;
+            color: #555566;
+            text-decoration-color: #555566;
+        }
+        .neon-theme #add-button { background-color: #00aaff; }
+        .neon-theme #add-button:hover { background-color: #0077cc; }
+        .neon-theme #sorteo-button { background-color: #ff00ff; }
+        .neon-theme #sorteo-button:hover { background-color: #cc00cc; }
+        .neon-theme #clear-button { background-color: #e04040; }
+        .neon-theme #clear-button:hover { background-color: #a02020; }
+        .neon-theme .add-numbers-group button, .neon-theme .range-buttons button { background-color: #64ffda; color: #000; }
+        .neon-theme .add-numbers-group button:hover, .neon-theme .range-buttons button:hover { background-color: #00e6b8; }
+        .neon-theme #results-container, .neon-theme #history-container {
+            background-color: #1a1a2a;
+            border: 1px solid #64ffda;
+            box-shadow: inset 0 0 5px #64ffda;
+        }
+        .neon-theme .person-entry, .neon-theme .history-entry {
+            border-bottom: 1px solid #64ffda;
+        }
+        .neon-theme .person-name {
+            color: #ff00ff;
+        }
+        .neon-theme .action-button {
+            color: #64ffda;
+        }
+        .neon-theme .action-button:hover {
+            color: #00ffff;
+        }
+        .neon-theme .edit-mode input[type="text"] {
+            background-color: #333344;
+            color: #64ffda;
+            border-color: #64ffda;
+        }
+        .neon-theme .edit-mode .person-number-chip {
+            background-color: #64ffda;
+            color: #000;
+        }
+        .neon-theme .edit-mode .person-number-chip button {
+            color: #ff00ff;
+        }
+        .neon-theme .edit-mode #add-number-btn { background-color: #00ffff; color: #000; }
+        .neon-theme .edit-mode #add-number-btn:hover { background-color: #00cccc; }
+        .neon-theme .edit-mode #update-name-btn { background-color: #ff00ff; color: #000; }
+        .neon-theme .edit-mode #update-name-btn:hover { background-color: #cc00cc; }
+        .neon-theme #ganador-container h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        .neon-theme #ganador-nombre {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        .neon-theme #ganador-numero {
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        .neon-theme #countdown-timer {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* --- ESTILOS TEMA PASTEL DREAMS --- */
+        body.pastel-theme {
+            background-color: #f7e1e6;
+            color: #5e548e;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .container.pastel-theme {
+            background-color: #fff0f3;
+            box-shadow: 0 4px 15px rgba(181, 126, 220, 0.4);
+            border: 2px solid #b57edc;
+        }
+        .pastel-theme h1 {
+            color: #ff66a4;
+            text-shadow: 1px 1px 5px rgba(255, 102, 164, 0.5);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .pastel-theme label {
+            color: #9381ff;
+        }
+        .pastel-theme input[type="text"] {
+            background-color: #fff8f8;
+            color: #5e548e;
+            border: 1px solid #b57edc;
+            box-shadow: inset 0 0 5px rgba(181, 126, 220, 0.2);
+        }
+        .pastel-theme #numbers-container {
+            background-color: #fef0f8;
+            border: 1px solid #b57edc;
+        }
+        .pastel-theme .number-box {
+            background-color: #f0e1ff;
+            color: #5e548e;
+            border: 1px solid #b57edc;
+        }
+        .pastel-theme .number-box:hover {
+            background-color: #c7b3e6;
+            color: #fff;
+        }
+        .pastel-theme .number-box.selected {
+            background-color: #ff66a4;
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 5px #ff66a4;
+        }
+        .pastel-theme .number-box.assigned {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+        }
+        .pastel-theme button {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .pastel-theme #add-button { background-color: #b57edc; }
+        .pastel-theme #add-button:hover { background-color: #a06ac9; }
+        .pastel-theme #sorteo-button { background-color: #4a91f2; }
+        .pastel-theme #sorteo-button:hover { background-color: #3b7ad6; }
+        .pastel-theme #clear-button { background-color: #ff8c42; }
+        .pastel-theme #clear-button:hover { background-color: #e67d35; }
+        .pastel-theme .add-numbers-group button, .pastel-theme .range-buttons button { background-color: #72b9e6; }
+        .pastel-theme .add-numbers-group button:hover, .pastel-theme .range-buttons button:hover { background-color: #61a9d4; }
+        .pastel-theme #results-container, .pastel-theme #history-container {
+            background-color: #fff8f8;
+            border: 1px solid #b57edc;
+        }
+        .pastel-theme .person-entry, .pastel-theme .history-entry {
+            border-bottom: 1px solid #e0c8ee;
+        }
+        .pastel-theme .person-name {
+            color: #4a91f2;
+        }
+        .pastel-theme .action-button {
+            color: #9381ff;
+        }
+        .pastel-theme .action-button:hover {
+            color: #ff66a4;
+        }
+        .pastel-theme .edit-mode input[type="text"] {
+            background-color: #fff0f3;
+            color: #5e548e;
+            border-color: #b57edc;
+        }
+        .pastel-theme .edit-mode .person-number-chip {
+            background-color: #e0c8ee;
+            color: #5e548e;
+        }
+        .pastel-theme .edit-mode .person-number-chip button {
+            color: #ff66a4;
+        }
+        .pastel-theme .edit-mode #add-number-btn { background-color: #b57edc; color: #fff; }
+        .pastel-theme .edit-mode #add-number-btn:hover { background-color: #a06ac9; }
+        .pastel-theme .edit-mode #update-name-btn { background-color: #ff66a4; color: #fff; }
+        .pastel-theme .edit-mode #update-name-btn:hover { background-color: #e65c92; }
+        .pastel-theme #ganador-container h2 {
+            color: #ff66a4;
+        }
+        .pastel-theme #ganador-nombre {
+            color: #b57edc;
+        }
+        .pastel-theme #ganador-numero {
+            color: #4a91f2;
+        }
+        .pastel-theme #countdown-timer {
+            color: #ff8c42;
+        }
+
+        #theme-toggle-group {
+            margin-top: 0;
+            justify-content: flex-end;
+        }
+        #theme-selector {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #333;
+        }
+        .cosmic-theme #theme-selector {
+            background-color: #220044;
+            color: #a0d4ff;
+            border-color: #4b0082;
+        }
+        .neon-theme #theme-selector {
+            background-color: #333344;
+            color: #64ffda;
+            border-color: #64ffda;
+        }
+        .pastel-theme #theme-selector {
+            background-color: #fff0f3;
+            color: #5e548e;
+            border-color: #b57edc;
+        }
+        .hide-on-edit-mode {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-container">
+    <div id="theme-toggle-group">
+        <label for="theme-selector" style="font-weight: normal;">Seleccionar tema:</label>
+        <select id="theme-selector">
+            <option value="default">Predeterminado</option>
+            <option value="cosmic">Cosmic</option>
+            <option value="neon">Neon Party</option>
+            <option value="pastel">Pastel Dreams</option>
+        </select>
+    </div>
+    <h1>Red Pilar</h1>
+
+    <div class="form-group">
+        <label for="person-name">Nombre de la persona:</label>
+        <input type="text" id="person-name" placeholder="Escribe el nombre aquí...">
+    </div>
+
+    <label id="numbers-range-label">Selecciona los números (00 a 99):</label>
+    <div id="numbers-container"></div>
+
+    <label>Modificar cantidad de números:</label>
+    <div class="add-numbers-group">
+        <button id="add-10-button">+10</button>
+        <button id="remove-10-button">-10</button>
+    </div>
+    <label>Selección de rango:</label>
+    <div class="range-buttons">
+        <button id="select-range-10-button">Seleccionar +10</button>
+    </div>
+
+    <div class="button-group">
+        <button id="add-button">Agregar persona y números</button>
+        <button id="sorteo-button">Sortear</button>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+        <button id="clear-button" style="width: 48%;">Limpiar todo</button>
+    </div>
+
+    <hr>
+
+    <div id="results-container">
+        <h2>Participantes</h2>
+        <div id="results-list">
+            </div>
+    </div>
+
+    <div id="ganador-container" style="display:none;">
+        <div id="countdown-timer"></div>
+        <h2>¡El número ganador es!</h2>
+        <div id="ganador-numero"></div>
+        <h2>¡Y el ganador es!</h2>
+        <div id="ganador-nombre"></div>
+    </div>
+
+</div>
+
+<script>
+    const numbersContainer = document.getElementById('numbers-container');
+    const personNameInput = document.getElementById('person-name');
+    const addButton = document.getElementById('add-button');
+    const clearButton = document.getElementById('clear-button');
+    const sorteoButton = document.getElementById('sorteo-button');
+    const add10Button = document.getElementById('add-10-button');
+    const remove10Button = document.getElementById('remove-10-button');
+    const selectRange10Button = document.getElementById('select-range-10-button');
+    const resultsList = document.getElementById('results-list');
+    const ganadorContainer = document.getElementById('ganador-container');
+    const ganadorNumero = document.getElementById('ganador-numero');
+    const ganadorNombre = document.getElementById('ganador-nombre');
+    const countdownTimer = document.getElementById('countdown-timer');
+    const themeSelector = document.getElementById('theme-selector');
+    const body = document.body;
+    const mainContainer = document.getElementById('main-container');
+    const numbersRangeLabel = document.getElementById('numbers-range-label');
+
+    // Audio
+    const countdownSound = new Audio('https://www.soundboard.com/mediafiles/3/30018_e2f694931a78c1874249a567634f195d.mp3');
+    const spinSound = new Audio('https://www.soundboard.com/mediafiles/1/18167_nfs_prostreet_rev_4.mp3');
+    const winnerSound = new Audio('https://www.soundboard.com/mediafiles/6/6389_87900b90e9e46a78280f58a329d91f86.mp3');
+
+    let selectedNumbers = [];
+    let allParticipants = [];
+    let assignedNumbers = new Set();
+    const MIN_NUMBERS = 100;
+    let currentMaxNumber = 99;
+
+    loadData();
+
+    function updateRangeLabel() {
+        numbersRangeLabel.textContent = `Selecciona los números (00 a ${currentMaxNumber}):`;
+    }
+
+    function createNumberBox(number) {
+        const numberBox = document.createElement('div');
+        numberBox.classList.add('number-box');
+        numberBox.textContent = String(number).padStart(2, '0');
+        numberBox.dataset.number = number;
+        numbersContainer.appendChild(numberBox);
+
+        numberBox.addEventListener('click', () => {
+            if (!numberBox.classList.contains('assigned')) {
+                numberBox.classList.toggle('selected');
+                const num = parseInt(numberBox.dataset.number);
+                const index = selectedNumbers.indexOf(num);
+                if (index > -1) {
+                    selectedNumbers.splice(index, 1);
+                } else {
+                    selectedNumbers.push(num);
+                }
+            }
+        });
+    }
+
+    function generateNumberBoxes(start, end) {
+        for (let i = start; i <= end; i++) {
+            createNumberBox(i);
+        }
+    }
+
+    function saveData() {
+        const data = {
+            participants: allParticipants,
+            assignedNumbers: [...assignedNumbers],
+            currentMaxNumber: currentMaxNumber
+        };
+        localStorage.setItem('raffleData', JSON.stringify(data));
+    }
+
+    function loadData() {
+        const savedData = localStorage.getItem('raffleData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            allParticipants = data.participants;
+            assignedNumbers = new Set(data.assignedNumbers);
+            currentMaxNumber = data.currentMaxNumber;
+
+            generateNumberBoxes(0, currentMaxNumber);
+            updateParticipantsList();
+        } else {
+            generateNumberBoxes(0, 99);
+            currentMaxNumber = 99;
+        }
+
+        updateRangeLabel();
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            themeSelector.value = savedTheme;
+            applyTheme(savedTheme);
+        } else {
+            themeSelector.value = 'default';
+        }
+    }
+
+    function updateParticipantsList() {
+        resultsList.innerHTML = '';
+        allParticipants.forEach((participant, index) => {
+            const personEntry = document.createElement('div');
+            personEntry.classList.add('person-entry');
+            personEntry.dataset.index = index;
+
+            const numbersText = participant.numbers.sort((a, b) => a - b).map(n => String(n).padStart(2, '0')).join(', ');
+            personEntry.innerHTML = `
+                <div class="person-info">
+                    <div class="person-name">${participant.name}</div>
+                    <div class="person-numbers">Números: ${numbersText}</div>
+                </div>
+                <div class="person-actions">
+                    <button class="action-button" onclick="editParticipant(${index})">✎</button>
+                    <button class="action-button" onclick="removeParticipant(${index})">🗑️</button>
+                </div>
+            `;
+            resultsList.appendChild(personEntry);
+        });
+        
+        assignedNumbers.forEach(num => {
+            const box = document.querySelector(`.number-box[data-number="${num}"]`);
+            if (box) {
+                box.classList.add('assigned');
+                box.classList.remove('selected');
+            }
+        });
+    }
+
+    function editParticipant(index) {
+        const participant = allParticipants[index];
+        const entry = document.querySelector(`.person-entry[data-index="${index}"]`);
+        
+        entry.classList.add('edit-mode');
+        entry.innerHTML = `
+            <div class="person-info">
+                <input type="text" id="edit-name-${index}" value="${participant.name}">
+                <div class="person-numbers-list">
+                    ${participant.numbers.sort((a,b)=>a-b).map(num => `
+                        <span class="person-number-chip">
+                            ${String(num).padStart(2, '0')}
+                            <button onclick="removeNumberFromParticipant(${index}, ${num})">🗑️</button>
+                        </span>
+                    `).join('')}
+                    <button id="add-number-btn" onclick="addNumberToParticipant(${index})">Agregar número</button>
+                </div>
+            </div>
+            <div class="person-actions">
+                <button id="update-name-btn" onclick="updateParticipantName(${index})">Actualizar participante</button>
+            </div>
+        `;
+    }
+
+    function updateParticipantName(index) {
+        const newName = document.getElementById(`edit-name-${index}`).value.trim();
+        if (newName === '') {
+            alert('El nombre no puede estar vacío.');
+            return;
+        }
+
+        const participant = allParticipants[index];
+        participant.name = newName;
+        
+        saveData();
+        updateParticipantsList();
+    }
+
+
+    function removeNumberFromParticipant(index, numberToRemove) {
+        const participant = allParticipants[index];
+        const numberIndex = participant.numbers.indexOf(numberToRemove);
+        
+        if (numberIndex > -1) {
+            participant.numbers.splice(numberIndex, 1);
+            assignedNumbers.delete(numberToRemove);
+            
+            const box = document.querySelector(`.number-box[data-number="${numberToRemove}"]`);
+            if (box) {
+                box.classList.remove('assigned');
+                box.classList.remove('selected');
+            }
+            saveData();
+            editParticipant(index); // Re-renderizar la entrada de edición
+        }
+    }
+
+    function addNumberToParticipant(index) {
+        const number = prompt(`Ingresa un número para agregar (00-${currentMaxNumber}):`);
+        if (number === null || number.trim() === '') return;
+
+        const num = parseInt(number);
+        if (isNaN(num) || num < 0 || num > currentMaxNumber) {
+            alert(`Número inválido. Debe estar entre 00 y ${currentMaxNumber}.`);
+            return;
+        }
+
+        if (assignedNumbers.has(num)) {
+            alert('Ese número ya está asignado a otro participante.');
+            return;
+        }
+
+        const participant = allParticipants[index];
+        if (participant.numbers.includes(num)) {
+            alert('Ese número ya está asignado a este participante.');
+            return;
+        }
+        
+        participant.numbers.push(num);
+        assignedNumbers.add(num);
+        
+        const box = document.querySelector(`.number-box[data-number="${num}"]`);
+        if (box) {
+            box.classList.add('assigned');
+        }
+
+        saveData();
+        editParticipant(index); // Re-renderizar la entrada de edición
+    }
+
+    function removeParticipant(index) {
+        if (confirm('¿Estás seguro de que quieres eliminar a este participante?')) {
+            const participant = allParticipants[index];
+            participant.numbers.forEach(num => {
+                assignedNumbers.delete(num);
+                const box = document.querySelector(`.number-box[data-number="${num}"]`);
+                if (box) {
+                    box.classList.remove('assigned');
+                }
+            });
+            allParticipants.splice(index, 1);
+            saveData();
+            updateParticipantsList();
+        }
+    }
+
+    addButton.addEventListener('click', () => {
+        const personName = personNameInput.value.trim();
+        if (personName === '') {
+            alert('Por favor, escribe el nombre de la persona.');
+            return;
+        }
+        if (selectedNumbers.length === 0) {
+            alert('Por favor, selecciona al menos un número.');
+            return;
+        }
+
+        allParticipants.push({ name: personName, numbers: selectedNumbers });
+
+        selectedNumbers.forEach(num => {
+            assignedNumbers.add(num);
+        });
+
+        personNameInput.value = '';
+        selectedNumbers = [];
+        
+        // Deseleccionar y actualizar
+        document.querySelectorAll('.number-box.selected').forEach(box => {
+            box.classList.remove('selected');
+        });
+        
+        saveData();
+        updateParticipantsList();
+    });
+
+    sorteoButton.addEventListener('click', () => {
+        const allAssignedNumbersArray = allParticipants.flatMap(p => p.numbers);
+        if (allAssignedNumbersArray.length === 0) {
+            alert('No hay números asignados para realizar el sorteo.');
+            return;
+        }
+        
+        // Desplazar la vista al contenedor del sorteo
+        ganadorContainer.style.display = 'block';
+        ganadorContainer.scrollIntoView({ behavior: 'smooth' });
+
+        ganadorNumero.textContent = '';
+        ganadorNombre.textContent = '';
+        ganadorNumero.classList.remove('sorteo-running');
+        ganadorNombre.classList.remove('sorteo-running');
+        ganadorNombre.classList.remove('ganador-zoom');
+        countdownTimer.style.display = 'block';
+
+        let count = 5;
+        countdownTimer.textContent = count;
+        countdownSound.play();
+
+        const countdownInterval = setInterval(() => {
+            count--;
+            if (count > 0) {
+                countdownTimer.textContent = count;
+                countdownSound.play();
+            } else {
+                clearInterval(countdownInterval);
+                countdownTimer.style.display = 'none';
+                
+                spinSound.loop = true;
+                spinSound.play();
+
+                ganadorNumero.classList.add('sorteo-running');
+                ganadorNombre.classList.add('sorteo-running');
+
+                const spinInterval = setInterval(() => {
+                    const randomNum = allAssignedNumbersArray[Math.floor(Math.random() * allAssignedNumbersArray.length)];
+                    ganadorNumero.textContent = String(randomNum).padStart(2, '0');
+                    const randomWinner = allParticipants[Math.floor(Math.random() * allParticipants.length)];
+                    ganadorNombre.textContent = randomWinner.name;
+                }, 25);
+
+                setTimeout(() => {
+                    clearInterval(spinInterval);
+                    spinSound.pause();
+                    spinSound.currentTime = 0;
+                    winnerSound.play();
+
+                    ganadorNumero.classList.remove('sorteo-running');
+                    ganadorNombre.classList.remove('sorteo-running');
+                    
+                    const winningNumber = allAssignedNumbersArray[Math.floor(Math.random() * allAssignedNumbersArray.length)];
+                    const winner = allParticipants.find(p => p.numbers.includes(winningNumber));
+
+                    ganadorNumero.textContent = String(winningNumber).padStart(2, '0');
+                    ganadorNombre.textContent = winner ? winner.name : 'No encontrado';
+                    ganadorNombre.classList.add('ganador-zoom');
+
+                    startConfetti();
+
+                }, 3000);
+            }
+        }, 1000);
+    });
+
+    clearButton.addEventListener('click', () => {
+        if (confirm('¿Estás seguro de que quieres limpiar toda la lista de participantes y números?')) {
+            localStorage.clear();
+            resultsList.innerHTML = '';
+            ganadorContainer.style.display = 'none';
+            personNameInput.value = '';
+            selectedNumbers = [];
+            allParticipants.length = 0;
+            assignedNumbers.clear();
+
+            document.querySelectorAll('.number-box').forEach(box => {
+                box.remove();
+            });
+            generateNumberBoxes(0, 99);
+            currentMaxNumber = 99;
+            updateRangeLabel();
+            saveData();
+        }
+    });
+
+    function addNumbers(count) {
+        const lastNumber = numbersContainer.childElementCount > 0 ? parseInt(numbersContainer.lastChild.dataset.number) : -1;
+        generateNumberBoxes(lastNumber + 1, lastNumber + count);
+        currentMaxNumber = lastNumber + count;
+        updateRangeLabel();
+        saveData();
+    }
+
+    function removeNumbers(count) {
+        let removedCount = 0;
+        const boxes = numbersContainer.children;
+        const currentMaxNumberCopy = currentMaxNumber;
+
+        if (currentMaxNumberCopy < 99) {
+            alert(`No se pueden eliminar más números. El mínimo es el 99.`);
+            return;
+        }
+
+        for (let i = currentMaxNumberCopy; i >= 0 && removedCount < count; i--) {
+            if (!assignedNumbers.has(i)) {
+                const box = document.querySelector(`.number-box[data-number="${i}"]`);
+                if (box) {
+                    box.remove();
+                    removedCount++;
+                }
+            }
+        }
+        
+        if (removedCount > 0) {
+            currentMaxNumber = currentMaxNumberCopy - removedCount;
+            updateRangeLabel();
+            saveData();
+        }
+    }
+
+    add10Button.addEventListener('click', () => addNumbers(10));
+    remove10Button.addEventListener('click', () => removeNumbers(10));
+    
+    selectRange10Button.addEventListener('click', () => {
+        const allBoxes = document.querySelectorAll('.number-box');
+        const unassignedBoxes = Array.from(allBoxes).filter(box => !box.classList.contains('assigned'));
+
+        let newSelected = 0;
+        unassignedBoxes.forEach((box, index) => {
+            if (newSelected < 10 && !box.classList.contains('selected')) {
+                box.classList.add('selected');
+                const num = parseInt(box.dataset.number);
+                if (!selectedNumbers.includes(num)) {
+                    selectedNumbers.push(num);
+                    newSelected++;
+                }
+            }
+        });
+    });
+
+    function startConfetti() {
+        const confettiContainer = document.querySelector('.container');
+        const colors = ['#f06', '#ff0', '#0f0', '#0ff', '#00f', '#f0f'];
+        const count = 200;
+        for (let i = 0; i < count; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = `${Math.random() * 100}%`;
+            confetti.style.animationDelay = `${Math.random() * 2}s`;
+            confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            confettiContainer.appendChild(confetti);
+            confetti.addEventListener('animationend', () => confetti.remove());
+        }
+    }
+
+    themeSelector.addEventListener('change', (event) => {
+        applyTheme(event.target.value);
+        localStorage.setItem('theme', event.target.value);
+    });
+
+    function applyTheme(themeName) {
+        body.className = '';
+        mainContainer.className = 'container';
+        switch (themeName) {
+            case 'cosmic':
+                body.classList.add('cosmic-theme');
+                mainContainer.classList.add('cosmic-theme');
+                break;
+            case 'neon':
+                body.classList.add('neon-theme');
+                mainContainer.classList.add('neon-theme');
+                break;
+            case 'pastel':
+                body.classList.add('pastel-theme');
+                mainContainer.classList.add('pastel-theme');
+                break;
+            default:
+                break;
+        }
+    }
+</script>
+
+</body>
+</html>
