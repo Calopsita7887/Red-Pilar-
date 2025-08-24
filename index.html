@@ -607,78 +607,6 @@
             color: #c7b3e6;
         }
 
-        /* --- ESTILOS TEMA HACKER --- */
-        body.hacker-theme {
-            background-color: #000;
-            color: #0f0;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .container.hacker-theme {
-            background-color: rgba(0, 10, 0, 0.8);
-            border: 1px solid #0f0;
-            box-shadow: 0 0 15px #0f0;
-        }
-        .hacker-theme h1 {
-            color: #0f0;
-            text-shadow: 0 0 5px #0f0;
-        }
-        .hacker-theme label {
-            color: #0f0;
-        }
-        .hacker-theme input {
-            background-color: #000;
-            color: #0f0;
-            border: 1px solid #0f0;
-        }
-        .hacker-theme #numbers-container {
-            background-color: #000;
-            border: 1px solid #0f0;
-        }
-        .hacker-theme .number-box {
-            background-color: #000;
-            color: #0f0;
-            border: 1px solid #0f0;
-        }
-        .hacker-theme .number-box:hover {
-            background-color: #0f0;
-            color: #000;
-        }
-        .hacker-theme .number-box.selected {
-            background-color: #0f0;
-            color: #000;
-        }
-        .hacker-theme .number-box.assigned {
-            background-color: #222;
-            color: #555;
-            text-decoration: line-through;
-        }
-        .hacker-theme button {
-            background-color: #0f0;
-            color: #000;
-            border: 1px solid #0f0;
-        }
-        .hacker-theme button:hover {
-            background-color: #000;
-            color: #0f0;
-        }
-        .hacker-theme #results-container, .hacker-theme #history-container {
-            background-color: rgba(0, 10, 0, 0.8);
-            border: 1px solid #0f0;
-        }
-        .hacker-theme .person-name {
-            color: #0f0;
-        }
-
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            display: none; /* Hidden by default */
-        }
-
         #theme-toggle-group {
             margin-top: 0;
             justify-content: flex-end;
@@ -707,6 +635,70 @@
         }
         .hide-on-edit-mode {
             display: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            color: #777;
+        }
+        footer p {
+            margin: 5px 0;
+        }
+
+        /* --- ESTILOS TEMA HACKER --- */
+        body.hacker-theme {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .container.hacker-theme {
+            background-color: rgba(0, 10, 0, 0.8);
+            border: 1px solid #0f0;
+            box-shadow: 0 0 15px #0f0;
+        }
+        .hacker-theme h1, .hacker-theme label, .hacker-theme .person-name {
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+        }
+        .hacker-theme input, .hacker-theme #numbers-container, .hacker-theme .number-box {
+            background-color: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+        .hacker-theme .number-box:hover, .hacker-theme .number-box.selected {
+            background-color: #0f0;
+            color: #000;
+        }
+        .hacker-theme .number-box.assigned {
+            background-color: #222;
+            color: #555;
+            text-decoration: line-through;
+        }
+        .hacker-theme button {
+            background-color: #0f0;
+            color: #000;
+            border: 1px solid #0f0;
+        }
+        .hacker-theme button:hover {
+            background-color: #000;
+            color: #0f0;
+        }
+        .hacker-theme #results-container {
+            background-color: rgba(0, 10, 0, 0.8);
+            border: 1px solid #0f0;
+        }
+
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: none; /* Hidden by default */
         }
     </style>
 </head>
@@ -778,6 +770,11 @@
 
 </div>
 
+<footer>
+  <p>Derechos reservados &copy; 2024 | Diseñado por Clau</p>
+  <p>Visitas: <span id="visitor-counter">0</span></p>
+</footer>
+
 <script>
     const numbersContainer = document.getElementById('numbers-container');
     const personNameInput = document.getElementById('person-name');
@@ -822,7 +819,9 @@
             count = parseInt(count) + 1;
         }
         localStorage.setItem('visitorCount', count);
-        visitorCounter.textContent = count;
+        if (visitorCounter) {
+            visitorCounter.textContent = count;
+        }
     }
 
     function updateRangeLabel() {
@@ -1248,29 +1247,34 @@
         body.className = '';
         mainContainer.className = 'container';
         const canvas = document.getElementById('matrix-canvas');
-        if (themeName === 'hacker') {
-            body.classList.add('hacker-theme');
-            mainContainer.classList.add('hacker-theme');
-            canvas.style.display = 'block';
-            startMatrix();
-        } else {
-            canvas.style.display = 'none';
-            switch (themeName) {
-                case 'cosmic':
-                    body.classList.add('cosmic-theme');
-                    mainContainer.classList.add('cosmic-theme');
-                    break;
-                case 'neon':
-                    body.classList.add('neon-theme');
-                    mainContainer.classList.add('neon-theme');
-                    break;
-                case 'pastel':
-                    body.classList.add('pastel-theme');
-                    mainContainer.classList.add('pastel-theme');
-                    break;
-                default:
-                    break;
-            }
+        if (matrixInterval) {
+            clearInterval(matrixInterval);
+            matrixInterval = null;
+        }
+        canvas.style.display = 'none';
+
+        switch (themeName) {
+            case 'cosmic':
+                body.classList.add('cosmic-theme');
+                mainContainer.classList.add('cosmic-theme');
+                break;
+            case 'neon':
+                body.classList.add('neon-theme');
+                mainContainer.classList.add('neon-theme');
+                break;
+            case 'pastel':
+                body.classList.add('pastel-theme');
+                mainContainer.classList.add('pastel-theme');
+                break;
+            case 'hacker':
+                body.classList.add('hacker-theme');
+                mainContainer.classList.add('hacker-theme');
+                canvas.style.display = 'block';
+                startMatrix();
+                break;
+            default:
+                // No theme
+                break;
         }
     }
 
@@ -1320,11 +1324,6 @@
         }
     });
 </script>
-
-<footer>
-  <p>Derechos reservados &copy; 2024 | Diseñado por Clau</p>
-  <p>Visitas: <span id="visitor-counter">0</span></p>
-</footer>
 
 </body>
 </html>
