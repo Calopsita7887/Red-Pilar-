@@ -607,6 +607,78 @@
             color: #c7b3e6;
         }
 
+        /* --- ESTILOS TEMA HACKER --- */
+        body.hacker-theme {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .container.hacker-theme {
+            background-color: rgba(0, 10, 0, 0.8);
+            border: 1px solid #0f0;
+            box-shadow: 0 0 15px #0f0;
+        }
+        .hacker-theme h1 {
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+        }
+        .hacker-theme label {
+            color: #0f0;
+        }
+        .hacker-theme input {
+            background-color: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+        .hacker-theme #numbers-container {
+            background-color: #000;
+            border: 1px solid #0f0;
+        }
+        .hacker-theme .number-box {
+            background-color: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+        .hacker-theme .number-box:hover {
+            background-color: #0f0;
+            color: #000;
+        }
+        .hacker-theme .number-box.selected {
+            background-color: #0f0;
+            color: #000;
+        }
+        .hacker-theme .number-box.assigned {
+            background-color: #222;
+            color: #555;
+            text-decoration: line-through;
+        }
+        .hacker-theme button {
+            background-color: #0f0;
+            color: #000;
+            border: 1px solid #0f0;
+        }
+        .hacker-theme button:hover {
+            background-color: #000;
+            color: #0f0;
+        }
+        .hacker-theme #results-container, .hacker-theme #history-container {
+            background-color: rgba(0, 10, 0, 0.8);
+            border: 1px solid #0f0;
+        }
+        .hacker-theme .person-name {
+            color: #0f0;
+        }
+
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: none; /* Hidden by default */
+        }
+
         #theme-toggle-group {
             margin-top: 0;
             justify-content: flex-end;
@@ -640,6 +712,8 @@
 </head>
 <body>
 
+<canvas id="matrix-canvas"></canvas>
+
 <div class="container" id="main-container">
     <div id="theme-toggle-group">
         <label for="theme-selector" style="font-weight: normal;">Seleccionar tema:</label>
@@ -648,6 +722,7 @@
             <option value="cosmic">Cosmic</option>
             <option value="neon">Neon Party</option>
             <option value="pastel">Pastel Dreams</option>
+            <option value="hacker">Hacker</option>
         </select>
     </div>
     <h1>Red Pilar</h1>
@@ -723,6 +798,7 @@
     const body = document.body;
     const mainContainer = document.getElementById('main-container');
     const numbersRangeLabel = document.getElementById('numbers-range-label');
+    const visitorCounter = document.getElementById('visitor-counter');
 
     // Audio
     const countdownSound = new Audio('https://www.soundboard.com/mediafiles/3/30018_e2f694931a78c1874249a567634f195d.mp3');
@@ -736,6 +812,18 @@
     let currentMaxNumber = 99;
 
     loadData();
+    updateVisitorCount();
+
+    function updateVisitorCount() {
+        let count = localStorage.getItem('visitorCount');
+        if (count === null) {
+            count = 1;
+        } else {
+            count = parseInt(count) + 1;
+        }
+        localStorage.setItem('visitorCount', count);
+        visitorCounter.textContent = count;
+    }
 
     function updateRangeLabel() {
         numbersRangeLabel.textContent = `Selecciona los números (00 a ${currentMaxNumber}):`;
@@ -1159,24 +1247,84 @@
     function applyTheme(themeName) {
         body.className = '';
         mainContainer.className = 'container';
-        switch (themeName) {
-            case 'cosmic':
-                body.classList.add('cosmic-theme');
-                mainContainer.classList.add('cosmic-theme');
-                break;
-            case 'neon':
-                body.classList.add('neon-theme');
-                mainContainer.classList.add('neon-theme');
-                break;
-            case 'pastel':
-                body.classList.add('pastel-theme');
-                mainContainer.classList.add('pastel-theme');
-                break;
-            default:
-                break;
+        const canvas = document.getElementById('matrix-canvas');
+        if (themeName === 'hacker') {
+            body.classList.add('hacker-theme');
+            mainContainer.classList.add('hacker-theme');
+            canvas.style.display = 'block';
+            startMatrix();
+        } else {
+            canvas.style.display = 'none';
+            switch (themeName) {
+                case 'cosmic':
+                    body.classList.add('cosmic-theme');
+                    mainContainer.classList.add('cosmic-theme');
+                    break;
+                case 'neon':
+                    body.classList.add('neon-theme');
+                    mainContainer.classList.add('neon-theme');
+                    break;
+                case 'pastel':
+                    body.classList.add('pastel-theme');
+                    mainContainer.classList.add('pastel-theme');
+                    break;
+                default:
+                    break;
+            }
         }
     }
+
+    let matrixInterval;
+    function startMatrix() {
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px arial';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        if(matrixInterval) clearInterval(matrixInterval);
+        matrixInterval = setInterval(draw, 33);
+    }
+
+    window.addEventListener('resize', () => {
+        const canvas = document.getElementById('matrix-canvas');
+        if (canvas.style.display === 'block') {
+            startMatrix();
+        }
+    });
 </script>
+
+<footer>
+  <p>Derechos reservados &copy; 2024 | Diseñado por Clau</p>
+  <p>Visitas: <span id="visitor-counter">0</span></p>
+</footer>
 
 </body>
 </html>
