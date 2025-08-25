@@ -636,7 +636,6 @@
         .hide-on-edit-mode {
             display: none;
         }
-
         footer {
             text-align: center;
             margin-top: 30px;
@@ -647,7 +646,6 @@
         footer p {
             margin: 5px 0;
         }
-
         /* --- ESTILOS TEMA HACKER --- */
         body.hacker-theme {
             background-color: #000;
@@ -690,7 +688,6 @@
             background-color: rgba(0, 10, 0, 0.8);
             border: 1px solid #0f0;
         }
-
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -1243,15 +1240,19 @@
         localStorage.setItem('theme', event.target.value);
     });
 
+    let matrixInterval;
     function applyTheme(themeName) {
         body.className = '';
         mainContainer.className = 'container';
         const canvas = document.getElementById('matrix-canvas');
+
         if (matrixInterval) {
             clearInterval(matrixInterval);
             matrixInterval = null;
         }
-        canvas.style.display = 'none';
+        if (canvas) {
+            canvas.style.display = 'none';
+        }
 
         switch (themeName) {
             case 'cosmic':
@@ -1269,8 +1270,10 @@
             case 'hacker':
                 body.classList.add('hacker-theme');
                 mainContainer.classList.add('hacker-theme');
-                canvas.style.display = 'block';
-                startMatrix();
+                if (canvas) {
+                    canvas.style.display = 'block';
+                    startMatrix();
+                }
                 break;
             default:
                 // No theme
@@ -1278,9 +1281,9 @@
         }
     }
 
-    let matrixInterval;
     function startMatrix() {
         const canvas = document.getElementById('matrix-canvas');
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
         canvas.width = window.innerWidth;
@@ -1319,7 +1322,7 @@
 
     window.addEventListener('resize', () => {
         const canvas = document.getElementById('matrix-canvas');
-        if (canvas.style.display === 'block') {
+        if (canvas && canvas.style.display === 'block') {
             startMatrix();
         }
     });
