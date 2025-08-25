@@ -43,7 +43,7 @@ label {
 }
 
 /* --- Forms and Controls --- */
-.controls-main, .controls-draw, .controls-clear {
+.controls-main, .controls-draw, .controls-clear, .controls-grid, .controls-data {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,6 +101,20 @@ button:hover {
 }
 #clear-button:hover {
     background-color: #c0392b;
+}
+
+#export-json-button {
+    background-color: #f39c12;
+}
+#export-json-button:hover {
+    background-color: #e67e22;
+}
+
+#import-json-button {
+    background-color: #9b59b6;
+}
+#import-json-button:hover {
+    background-color: #8e44ad;
 }
 
 
@@ -339,9 +353,9 @@ body.hacker-theme {
     color: #000;
 }
 .hacker-theme .number-box.assigned {
-    background-color: #111;
-    color: #333;
-    text-decoration-color: #333;
+    background-color: #222;
+    color: #555;
+    text-decoration-color: #555;
 }
 .hacker-theme .person-entry {
     background-color: rgba(0, 0, 0, 0.2);
@@ -409,12 +423,15 @@ body.jules-theme {
     border: 1px solid #2c3e50;
 }
 .jules-theme .number-box.selected {
-    background-color: #9b59b6;
+    background-color: #a569bd;
     color: #fff;
+    box-shadow: 0 0 12px rgba(165, 105, 189, 0.7);
 }
 .jules-theme .number-box.assigned {
-    background-color: #2c3e50;
-    color: #7f8c8d;
+    background-color: #34495e;
+    color: #95a5a6;
+    text-decoration: line-through;
+    text-decoration-color: #c0392b;
 }
 .jules-theme .person-entry {
     background-color: rgba(0, 0, 0, 0.2);
@@ -437,4 +454,73 @@ body.jules-theme {
 }
 .jules-theme #winner-list-top3 li {
     background-color: #2c3e50;
+}
+
+
+/* --- 4D THEME --- */
+@keyframes morph-bg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes float {
+    0% { transform: translateZ(0); }
+    50% { transform: translateZ(30px) rotateY(10deg); }
+    100% { transform: translateZ(0); }
+}
+
+body.4d-theme {
+    background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+    background-size: 600% 600%;
+    animation: morph-bg 15s ease infinite;
+    perspective: 1000px;
+    color: #fff;
+}
+
+.4d-theme .container {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #ff00ff;
+    box-shadow: 0 0 30px #00ffff, 0 0 50px #ff00ff;
+    transform-style: preserve-3d;
+    animation: float 10s ease-in-out infinite;
+}
+
+.4d-theme h1, .4d-theme h2 {
+    color: #fff;
+    text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 15px #ff00ff;
+}
+.4d-theme h2 {
+    border-bottom-color: #00ffff;
+}
+
+.4d-theme .number-box {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #00ffff;
+    color: #fff;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+.4d-theme .number-box:hover {
+    transform: translateZ(20px) scale(1.2);
+    background: rgba(0, 255, 255, 0.3);
+}
+.4d-theme .number-box.selected {
+    background: #ff00ff;
+    box-shadow: 0 0 15px #ff00ff;
+    transform: translateZ(20px) scale(1.2);
+}
+.4d-theme .number-box.assigned {
+    background: rgba(0, 0, 0, 0.5);
+    color: #555;
+    text-decoration: line-through;
+}
+
+.4d-theme button {
+    background-color: transparent;
+    border: 2px solid;
+    border-image: linear-gradient(to right, #ff00ff, #00ffff) 1;
+    color: #fff;
+}
+.4d-theme button:hover {
+    background: linear-gradient(to right, #ff00ff, #00ffff);
+    color: #000;
 }

@@ -15,10 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const sorteo3Button = document.getElementById('sorteo-3-button');
     const winnerListTop3El = document.getElementById('winner-list-top3');
 
+    const add10Button = document.getElementById('add-10-button');
+    const remove10Button = document.getElementById('remove-10-button');
+
     // --- App State ---
     let participants = [];
     let selectedNumbers = [];
-    const MAX_NUMBERS = 100; // Default to 100 numbers (0-99)
+    let maxNumbers = 100; // Default to 100 numbers (0-99)
 
     // --- Functions ---
 
@@ -30,6 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (savedParticipants) {
             participants = JSON.parse(savedParticipants);
         }
+        const savedMaxNumbers = localStorage.getItem('raffleMaxNumbers');
+        if (savedMaxNumbers) {
+            maxNumbers = parseInt(savedMaxNumbers, 10);
+        }
         generateNumberGrid();
         renderParticipants();
         updateAssignedNumbers();
@@ -40,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function generateNumberGrid() {
         numbersContainer.innerHTML = '';
-        for (let i = 0; i < MAX_NUMBERS; i++) {
+        document.getElementById('numbers-range-label').textContent = `Selecciona los números (0 a ${maxNumbers - 1}):`;
+        for (let i = 0; i < maxNumbers; i++) {
             const numberBox = document.createElement('div');
             numberBox.classList.add('number-box');
             numberBox.textContent = String(i).padStart(2, '0');
@@ -147,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAssignedNumbers();
         document.querySelectorAll('.number-box.selected').forEach(box => box.classList.remove('selected'));
     }
-    
+
     /**
      * Handles deleting a participant.
      * @param {number} index The index of the participant to delete.
@@ -213,12 +221,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(countdownInterval);
                 countdownTimer.style.display = 'none';
 
-                // Select winner
-                const winningNumber = allAssignedNumbers[Math.floor(Math.random() * allAssignedNumbers.length)];
-                const winner = participants.find(p => p.numbers.includes(winningNumber));
+                // Start roulette animation
+                const rouletteInterval = setInterval(() => {
+                    const randomNum = allAssignedNumbers[Math.floor(Math.random() * allAssignedNumbers.length)];
+                    const randomParticipant = participants.find(p => p.numbers.includes(randomNum));
+                    winnerNumberEl.textContent = String(randomNum).padStart(2, '0');
+                    winnerNameEl.textContent = randomParticipant ? randomParticipant.name : '...';
+                }, 50);
 
-                winnerNumberEl.textContent = String(winningNumber).padStart(2, '0');
-                winnerNameEl.textContent = winner ? winner.name : 'No encontrado';
+                // Stop roulette and show winner after 3 seconds
+                setTimeout(() => {
+                    clearInterval(rouletteInterval);
+                    const winningNumber = allAssignedNumbers[Math.floor(Math.random() * allAssignedNumbers.length)];
+                    const winner = participants.find(p => p.numbers.includes(winningNumber));
+                    winnerNumberEl.textContent = String(winningNumber).padStart(2, '0');
+                    winnerNameEl.textContent = winner ? winner.name : 'No encontrado';
+                }, 3000);
             }
         }, 1000);
     }
@@ -249,10 +267,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 countdownTimer.textContent = count;
             } else {
                 clearInterval(countdownInterval);
-                countdownTimer.style.display = 'none';
 
-                // Shuffle the array to get random winners
-                const shuffled = allAssignedNumbers.sort(() => 0.5 - Math.random());
+                // Start roulette animation in the countdown timer
+                const rouletteInterval = setInterval(() => {
+                    const randomNum = allAssignedNumbers[Math.floor(Math.random() * allAssignedNumbers.length)];
+                    countdownTimer.textContent = String(randomNum).padStart(2, '0');
+                }, 50);
+
+                // Stop roulette and show winners after 3 seconds
+                setTimeout(() => {
+                    clearInterval(rouletteInterval);
+                    countdownTimer.style.display = 'none';
+                    const shuffled = allAssignedNumbers.sort(() => 0.5 - Math.random());
                 const winningNumbers = shuffled.slice(0, 3);
 
                 winningNumbers.forEach(num => {
@@ -269,11 +295,105 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    /**
+     * Modifies the total number of boxes in the grid.
+     * @param {number} amount The amount to add or remove (e.g., 10 or -10).
+     */
+    function modifyGridSize(amount) {
+        const newSize = maxNumbers + amount;
+        if (newSize < 10) {
+            alert('El número mínimo de casillas es 10.');
+            return;
+        }
+        const allAssigned = new Set(participants.flatMap(p => p.numbers));
+        if (newSize < maxNumbers) {
+            for (let i = newSize; i < maxNumbers; i++) {
+                if (allAssigned.has(i)) {
+                    alert(`No se puede reducir el tamaño. El número ${i} ya está asignado.`);
+                    return;
+                }
+            }
+        }
+        maxNumbers = newSize;
+        localStorage.setItem('raffleMaxNumbers', maxNumbers);
+        generateNumberGrid();
+        updateAssignedNumbers();
+    }
+
+
+    /**
+     * Exports the current participants and settings to a JSON file.
+     */
+    function exportToJson() {
+        if (participants.length === 0) {
+            alert('No hay datos para exportar.');
+            return;
+        }
+        const dataToExport = {
+            participants: participants,
+            maxNumbers: maxNumbers
+        };
+        const dataStr = JSON.stringify(dataToExport, null, 4);
+        const dataBlob = new Blob([dataStr], {type: "application/json"});
+        const url = URL.createObjectURL(dataBlob);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = `sorteo-red-pilar-datos-${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(url);
+    }
+
+
+    /**
+     * Handles the file import process.
+     */
+    function importFromJson(event) {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (data && data.participants && data.maxNumbers) {
+                    if (confirm('Esto reemplazará todos los datos actuales. ¿Continuar?')) {
+                        participants = data.participants;
+                        maxNumbers = data.maxNumbers;
+                        saveData();
+                        localStorage.setItem('raffleMaxNumbers', maxNumbers);
+                        initializeApp();
+                    }
+                } else {
+                    alert('El archivo JSON no tiene el formato esperado.');
+                }
+            } catch (error) {
+                alert('Error al leer o procesar el archivo JSON.');
+                console.error(error);
+            }
+        };
+        reader.readAsText(file);
+        // Reset file input to allow importing the same file again
+        event.target.value = null;
+    }
+
+
     // --- Event Listeners ---
+    const exportButton = document.getElementById('export-json-button');
+    const importButton = document.getElementById('import-json-button');
+    const fileInput = document.getElementById('import-file-input');
     addButton.addEventListener('click', addParticipant);
     clearButton.addEventListener('click', clearAll);
     sorteoButton.addEventListener('click', startSingleDraw);
     sorteo3Button.addEventListener('click', startTop3Draw);
+    exportButton.addEventListener('click', exportToJson);
+    importButton.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', importFromJson);
+    add10Button.addEventListener('click', () => modifyGridSize(10));
+    remove10Button.addEventListener('click', () => modifyGridSize(-10));
 
     // Use event delegation for edit/delete buttons
     resultsList.addEventListener('click', (event) => {
