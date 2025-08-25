@@ -1,631 +1,440 @@
-/* --- ESTILOS GENERALES (TEMA PREDETERMINADO) --- */
+/* --- General Body and Font Styles --- */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f7f9;
     color: #333;
     margin: 0;
     padding: 20px;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    line-height: 1.6;
 }
+
+/* --- Main Container --- */
 .container {
-    max-width: 600px;
+    max-width: 800px;
     margin: auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
-    transition: background-color 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
-h1 {
-    color: #4CAF50;
+
+h1, h2 {
+    color: #2c3e50;
     text-align: center;
-    transition: color 0.5s ease;
+    margin-bottom: 20px;
 }
-.form-group {
-    margin-bottom: 15px;
+
+h1 {
+    font-size: 2.5em;
 }
+
+h2 {
+    font-size: 1.8em;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-top: 40px;
+}
+
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
-    transition: color 0.5s ease;
+    color: #555;
 }
+
+/* --- Forms and Controls --- */
+.controls-main, .controls-draw, .controls-clear {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    flex-grow: 1;
+}
+
 input[type="text"] {
-    width: calc(100% - 22px);
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    transition: border-color 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box; /* Important for padding and width */
 }
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+#add-button {
+    background-color: #3498db;
+}
+#add-button:hover {
+    background-color: #2980b9;
+}
+
+.controls-draw button {
+    background-color: #2ecc71;
+    flex-grow: 1;
+}
+.controls-draw button:hover {
+    background-color: #27ae60;
+}
+
+#clear-button {
+    background-color: #e74c3c;
+    width: 100%;
+}
+#clear-button:hover {
+    background-color: #c0392b;
+}
+
+
+/* --- Number Grid --- */
+.grid-container {
+    margin-top: 30px;
+}
+
 #numbers-container {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 5px;
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    max-height: 250px;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 8px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    max-height: 300px;
     overflow-y: auto;
-    transition: border-color 0.5s ease, background-color 0.5s ease;
+    background-color: #fafafa;
 }
+
 .number-box {
     background-color: #e9e9e9;
     text-align: center;
-    padding: 8px 0;
-    border-radius: 4px;
+    padding: 12px 0;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s, color 0.2s, border 0.2s ease;
-    font-size: 14px;
+    transition: all 0.2s ease;
     font-weight: bold;
+    user-select: none;
 }
+
 .number-box:hover {
-    background-color: #ddd;
-}
-.number-box.selected {
-    background-color: #4CAF50;
-    color: #fff;
+    background-color: #dcdcdc;
     transform: scale(1.05);
 }
+
+.number-box.selected {
+    background-color: #3498db;
+    color: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+}
+
 .number-box.assigned {
-    background-color: #ccc;
+    background-color: #bdc3c7;
     text-decoration: line-through;
-    color: #777;
+    color: #7f8c8d;
     cursor: not-allowed;
 }
-.button-group, .add-numbers-group, #theme-toggle-group, .range-buttons, .search-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+
+
+/* --- Participant List --- */
+#results-container {
+    margin-top: 40px;
 }
-.search-group {
-    align-items: center;
-}
-.search-group input {
-    flex-grow: 1;
-    margin-right: 10px;
-}
-.add-numbers-group, .range-buttons {
-    margin-top: 10px;
-}
-.range-buttons button {
-    flex-grow: 1;
-    margin-right: 5px;
-}
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    flex-grow: 1;
-    margin: 0 5px;
-}
-button:first-child { margin-left: 0; }
-button:last-child { margin-right: 0; }
-#add-button { background-color: #4CAF50; }
-#add-button:hover { background-color: #45a049; }
-#clear-button { background-color: #f44336; }
-#clear-button:hover { background-color: #da190b; }
-#sorteo-button { background-color: #007BFF; }
-#sorteo-button:hover { background-color: #0056b3; }
-.add-numbers-group button, .range-buttons button { background-color: #17a2b8; }
-.add-numbers-group button:hover, .range-buttons button:hover { background-color: #138496; }
-#search-button { background-color: #f4b400; color: #fff; }
-#search-button:hover { background-color: #e0a300; }
-#results-container, #history-container {
-    margin-top: 30px;
+
+.person-entry {
+    background-color: #f9f9f9;
     padding: 15px;
-    background-color: #fff;
     border-radius: 8px;
-    border: 1px solid #eee;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
-}
-.person-entry, .history-entry {
-    border-bottom: 1px solid #eee;
-    padding: 10px 0;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: border-color 0.5s ease;
+    border: 1px solid #eee;
 }
-.person-entry:last-child, .history-entry:last-child {
-    border-bottom: none;
-}
-.person-info {
-    flex-grow: 1;
-}
-.person-name {
+
+.person-info .person-name {
     font-weight: bold;
-    color: #007BFF;
-    margin-bottom: 5px;
-    transition: color 0.5s ease;
+    font-size: 1.1em;
+    color: #2c3e50;
 }
-.person-numbers {
-    font-size: 14px;
-}
-.person-actions {
-    margin-left: 10px;
-}
-.action-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2em;
-    margin-left: 5px;
+
+.person-info .person-numbers {
+    font-size: 0.9em;
     color: #777;
-    transition: color 0.2s;
+    word-break: break-all;
 }
-.action-button:hover {
-    color: #000;
-}
-.edit-mode .person-info, .edit-mode .person-actions {
-    flex-direction: column;
-    align-items: flex-start;
-}
-.edit-mode .person-info {
-    width: 100%;
-}
-.edit-mode .person-name {
-    margin-bottom: 10px;
-}
-.edit-mode .person-actions {
-    margin-top: 10px;
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-}
-.edit-mode .person-actions button {
-    margin-left: 10px;
-}
-.edit-mode .person-numbers-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 5px;
-}
-.edit-mode .person-number-chip {
-    background-color: #e9e9e9;
-    padding: 5px 8px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-}
-.edit-mode .person-number-chip button {
+
+.person-actions button {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1em;
-    color: #f44336;
-    margin-left: 5px;
-    padding: 0;
+    font-size: 1.5em;
+    margin-left: 10px;
+    color: #95a5a6;
+    transition: color 0.2s ease;
+    box-shadow: none;
+    padding: 5px;
 }
-.edit-mode .person-number-chip button:hover {
-    color: #da190b;
+.person-actions button:hover {
+    color: #e74c3c;
+    transform: none;
 }
-/* ESTILOS DEL BOTÓN ACTUALIZADO EN MODO EDICIÓN */
-.edit-mode #add-number-btn { background-color: #007BFF; }
-.edit-mode #add-number-btn:hover { background-color: #0056b3; }
-.edit-mode #update-name-btn { background-color: #4CAF50; color: #fff; }
-.edit-mode #update-name-btn:hover { background-color: #45a049; }
 
 
-#ganador-container {
-    margin-top: 20px;
+/* --- Winner Display --- */
+#winner-display {
     text-align: center;
-    position: relative;
+    margin-top: 40px;
+    padding: 30px;
+    background-color: #ecf0f1;
+    border-radius: 8px;
 }
-#ganador-container h2 {
-    color: #ffc107;
-    transition: color 0.5s ease;
-}
-#ganador-nombre, #ganador-numero {
-    font-size: 2em;
-    font-weight: bold;
-    color: #007BFF;
-    transition: transform 0.5s ease-in-out, color 0.5s ease;
-    min-height: 1.5em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#ganador-numero {
-    color: #4CAF50;
-    margin-bottom: 10px;
-    transition: color 0.5s ease;
-}
-.sorteo-running {
-    animation: spin 0.025s linear infinite;
-}
-.ganador-zoom {
-    animation: winnerZoom 1s ease-in-out;
-}
-@keyframes winnerZoom {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); }
-}
+
 #countdown-timer {
-    font-size: 3em;
+    font-size: 4em;
     font-weight: bold;
-    color: #f44336;
-    margin-top: 20px;
-    transition: color 0.5s ease;
-}
-.confetti {
-    width: 10px;
-    height: 10px;
-    background-color: #f06;
-    position: absolute;
-    top: -10px;
-    border-radius: 50%;
-    z-index: 1;
-}
-@keyframes fall {
-    to {
-        top: 105%;
-        transform: translate(-50%, 0) rotateZ(360deg);
-        opacity: 0;
-    }
+    color: #e74c3c;
+    margin-bottom: 20px;
 }
 
-/* --- ESTILOS TEMA COSMIC --- */
-body.cosmic-theme {
-    background: #00001a;
-    color: #e0e0ff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-.container.cosmic-theme {
-    background-color: #1a0033;
-    box-shadow: 0 0 20px rgba(70, 0, 100, 0.8), inset 0 0 10px rgba(100, 0, 150, 0.5);
-    border: 2px solid #5d00a0;
-}
-.cosmic-theme h1 {
-    color: #d495ff;
-    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
-}
-.cosmic-theme label {
-    color: #b3a0d3;
-}
-.cosmic-theme input[type="text"] {
-    background-color: #220044;
-    color: #a0d4ff;
-    border-color: #4b0082;
-    box-shadow: inset 0 0 5px rgba(160, 212, 255, 0.5);
-}
-.cosmic-theme #numbers-container {
-    background-color: #220044;
-    border-color: #4b0082;
-    box-shadow: inset 0 0 10px rgba(160, 212, 255, 0.3);
-}
-.cosmic-theme .number-box {
-    background-color: #330066;
-    color: #e0e0ff;
-    border: 1px solid #5d00a0;
-}
-.cosmic-theme .number-box:hover {
-    background-color: #5d00a0;
-    color: #fff;
-    box-shadow: 0 0 5px #d495ff;
-}
-.cosmic-theme .number-box.selected {
-    background-color: #8a2be2;
-    color: #fff;
-    box-shadow: 0 0 10px #ff00ff;
-}
-.cosmic-theme .number-box.assigned {
-    background-color: #330044;
-    color: #663399;
-    text-decoration-color: #9966cc;
-}
-.cosmic-theme #add-button { background-color: #483d8b; }
-.cosmic-theme #add-button:hover { background-color: #6a5acd; }
-.cosmic-theme #sorteo-button { background-color: #d495ff; color: #000; }
-.cosmic-theme #sorteo-button:hover { background-color: #b56eff; }
-.cosmic-theme #clear-button { background-color: #e30022; }
-.cosmic-theme #clear-button:hover { background-color: #a30019; }
-.cosmic-theme .add-numbers-group button, .cosmic-theme .range-buttons button { background-color: #00aaff; }
-.cosmic-theme .add-numbers-group button:hover, .cosmic-theme .range-buttons button:hover { background-color: #0077cc; }
-.cosmic-theme #search-button { background-color: #cc9900; }
-.cosmic-theme #search-button:hover { background-color: #b38600; }
-.cosmic-theme #results-container, .cosmic-theme #history-container {
-    background-color: #220044;
-    border-color: #4b0082;
-    box-shadow: inset 0 0 10px rgba(160, 212, 255, 0.3);
-}
-.cosmic-theme .person-entry, .cosmic-theme .history-entry {
-    border-bottom: 1px solid #5d00a0;
-}
-.cosmic-theme .person-name {
-    color: #a0d4ff;
-}
-.cosmic-theme .action-button {
-    color: #b3a0d3;
-}
-.cosmic-theme .action-button:hover {
-    color: #fff;
-}
-.cosmic-theme .edit-mode input[type="text"] {
-    background-color: #330066;
-    color: #a0d4ff;
-    border-color: #5d00a0;
-}
-.cosmic-theme .edit-mode .person-number-chip {
-    background-color: #5d00a0;
-    color: #e0e0ff;
-}
-.cosmic-theme .edit-mode .person-number-chip button {
-    color: #d495ff;
-}
-.cosmic-theme .edit-mode #add-number-btn { background-color: #00aaff; color: #fff; }
-.cosmic-theme .edit-mode #add-number-btn:hover { background-color: #0077cc; }
-.cosmic-theme .edit-mode #update-name-btn { background-color: #483d8b; color: #fff; }
-.cosmic-theme .edit-mode #update-name-btn:hover { background-color: #6a5acd; }
-.cosmic-theme #ganador-container h2 {
-    color: #d495ff;
-    text-shadow: 0 0 10px #ff00ff;
-}
-.cosmic-theme #ganador-nombre {
-    color: #a0d4ff;
-    text-shadow: 0 0 10px #a0d4ff;
-}
-.cosmic-theme #ganador-numero {
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
-}
-.cosmic-theme #countdown-timer {
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
-}
-
-/* --- ESTILOS TEMA NEON PARTY --- */
-body.neon-theme {
-    background-color: #0a0a1a;
-    color: #f0f0f0;
-    font-family: 'Consolas', 'Courier New', monospace;
-}
-.container.neon-theme {
-    background-color: #1a1a2a;
-    box-shadow: 0 0 20px 5px rgba(100, 255, 255, 0.4);
-    border: 1px solid #64ffda;
-}
-.neon-theme h1 {
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
-    font-family: 'Consolas', 'Courier New', monospace;
-}
-.neon-theme label {
-    color: #f0f0f0;
-}
-.neon-theme input[type="text"] {
-    background-color: #333344;
-    color: #64ffda;
-    border: 1px solid #64ffda;
-    box-shadow: 0 0 5px #64ffda;
-}
-.neon-theme #numbers-container {
-    background-color: #1a1a2a;
-    border: 1px solid #64ffda;
-    box-shadow: inset 0 0 5px #64ffda;
-}
-.neon-theme .number-box {
-    background-color: #333344;
-    color: #64ffda;
-    border: 1px solid #64ffda;
-}
-.neon-theme .number-box:hover {
-    background-color: #ff00ff;
-    color: #000;
-    box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
-}
-.neon-theme .number-box.selected {
-    background-color: #00ffff;
-    color: #000;
-    box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
-}
-.neon-theme .number-box.assigned {
-    background-color: #222233;
-    color: #555566;
-    text-decoration-color: #555566;
-}
-.neon-theme #add-button { background-color: #00aaff; }
-.neon-theme #add-button:hover { background-color: #0077cc; }
-.neon-theme #sorteo-button { background-color: #ff00ff; }
-.neon-theme #sorteo-button:hover { background-color: #cc00cc; }
-.neon-theme #clear-button { background-color: #e04040; }
-.neon-theme #clear-button:hover { background-color: #a02020; }
-.neon-theme .add-numbers-group button, .neon-theme .range-buttons button { background-color: #64ffda; color: #000; }
-.neon-theme .add-numbers-group button:hover, .neon-theme .range-buttons button:hover { background-color: #00e6b8; }
-.neon-theme #search-button { background-color: #e6b800; color: #0a0a1a; }
-.neon-theme #search-button:hover { background-color: #cc9900; }
-.neon-theme #results-container, .neon-theme #history-container {
-    background-color: #1a1a2a;
-    border: 1px solid #64ffda;
-    box-shadow: inset 0 0 5px #64ffda;
-}
-.neon-theme .person-entry, .neon-theme .history-entry {
-    border-bottom: 1px solid #64ffda;
-}
-.neon-theme .person-name {
-    color: #ff00ff;
-}
-.neon-theme .action-button {
-    color: #64ffda;
-}
-.neon-theme .action-button:hover {
-    color: #00ffff;
-}
-.neon-theme .edit-mode input[type="text"] {
-    background-color: #333344;
-    color: #64ffda;
-    border-color: #64ffda;
-}
-.neon-theme .edit-mode .person-number-chip {
-    background-color: #64ffda;
-    color: #000;
-}
-.neon-theme .edit-mode .person-number-chip button {
-    color: #ff00ff;
-}
-.neon-theme .edit-mode #add-number-btn { background-color: #00ffff; color: #000; }
-.neon-theme .edit-mode #add-number-btn:hover { background-color: #00cccc; }
-.neon-theme .edit-mode #update-name-btn { background-color: #ff00ff; color: #000; }
-.neon-theme .edit-mode #update-name-btn:hover { background-color: #cc00cc; }
-.neon-theme #ganador-container h2 {
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
-}
-.neon-theme #ganador-nombre {
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
-}
-.neon-theme #ganador-numero {
-    color: #00ffff;
-    text-shadow: 0 0 10px #00ffff;
-}
-.neon-theme #countdown-timer {
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
-}
-
-/* --- ESTILOS TEMA PASTEL DREAMS --- */
-body.pastel-theme {
-    background-color: #f7e1e6;
-    color: #5e548e;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-}
-.container.pastel-theme {
-    background-color: #fff0f3;
-    box-shadow: 0 4px 15px rgba(181, 126, 220, 0.4);
-    border: 2px solid #b57edc;
-}
-.pastel-theme h1 {
-    color: #ff66a4;
-    text-shadow: 1px 1px 5px rgba(255, 102, 164, 0.5);
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-}
-.pastel-theme label {
-    color: #9381ff;
-}
-.pastel-theme input[type="text"] {
-    background-color: #fff8f8;
-    color: #5e548e;
-    border: 1px solid #b57edc;
-    box-shadow: inset 0 0 5px rgba(181, 126, 220, 0.2);
-}
-.pastel-theme #numbers-container {
-    background-color: #fef0f8;
-    border: 1px solid #b57edc;
-}
-.pastel-theme .number-box {
-    background-color: #f0e1ff;
-    color: #5e548e;
-    border: 1px solid #b57edc;
-}
-.pastel-theme .number-box:hover {
-    background-color: #c7b3e6;
-    color: #fff;
-}
-.pastel-theme .number-box.selected {
-    background-color: #ff66a4;
-    color: #fff;
-    transform: scale(1.05);
-    box-shadow: 0 0 5px #ff66a4;
-}
-.pastel-theme .number-box.assigned {
-    background-color: #e0e0e0;
-    color: #a0a0a0;
-}
-.pastel-theme button {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.pastel-theme #add-button { background-color: #b57edc; }
-.pastel-theme #add-button:hover { background-color: #a06ac9; }
-.pastel-theme #sorteo-button { background-color: #4a91f2; }
-.pastel-theme #sorteo-button:hover { background-color: #3b7ad6; }
-.pastel-theme #clear-button { background-color: #ff8c42; }
-.pastel-theme #clear-button:hover { background-color: #e67d35; }
-.pastel-theme .add-numbers-group button, .pastel-theme .range-buttons button { background-color: #72b9e6; }
-.pastel-theme .add-numbers-group button:hover, .pastel-theme .range-buttons button:hover { background-color: #61a9d4; }
-.pastel-theme #search-button { background-color: #ffdd4c; color: #5e548e; }
-.pastel-theme #search-button:hover { background-color: #e6c543; }
-.pastel-theme #results-container, .pastel-theme #history-container {
-    background-color: #fff8f8;
-    border: 1px solid #b57edc;
-}
-.pastel-theme .person-entry, .pastel-theme .history-entry {
-    border-bottom: 1px solid #e0c8ee;
-}
-.pastel-theme .person-name {
-    color: #4a91f2;
-}
-.pastel-theme .action-button {
-    color: #9381ff;
-}
-.pastel-theme .action-button:hover {
-    color: #ff66a4;
-}
-.pastel-theme .edit-mode input[type="text"] {
-    background-color: #fff0f3;
-    color: #5e548e;
-    border-color: #b57edc;
-}
-.pastel-theme .edit-mode .person-number-chip {
-    background-color: #e0c8ee;
-    color: #5e548e;
-}
-.pastel-theme .edit-mode .person-number-chip button {
-    color: #ff66a4;
-}
-.pastel-theme .edit-mode #add-number-btn { background-color: #b57edc; color: #fff; }
-.pastel-theme .edit-mode #add-number-btn:hover { background-color: #a06ac9; }
-.pastel-theme .edit-mode #update-name-btn { background-color: #ff66a4; color: #fff; }
-.pastel-theme .edit-mode #update-name-btn:hover { background-color: #e65c92; }
-.pastel-theme #ganador-container h2 {
-    color: #ff66a4;
-}
-.pastel-theme #ganador-nombre {
-    color: #b57edc;
-}
-.pastel-theme #ganador-numero {
-    color: #4a91f2;
-}
-.pastel-theme #countdown-timer {
-    color: #ff8c42;
-}
-
-#theme-toggle-group {
+#winner-single h2, #winner-top3 h2 {
     margin-top: 0;
-    justify-content: flex-end;
+    border: none;
+}
+
+#winner-name, #winner-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+#winner-name {
+    color: #3498db;
+}
+
+#winner-number {
+    color: #2ecc71;
+}
+
+#winner-list-top3 {
+    list-style-type: none;
+    padding: 0;
+    font-size: 1.5em;
+}
+
+#winner-list-top3 li {
+    background-color: #fff;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 6px;
+    max-width: 80%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+#winner-list-top3 li .winner-name {
+    font-weight: bold;
+    color: #3498db;
+}
+
+#winner-list-top3 li .winner-number {
+    font-weight: normal;
+    color: #2ecc71;
+}
+
+/* --- Footer --- */
+#page-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    color: #95a5a6;
+}
+#page-footer p {
+    margin: 5px 0;
+}
+
+
+/* --- THEME SWITCHER --- */
+#theme-switcher-container {
+    text-align: right;
+    margin-bottom: 20px;
+}
+#theme-switcher-container label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: normal;
 }
 #theme-selector {
-    padding: 8px;
+    padding: 5px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    background-color: #fff;
+}
+
+
+/* --- HACKER THEME --- */
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    display: none; /* Hidden by default */
+}
+
+body.hacker-theme {
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', Courier, monospace;
+}
+.hacker-theme .container {
+    background-color: rgba(0, 20, 0, 0.85);
+    border: 1px solid #0f0;
+    box-shadow: 0 0 25px rgba(0, 255, 0, 0.5);
+}
+.hacker-theme h1, .hacker-theme h2, .hacker-theme label {
+    color: #0f0;
+    text-shadow: 0 0 5px #0f0;
+}
+.hacker-theme h2 {
+    border-bottom-color: #0f0;
+}
+.hacker-theme input, .hacker-theme #theme-selector {
+    background-color: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+}
+.hacker-theme button {
+    background-color: #0f0;
+    color: #000;
+    border: 1px solid #0f0;
+}
+.hacker-theme button:hover {
+    background-color: #000;
+    color: #0f0;
+}
+.hacker-theme .number-box {
+    background-color: #000;
+    color: #0f0;
+    border: 1px solid #0a0;
+}
+.hacker-theme .number-box.selected {
+    background-color: #0f0;
+    color: #000;
+}
+.hacker-theme .number-box.assigned {
+    background-color: #111;
     color: #333;
+    text-decoration-color: #333;
 }
-.cosmic-theme #theme-selector {
-    background-color: #220044;
-    color: #a0d4ff;
-    border-color: #4b0082;
+.hacker-theme .person-entry {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-color: #0f0;
 }
-.neon-theme #theme-selector {
-    background-color: #333344;
-    color: #64ffda;
-    border-color: #64ffda;
+.hacker-theme .person-name, .hacker-theme .person-numbers {
+    color: #0f0;
 }
-.pastel-theme #theme-selector {
-    background-color: #fff0f3;
-    color: #5e548e;
-    border-color: #b57edc;
+.hacker-theme #winner-display {
+    background-color: rgba(0, 20, 0, 0.85);
 }
-.hide-on-edit-mode {
-    display: none;
+.hacker-theme #winner-name, .hacker-theme #winner-list-top3 li .winner-name {
+    color: #0f0;
+}
+.hacker-theme #winner-number, .hacker-theme #winner-list-top3 li .winner-number {
+    color: #fff;
+}
+.hacker-theme #winner-list-top3 li {
+    background-color: #000;
+}
+
+
+/* --- JULES'S THEME --- */
+body.jules-theme {
+    background: linear-gradient(135deg, #232526, #414345);
+    color: #f0f0f0;
+    font-family: 'Roboto Mono', monospace;
+}
+.jules-theme .container {
+    background-color: rgba(44, 62, 80, 0.85);
+    border: 1px solid #8e44ad;
+    box-shadow: 0 0 25px rgba(142, 68, 173, 0.5);
+    backdrop-filter: blur(5px);
+}
+.jules-theme h1, .jules-theme h2 {
+    color: #9b59b6;
+    text-shadow: 0 0 4px #9b59b6;
+}
+.jules-theme h2 {
+    border-bottom-color: #9b59b6;
+}
+.jules-theme label {
+    color: #ecf0f1;
+}
+.jules-theme input, .jules-theme #theme-selector {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border: 1px solid #9b59b6;
+}
+.jules-theme button {
+    background-color: #8e44ad;
+}
+.jules-theme button:hover {
+    background-color: #9b59b6;
+}
+.jules-theme #clear-button {
+    background-color: #c0392b;
+}
+.jules-theme #clear-button:hover {
+    background-color: #e74c3c;
+}
+.jules-theme .number-box {
+    background-color: #34495e;
+    color: #ecf0f1;
+    border: 1px solid #2c3e50;
+}
+.jules-theme .number-box.selected {
+    background-color: #9b59b6;
+    color: #fff;
+}
+.jules-theme .number-box.assigned {
+    background-color: #2c3e50;
+    color: #7f8c8d;
+}
+.jules-theme .person-entry {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-color: #9b59b6;
+}
+.jules-theme .person-name {
+    color: #9b59b6;
+}
+.jules-theme .person-numbers {
+    color: #bdc3c7;
+}
+.jules-theme #winner-display {
+    background-color: rgba(44, 62, 80, 0.85);
+}
+.jules-theme #winner-name, .jules-theme #winner-list-top3 li .winner-name {
+    color: #9b59b6;
+}
+.jules-theme #winner-number, .jules-theme #winner-list-top3 li .winner-number {
+    color: #fff;
+}
+.jules-theme #winner-list-top3 li {
+    background-color: #2c3e50;
 }
