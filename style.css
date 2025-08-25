@@ -523,4 +523,13 @@ body.4d-theme {
 .4d-theme button:hover {
     background: linear-gradient(to right, #ff00ff, #00ffff);
     color: #000;
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 0 20px #fff;
+}
+
+.4d-theme .person-entry, .4d-theme .grid-container {
+    transition: transform 0.3s ease;
+}
+.4d-theme .person-entry:hover, .4d-theme .grid-container:hover {
+    transform: translateZ(10px);
 }
