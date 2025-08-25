@@ -297,18 +297,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Theme Switcher Logic ---
     function applyTheme(themeName) {
+        // Reset all theme classes
         body.className = '';
         const canvas = document.getElementById('matrix-canvas');
+
+        // Stop any running animations
         if (matrixInterval) {
             clearInterval(matrixInterval);
             matrixInterval = null;
         }
-        if (canvas) canvas.style.display = 'none';
+        if (canvas) {
+            canvas.style.display = 'none';
+        }
 
-        if (themeName !== 'default') body.classList.add(`${themeName}-theme`);
-        if (themeName === 'hacker' && canvas) {
-            canvas.style.display = 'block';
-            startMatrix();
+        switch (themeName) {
+            case 'hacker':
+                body.classList.add('hacker-theme');
+                if (canvas) {
+                    canvas.style.display = 'block';
+                    startMatrix();
+                }
+                break;
+            case 'jules':
+                body.classList.add('jules-theme');
+                break;
+            case '4d':
+                body.classList.add('4d-theme');
+                break;
+            case 'default':
+            default:
+                // No class needed for default theme
+                break;
         }
     }
 
