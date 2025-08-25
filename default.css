@@ -300,236 +300,31 @@ button:hover {
     border: 1px solid #ccc;
 }
 
-
-/* --- HACKER THEME --- */
-#matrix-canvas {
+/* --- Roulette Animation Overlay --- */
+#roulette-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.85);
     display: none; /* Hidden by default */
-}
-
-body.hacker-theme {
-    background-color: #000;
-    color: #0f0;
-    font-family: 'Courier New', Courier, monospace;
-}
-.hacker-theme .container {
-    background-color: rgba(0, 20, 0, 0.85);
-    border: 1px solid #0f0;
-    box-shadow: 0 0 25px rgba(0, 255, 0, 0.5);
-}
-.hacker-theme h1, .hacker-theme h2, .hacker-theme label {
-    color: #0f0;
-    text-shadow: 0 0 5px #0f0;
-}
-.hacker-theme h2 {
-    border-bottom-color: #0f0;
-}
-.hacker-theme input, .hacker-theme #theme-selector {
-    background-color: #000;
-    color: #0f0;
-    border: 1px solid #0f0;
-}
-.hacker-theme button {
-    background-color: #0f0;
-    color: #000;
-    border: 1px solid #0f0;
-}
-.hacker-theme button:hover {
-    background-color: #000;
-    color: #0f0;
-}
-.hacker-theme .number-box {
-    background-color: #000;
-    color: #0f0;
-    border: 1px solid #0a0;
-}
-.hacker-theme .number-box.selected {
-    background-color: #0f0;
-    color: #000;
-}
-.hacker-theme .number-box.assigned {
-    background-color: #222;
-    color: #555;
-    text-decoration-color: #555;
-}
-.hacker-theme .person-entry {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-color: #0f0;
-}
-.hacker-theme .person-name, .hacker-theme .person-numbers {
-    color: #0f0;
-}
-.hacker-theme #winner-display {
-    background-color: rgba(0, 20, 0, 0.85);
-}
-.hacker-theme #winner-name, .hacker-theme #winner-list-top3 li .winner-name {
-    color: #0f0;
-}
-.hacker-theme #winner-number, .hacker-theme #winner-list-top3 li .winner-number {
-    color: #fff;
-}
-.hacker-theme #winner-list-top3 li {
-    background-color: #000;
-}
-
-
-/* --- JULES'S THEME --- */
-body.jules-theme {
-    background: linear-gradient(135deg, #232526, #414345);
-    color: #f0f0f0;
-    font-family: 'Roboto Mono', monospace;
-}
-.jules-theme .container {
-    background-color: rgba(44, 62, 80, 0.85);
-    border: 1px solid #8e44ad;
-    box-shadow: 0 0 25px rgba(142, 68, 173, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
     backdrop-filter: blur(5px);
 }
-.jules-theme h1, .jules-theme h2 {
-    color: #9b59b6;
-    text-shadow: 0 0 4px #9b59b6;
-}
-.jules-theme h2 {
-    border-bottom-color: #9b59b6;
-}
-.jules-theme label {
-    color: #ecf0f1;
-}
-.jules-theme input, .jules-theme #theme-selector {
-    background-color: #2c3e50;
-    color: #ecf0f1;
-    border: 1px solid #9b59b6;
-}
-.jules-theme button {
-    background-color: #8e44ad;
-}
-.jules-theme button:hover {
-    background-color: #9b59b6;
-}
-.jules-theme #clear-button {
-    background-color: #c0392b;
-}
-.jules-theme #clear-button:hover {
-    background-color: #e74c3c;
-}
-.jules-theme .number-box {
-    background-color: #34495e;
-    color: #ecf0f1;
-    border: 1px solid #2c3e50;
-}
-.jules-theme .number-box.selected {
-    background-color: #a569bd;
+
+#roulette-number {
+    font-size: 25vw;
+    font-weight: bold;
     color: #fff;
-    box-shadow: 0 0 12px rgba(165, 105, 189, 0.7);
-}
-.jules-theme .number-box.assigned {
-    background-color: #34495e;
-    color: #95a5a6;
-    text-decoration: line-through;
-    text-decoration-color: #c0392b;
-}
-.jules-theme .person-entry {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-color: #9b59b6;
-}
-.jules-theme .person-name {
-    color: #9b59b6;
-}
-.jules-theme .person-numbers {
-    color: #bdc3c7;
-}
-.jules-theme #winner-display {
-    background-color: rgba(44, 62, 80, 0.85);
-}
-.jules-theme #winner-name, .jules-theme #winner-list-top3 li .winner-name {
-    color: #9b59b6;
-}
-.jules-theme #winner-number, .jules-theme #winner-list-top3 li .winner-number {
-    color: #fff;
-}
-.jules-theme #winner-list-top3 li {
-    background-color: #2c3e50;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #2ecc71, 0 0 80px #2ecc71;
+    animation: pulse 1s infinite;
 }
 
-
-/* --- 4D THEME --- */
-@keyframes morph-bg {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-@keyframes float {
-    0% { transform: translateZ(0); }
-    50% { transform: translateZ(30px) rotateY(10deg); }
-    100% { transform: translateZ(0); }
-}
-
-body.4d-theme {
-    background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
-    background-size: 600% 600%;
-    animation: morph-bg 15s ease infinite;
-    perspective: 1000px;
-    color: #fff;
-}
-
-.4d-theme .container {
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid #ff00ff;
-    box-shadow: 0 0 30px #00ffff, 0 0 50px #ff00ff;
-    transform-style: preserve-3d;
-    animation: float 10s ease-in-out infinite;
-}
-
-.4d-theme h1, .4d-theme h2 {
-    color: #fff;
-    text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 15px #ff00ff;
-}
-.4d-theme h2 {
-    border-bottom-color: #00ffff;
-}
-
-.4d-theme .number-box {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #00ffff;
-    color: #fff;
-    transition: transform 0.3s ease, background 0.3s ease;
-}
-.4d-theme .number-box:hover {
-    transform: translateZ(20px) scale(1.2);
-    background: rgba(0, 255, 255, 0.3);
-}
-.4d-theme .number-box.selected {
-    background: #ff00ff;
-    box-shadow: 0 0 15px #ff00ff;
-    transform: translateZ(20px) scale(1.2);
-}
-.4d-theme .number-box.assigned {
-    background: rgba(0, 0, 0, 0.5);
-    color: #555;
-    text-decoration: line-through;
-}
-
-.4d-theme button {
-    background-color: transparent;
-    border: 2px solid;
-    border-image: linear-gradient(to right, #ff00ff, #00ffff) 1;
-    color: #fff;
-}
-.4d-theme button:hover {
-    background: linear-gradient(to right, #ff00ff, #00ffff);
-    color: #000;
-    transform: scale(1.1) rotate(-5deg);
-    box-shadow: 0 0 20px #fff;
-}
-
-.4d-theme .person-entry, .4d-theme .grid-container {
-    transition: transform 0.3s ease;
-}
-.4d-theme .person-entry:hover, .4d-theme .grid-container:hover {
-    transform: translateZ(10px);
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); text-shadow: 0 0 15px #fff, 0 0 30px #fff, 0 0 60px #2ecc71, 0 0 100px #2ecc71; }
+    100% { transform: scale(1); }
 }
