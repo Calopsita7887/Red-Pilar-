@@ -859,7 +859,48 @@
     let currentMaxNumber = 99;
     let currentRaffleCode = null; // Variable para almacenar el código del sorteo cargado
 
-    loadData();
+    function saveStateToLocalStorage() {
+        try {
+            const state = {
+                allParticipants: allParticipants,
+                assignedNumbers: [...assignedNumbers],
+                currentMaxNumber: currentMaxNumber
+            };
+            localStorage.setItem('raffleLocalState', JSON.stringify(state));
+        } catch (e) {
+            console.error('Error guardando el estado en localStorage:', e);
+        }
+    }
+
+    function loadStateFromLocalStorage() {
+        try {
+            const savedState = localStorage.getItem('raffleLocalState');
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                allParticipants = state.allParticipants || [];
+                assignedNumbers = new Set(state.assignedNumbers || []);
+                currentMaxNumber = state.currentMaxNumber !== undefined ? state.currentMaxNumber : 99;
+
+                updateRangeLabel();
+                updateAllNumberBoxes();
+                renderParticipants(allParticipants);
+
+                console.log("Estado del sorteo cargado desde el navegador.");
+                return true; // Indicate that data was loaded
+            }
+        } catch (e) {
+            console.error('Error cargando el estado desde localStorage:', e);
+        }
+        return false; // Indicate no data was loaded
+    }
+
+    // Cargar datos desde localStorage al iniciar
+    const loadedFromLocal = loadStateFromLocalStorage();
+    if (!loadedFromLocal) {
+        // Si no hay datos locales, generar la vista inicial
+        generateNumberBoxes(0, currentMaxNumber);
+        updateRangeLabel();
+    }
 
     function updateRangeLabel() {
         numbersRangeLabel.textContent = `Selecciona los números (00 a ${currentMaxNumber}):`;
@@ -912,7 +953,7 @@
             });
     }
 
-    function loadData() {
+function loadDataFromFirebase() {
         if (!currentRaffleCode) {
             console.log("No hay código de sorteo cargado. Generando números predeterminados.");
             generateNumberBoxes(0, currentMaxNumber);
@@ -932,6 +973,7 @@
                 updateRangeLabel();
                 updateAllNumberBoxes();
                 renderParticipants(allParticipants);
+                saveStateToLocalStorage();
                 console.log("Sorteo cargado exitosamente.");
             } else {
                 console.log("No se encontró el sorteo con el código proporcionado.");
@@ -957,6 +999,7 @@
             renderParticipants(allParticipants);
             updateNumberBoxes();
             clearInputs();
+            saveStateToLocalStorage();
         } else {
             alert('Por favor, ingresa un nombre y selecciona al menos un número.');
         }
@@ -1016,6 +1059,7 @@
             allParticipants.splice(personIndex, 1);
             renderParticipants(allParticipants);
             updateNumberBoxes();
+            saveStateToLocalStorage();
         }
     }
 
@@ -1053,6 +1097,7 @@
         if (person) {
             person.name = newName;
             renderParticipants(allParticipants);
+            saveStateToLocalStorage();
         }
     }
 
@@ -1070,6 +1115,7 @@
                 assignedNumbers.add(numberToAdd);
                 renderParticipants(allParticipants);
                 updateNumberBoxes();
+                saveStateToLocalStorage();
             } else if (assignedNumbers.has(numberToAdd)) {
                 alert(`El número ${numberString} ya está asignado.`);
             }
@@ -1086,6 +1132,7 @@
                 assignedNumbers.delete(numberToRemove);
                 renderParticipants(allParticipants);
                 updateNumberBoxes();
+                saveStateToLocalStorage();
                 editPerson(personId);
             }
         }
@@ -1209,6 +1256,7 @@
         assignedNumbers.clear();
         currentMaxNumber = 99;
         currentRaffleCode = null;
+        saveStateToLocalStorage();
         numbersContainer.innerHTML = '';
         resultsList.innerHTML = '';
         ganadorContainer.style.display = 'none';
@@ -1244,6 +1292,7 @@
         currentMaxNumber = newMax;
         updateAllNumberBoxes();
         updateRangeLabel();
+        saveStateToLocalStorage();
     }
     
     function selectRange(amount) {
@@ -1335,7 +1384,7 @@
         const code = loadCodeInput.value.trim();
         if (code) {
             currentRaffleCode = code;
-            loadData();
+            loadDataFromFirebase();
         } else {
             alert('Por favor, ingresa un código de sorteo.');
         }
