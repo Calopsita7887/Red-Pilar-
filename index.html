@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorteo Red Pilar</title>
-    <link rel="icon" href="logo.png" type="image/png">
     <style>
         /* --- ESTILOS GENERALES (TEMA PREDETERMINADO) --- */
         body {
@@ -31,7 +30,7 @@
             margin-bottom: 20px;
         }
         .logo {
-            width: 200px;
+            width: 150px;
             height: auto;
         }
         h1 {
@@ -383,8 +382,7 @@
             text-shadow: 0 0 10px #ff00ff;
         }
         .cosmic-theme #countdown-timer {
-            color: #ff00ff;
-            text-shadow: 0 0 10px #ff00ff;
+            color: #f44336;
         }
         /* --- ESTILOS TEMA NEON PARTY --- */
         body.neon-theme {
@@ -597,11 +595,6 @@
         .pastel-theme #countdown-timer {
             color: #ff8c42;
         }
-        .pastel-theme #theme-selector {
-            background-color: #fff0f3;
-            color: #5e548e;
-            border-color: #b57edc;
-        }
         #theme-toggle-group {
             margin-top: 0;
             justify-content: flex-end;
@@ -705,7 +698,7 @@
         }
         /* --- NUEVO ESTILO PARA EL BORDE DE RESALTE --- */
         .number-box.resaltado {
-            border: 3px solid #ff5722; /* Color naranja, puedes cambiarlo */
+            border: 3px solid #ff5722;
             transform: scale(1.1);
         }
         /* Fin de los nuevos estilos */
@@ -715,682 +708,612 @@
             font-size: 0.9em;
             color: #888;
         }
+
+        /* -------------------------------------- */
+        /* --- ESTILOS TEMA CELUAPUESTAS (NUEVO) --- */
+        /* -------------------------------------- */
+        body.celuapuestas-theme {
+            background-color: #181822; /* Fondo oscuro */
+            color: #f0f0f0; /* Texto claro */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .celuapuestas-theme .logo {
+            filter: brightness(0) invert(1) sepia(1) hue-rotate(280deg) saturate(1000%) brightness(1.2);
+        }
+        .container.celuapuestas-theme {
+            background-color: #20202d; /* Color del panel */
+            border: 1px solid #333344;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .celuapuestas-theme h1 {
+            color: #62B4E9;
+            text-shadow: 0 0 5px rgba(98, 180, 233, 0.5);
+        }
+        .celuapuestas-theme label {
+            color: #f0f0f0;
+        }
+        .celuapuestas-theme input[type="text"] {
+            background-color: #12121b;
+            color: #f0f0f0;
+            border: 1px solid #444;
+        }
+        .celuapuestas-theme #numbers-container {
+            background-color: #181822;
+            border: 1px solid #444;
+        }
+        .celuapuestas-theme .number-box {
+            background-color: #2c2c3e;
+            color: #f0f0f0;
+            border: 1px solid #444;
+        }
+        .celuapuestas-theme .number-box:hover {
+            background-color: #3c3c5c;
+            transform: none;
+        }
+        .celuapuestas-theme .number-box.selected {
+            background-color: #F5B742; /* Color de acento dorado */
+            color: #181822;
+            transform: scale(1.05);
+            box-shadow: 0 0 5px #F5B742;
+        }
+        .celuapuestas-theme .number-box.assigned {
+            background-color: #20202d;
+            color: #444;
+            text-decoration-color: #666;
+        }
+        .celuapuestas-theme button {
+            box-shadow: none;
+            font-weight: bold;
+        }
+        .celuapuestas-theme #add-button { background-color: #62B4E9; color: #000; }
+        .celuapuestas-theme #add-button:hover { background-color: #459ad5; }
+        .celuapuestas-theme #sorteo-button { background-color: #E93D71; }
+        .celuapuestas-theme #sorteo-button:hover { background-color: #c92c61; }
+        .celuapuestas-theme #clear-button { background-color: #e96d3d; }
+        .celuapuestas-theme #clear-button:hover { background-color: #c95c32; }
+        .celuapuestas-theme .add-numbers-group button, .celuapuestas-theme .range-buttons button {
+            background-color: #4a4a58;
+            color: #f0f0f0;
+        }
+        .celuapuestas-theme .add-numbers-group button:hover, .celuapuestas-theme .range-buttons button:hover {
+            background-color: #5a5a68;
+        }
+        .celuapuestas-theme #results-container, .celuapuestas-theme #history-container {
+            background-color: #20202d;
+            border: 1px solid #333344;
+        }
+        .celuapuestas-theme .person-entry, .celuapuestas-theme .history-entry {
+            border-bottom: 1px solid #333344;
+        }
+        .celuapuestas-theme .person-name {
+            color: #62B4E9;
+        }
+        .celuapuestas-theme .action-button {
+            color: #f0f0f0;
+        }
+        .celuapuestas-theme .action-button:hover {
+            color: #F5B742;
+        }
+        .celuapuestas-theme .edit-mode input[type="text"] {
+            background-color: #2c2c3e;
+            color: #f0f0f0;
+            border-color: #62B4E9;
+        }
+        .celuapuestas-theme .edit-mode .person-number-chip {
+            background-color: #4a4a58;
+            color: #f0f0f0;
+        }
+        .celuapuestas-theme .edit-mode .person-number-chip button {
+            color: #E93D71;
+        }
+        .celuapuestas-theme .edit-mode #add-number-btn { background-color: #62B4E9; color: #000; }
+        .celuapuestas-theme .edit-mode #add-number-btn:hover { background-color: #459ad5; }
+        .celuapuestas-theme .edit-mode #update-name-btn { background-color: #F5B742; color: #000; }
+        .celuapuestas-theme .edit-mode #update-name-btn:hover { background-color: #d8a33a; }
+        .celuapuestas-theme #ganador-container h2 {
+            color: #F5B742;
+        }
+        .celuapuestas-theme #ganador-nombre {
+            color: #E93D71;
+        }
+        .celuapuestas-theme #ganador-numero {
+            color: #62B4E9;
+        }
+        .celuapuestas-theme #countdown-timer {
+            color: #F5B742;
+        }
+        .celuapuestas-theme #theme-selector {
+            background-color: #2c2c3e;
+            color: #f0f0f0;
+            border-color: #4a4a58;
+        }
+        .celuapuestas-theme #save-data-button { background-color: #4a4a58; }
+        .celuapuestas-theme #save-data-button:hover { background-color: #3a3a48; }
+        .celuapuestas-theme #load-data-button { background-color: #4a4a58; }
+        .celuapuestas-theme #load-data-button:hover { background-color: #3a3a48; }
+        .celuapuestas-theme #save-code-container {
+            background-color: #2c2c3e;
+            border-color: #4a4a58;
+        }
+        .celuapuestas-theme #save-code-container h4 {
+            color: #f0f0f0;
+        }
+        .celuapuestas-theme #saved-code {
+            color: #F5B742;
+        }
+        .celuapuestas-theme .number-box.resaltado {
+            border: 3px solid #E93D71;
+            box-shadow: 0 0 10px #E93D71;
+        }
+        .celuapuestas-theme .footer {
+            color: #666;
+        }
     </style>
 </head>
 <body>
-
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-
-<div class="container" id="main-container">
-    <div id="theme-toggle-group">
-        <label for="theme-selector" style="font-weight: normal;">Seleccionar tema:</label>
-        <select id="theme-selector">
-            <option value="pastel" selected>Pastel Dreams</option>
-            <option value="default">Clásico</option>
-        </select>
-    </div>
-    <div class="logo-container">
-        <img src="logo.png" alt="Logo de Red Pilar" class="logo">
-    </div>
-    <h1>Red Pilar</h1>
-
-    <div class="form-group">
-        <label for="search-number">Buscar y resaltar número:</label>
-        <input type="text" id="search-number" placeholder="Ej: 02, 102...">
-    </div>
-
-    <div class="form-group">
-        <label for="person-name">Nombre de la persona:</label>
-        <input type="text" id="person-name" placeholder="Escribe el nombre aquí...">
-    </div>
-
-    <label id="numbers-range-label">Selecciona los números (00 a 99):</label>
-    <div id="numbers-container"></div>
-
-    <label>Modificar cantidad de números:</label>
-    <div class="add-numbers-group">
-        <button id="add-10-button">+10</button>
-        <button id="remove-10-button">-10</button>
-    </div>
-    <label>Selección de rango:</label>
-    <div class="range-buttons">
-        <button id="select-range-10-button">Seleccionar +10</button>
-    </div>
-
-    <div class="button-group">
-        <button id="add-button">Agregar persona y números</button>
-        <button id="sorteo-button">Sortear</button>
-    </div>
-
-    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-        <button id="clear-button" style="width: 48%;">Limpiar todo</button>
-    </div>
-
-    <hr>
-    
-    <div style="text-align: center; margin-top: 20px;">
-        <button id="save-data-button" style="padding: 10px 20px; border: none; border-radius: 4px; color: #fff; cursor: pointer;">Guardar Sorteo</button>
-        <input type="text" id="load-code-input" placeholder="Ingresa tu código" style="padding: 10px; border-radius: 4px; border: 1px solid #ccc; width: 150px;">
-        <button id="load-data-button" style="padding: 10px 20px; border: none; border-radius: 4px; color: #fff; cursor: pointer;">Cargar Sorteo</button>
-    </div>
-    
-    <div id="save-code-container">
-        <h4>Tu sorteo ha sido guardado.</h4>
-        <p>¡Guarda este código para cargarlo en otro momento! 👉 <span id="saved-code"></span></p>
-    </div>
-
-    <hr>
-
-    <div id="results-container">
-        <h2>Participantes</h2>
-        <div class="form-group">
-            <input type="text" id="search-person" placeholder="Busca por nombre o número...">
+    <div class="container">
+        <div id="theme-toggle-group">
+            <select id="theme-selector">
+                <option value="default">Clásico</option>
+                <option value="cosmic">Cósmico</option>
+                <option value="neon">Neon Party</option>
+                <option value="pastel">Pastel Dreams</option>
+                <option value="celuapuestas">CeluApuestas</option>
+            </select>
         </div>
-        <div id="results-list">
+        <div class="logo-container">
+            <img src="https://i.ibb.co/6P6X2yH/logo-redpilar.png" alt="Logo de Red Pilar" class="logo">
         </div>
+        <h1 id="main-title">Sorteo Red Pilar</h1>
+        <div id="form-container">
+            <div class="form-group">
+                <label for="person-name">Nombre del Participante:</label>
+                <input type="text" id="person-name" placeholder="Escribe el nombre aquí">
+            </div>
+            <div class="form-group">
+                <label>Selecciona los números:</label>
+                <div id="numbers-container"></div>
+            </div>
+            <div class="add-numbers-group">
+                <button id="add-10-button">+10</button>
+                <button id="add-25-button">+25</button>
+                <button id="add-50-button">+50</button>
+            </div>
+            <div class="button-group">
+                <button id="add-button">Añadir Participante</button>
+                <button id="clear-button">Limpiar Selección</button>
+            </div>
+        </div>
+        
+        <div id="results-container">
+            <h2>Participantes</h2>
+            <div id="participants-list"></div>
+        </div>
+        
+        <div class="button-group hide-on-edit-mode">
+            <button id="sorteo-button">Realizar Sorteo</button>
+            <button id="save-data-button">Guardar Datos</button>
+            <button id="load-data-button">Cargar Datos</button>
+        </div>
+
+        <div id="save-code-container">
+            <h4>Código de guardado:</h4>
+            <span id="saved-code"></span>
+        </div>
+        
+        <div id="ganador-container">
+            <h2>🎉 Ganador del Sorteo 🎉</h2>
+            <div id="ganador-numero"></div>
+            <div id="ganador-nombre"></div>
+            <div id="countdown-timer"></div>
+        </div>
+        
+        <div id="history-container">
+            <h2>Historial de Sorteos</h2>
+            <div id="history-list"></div>
+        </div>
+
+        <p class="footer">
+            <a href="https://www.redpilar.com.ar" target="_blank">RedPilar.com.ar</a> - Sorteo Digital
+            <br>
+            © Marca Registrada - Diseñado por Clau Ibarra
+        </p>
+
     </div>
 
-    <div id="ganador-container" style="display:none;">
-        <div id="countdown-timer"></div>
-        <h2>¡El número ganador es!</h2>
-        <div id="ganador-numero"></div>
-        <h2>¡Y el ganador es!</h2>
-        <div id="ganador-nombre"></div>
-    </div>
-    <div class="footer">
-        design by Clau
-    </div>
+    <script>
+        const personNameInput = document.getElementById('person-name');
+        const numbersContainer = document.getElementById('numbers-container');
+        const addButton = document.getElementById('add-button');
+        const clearButton = document.getElementById('clear-button');
+        const sorteoButton = document.getElementById('sorteo-button');
+        const participantsList = document.getElementById('participants-list');
+        const ganadorNombre = document.getElementById('ganador-nombre');
+        const ganadorNumero = document.getElementById('ganador-numero');
+        const countdownTimer = document.getElementById('countdown-timer');
+        const historyList = document.getElementById('history-list');
+        const add10Button = document.getElementById('add-10-button');
+        const add25Button = document.getElementById('add-25-button');
+        const add50Button = document.getElementById('add-50-button');
+        const saveDataButton = document.getElementById('save-data-button');
+        const loadDataButton = document.getElementById('load-data-button');
+        const saveCodeContainer = document.getElementById('save-code-container');
+        const savedCodeSpan = document.getElementById('saved-code');
+        const themeSelector = document.getElementById('theme-selector');
+        
+        let allNumbers = [];
+        let assignedNumbers = new Set();
+        let selectedNumbers = new Set();
+        let participants = [];
+        let history = [];
+        
+        let isEditing = false;
+        let editingIndex = -1;
 
-</div>
-
-<script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCQdtjwagG3pH2_MZAV2pKVq9HS7I-ufHk",
-      authDomain: "sorteo-24534.firebaseapp.com",
-      projectId: "sorteo-24534",
-      storageBucket: "sorteo-24534.firebasestorage.app",
-      messagingSenderId: "546018107328",
-      appId: "1:546018107328:web:4eb823a41e3cd70c29f225"
-    };
-
-    // Inicializa Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    const numbersContainer = document.getElementById('numbers-container');
-    const personNameInput = document.getElementById('person-name');
-    const addButton = document.getElementById('add-button');
-    const clearButton = document.getElementById('clear-button');
-    const sorteoButton = document.getElementById('sorteo-button');
-    const add10Button = document.getElementById('add-10-button');
-    const remove10Button = document.getElementById('remove-10-button');
-    const selectRange10Button = document.getElementById('select-range-10-button');
-    const resultsList = document.getElementById('results-list');
-    const ganadorContainer = document.getElementById('ganador-container');
-    const ganadorNumero = document.getElementById('ganador-numero');
-    const ganadorNombre = document.getElementById('ganador-nombre');
-    const countdownTimer = document.getElementById('countdown-timer');
-    const themeSelector = document.getElementById('theme-selector');
-    const body = document.body;
-    const mainContainer = document.getElementById('main-container');
-    const numbersRangeLabel = document.getElementById('numbers-range-label');
-
-    const saveButton = document.getElementById('save-data-button');
-    const loadButton = document.getElementById('load-data-button');
-    const loadCodeInput = document.getElementById('load-code-input');
-    const saveCodeContainer = document.getElementById('save-code-container');
-    const savedCodeElement = document.getElementById('saved-code');
-    
-    // Campo de búsqueda de números
-    const searchNumberInput = document.getElementById('search-number');
-    // Nuevo campo de búsqueda de participantes
-    const searchPersonInput = document.getElementById('search-person');
-
-
-    const countdownSound = new Audio('https://www.soundboard.com/mediafiles/3/30018_e2f694931a78c1874249a567634f195d.mp3');
-    const spinSound = new Audio('https://www.soundboard.com/mediafiles/1/18167_nfs_prostreet_rev_4.mp3');
-    const winnerSound = new Audio('https://www.soundboard.com/mediafiles/6/6389_87900b90e9e46a78280f58a329d91f86.mp3');
-
-    let selectedNumbers = [];
-    let allParticipants = [];
-    let assignedNumbers = new Set();
-    const MIN_NUMBERS = 100;
-    let currentMaxNumber = 99;
-    let currentRaffleCode = null; // Variable para almacenar el código del sorteo cargado
-
-    function saveStateToLocalStorage() {
-        try {
-            const state = {
-                allParticipants: allParticipants,
-                assignedNumbers: [...assignedNumbers],
-                currentMaxNumber: currentMaxNumber
-            };
-            localStorage.setItem('raffleLocalState', JSON.stringify(state));
-        } catch (e) {
-            console.error('Error guardando el estado en localStorage:', e);
+        // --- Lógica del Sorteo ---
+        function generateNumbers(count = 100) {
+            allNumbers = Array.from({ length: count }, (_, i) => i + 1);
+            renderNumbers();
         }
-    }
 
-    function loadStateFromLocalStorage() {
-        try {
-            const savedState = localStorage.getItem('raffleLocalState');
-            if (savedState) {
-                const state = JSON.parse(savedState);
-                allParticipants = state.allParticipants || [];
-                assignedNumbers = new Set(state.assignedNumbers || []);
-                currentMaxNumber = state.currentMaxNumber !== undefined ? state.currentMaxNumber : 99;
+        function renderNumbers() {
+            numbersContainer.innerHTML = '';
+            allNumbers.forEach(num => {
+                const numberBox = document.createElement('div');
+                numberBox.classList.add('number-box');
+                numberBox.textContent = num;
+                numberBox.dataset.number = num;
 
-                updateRangeLabel();
-                updateAllNumberBoxes();
-                renderParticipants(allParticipants);
-
-                console.log("Estado del sorteo cargado desde el navegador.");
-                return true; // Indicate that data was loaded
-            }
-        } catch (e) {
-            console.error('Error cargando el estado desde localStorage:', e);
-        }
-        return false; // Indicate no data was loaded
-    }
-
-    // Cargar datos desde localStorage al iniciar
-    const loadedFromLocal = loadStateFromLocalStorage();
-    if (!loadedFromLocal) {
-        // Si no hay datos locales, generar la vista inicial
-        generateNumberBoxes(0, currentMaxNumber);
-        updateRangeLabel();
-    }
-
-    function updateRangeLabel() {
-        numbersRangeLabel.textContent = `Selecciona los números (00 a ${currentMaxNumber}):`;
-    }
-
-    function createNumberBox(number) {
-        const numberBox = document.createElement('div');
-        numberBox.classList.add('number-box');
-        numberBox.textContent = String(number).padStart(2, '0');
-        numberBox.dataset.number = number;
-        numbersContainer.appendChild(numberBox);
-
-        numberBox.addEventListener('click', () => {
-            if (!numberBox.classList.contains('assigned')) {
-                numberBox.classList.toggle('selected');
-                const num = parseInt(numberBox.dataset.number);
-                const index = selectedNumbers.indexOf(num);
-                if (index > -1) {
-                    selectedNumbers.splice(index, 1);
-                } else {
-                    selectedNumbers.push(num);
+                if (assignedNumbers.has(num)) {
+                    numberBox.classList.add('assigned');
                 }
-            }
-        });
-    }
+                if (selectedNumbers.has(num)) {
+                    numberBox.classList.add('selected');
+                }
 
-    function generateNumberBoxes(start, end) {
-        for (let i = start; i <= end; i++) {
-            createNumberBox(i);
-        }
-    }
-
-    function saveData() {
-        const data = {
-            participants: allParticipants,
-            assignedNumbers: [...assignedNumbers],
-            currentMaxNumber: currentMaxNumber
-        };
-        const docRef = db.collection("sorteos").doc();
-        docRef.set(data)
-            .then(() => {
-                savedCodeElement.textContent = docRef.id;
-                saveCodeContainer.style.display = 'block';
-                currentRaffleCode = docRef.id;
-                console.log("Documento guardado con ID: ", docRef.id);
-            })
-            .catch((error) => {
-                console.error("Error al guardar el documento: ", error);
-                alert("Error al guardar el sorteo. Intenta de nuevo.");
-            });
-    }
-
-function loadDataFromFirebase() {
-        if (!currentRaffleCode) {
-            console.log("No hay código de sorteo cargado. Generando números predeterminados.");
-            generateNumberBoxes(0, currentMaxNumber);
-            return;
-        }
-
-        const docRef = db.collection("sorteos").doc(currentRaffleCode);
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                const data = doc.data();
-                allParticipants = data.participants || [];
-                assignedNumbers = new Set(data.assignedNumbers || []);
-                currentMaxNumber = data.currentMaxNumber || 99;
-
-                numbersContainer.innerHTML = '';
-                generateNumberBoxes(0, currentMaxNumber);
-                updateRangeLabel();
-                updateAllNumberBoxes();
-                renderParticipants(allParticipants);
-                saveStateToLocalStorage();
-                console.log("Sorteo cargado exitosamente.");
-            } else {
-                console.log("No se encontró el sorteo con el código proporcionado.");
-                alert("No se encontró el sorteo con ese código. Generando uno nuevo.");
-                clearAllData();
-            }
-        }).catch((error) => {
-            console.error("Error al cargar el documento: ", error);
-            alert("Error al cargar el sorteo. Intenta de nuevo.");
-        });
-    }
-
-    function addPerson() {
-        const personName = personNameInput.value.trim();
-        if (personName && selectedNumbers.length > 0) {
-            const newParticipant = {
-                id: Date.now(),
-                name: personName,
-                numbers: selectedNumbers.sort((a, b) => a - b)
-            };
-            allParticipants.push(newParticipant);
-            selectedNumbers.forEach(num => assignedNumbers.add(num));
-            renderParticipants(allParticipants);
-            updateNumberBoxes();
-            clearInputs();
-            saveStateToLocalStorage();
-        } else {
-            alert('Por favor, ingresa un nombre y selecciona al menos un número.');
-        }
-    }
-
-    function clearInputs() {
-        personNameInput.value = '';
-        selectedNumbers = [];
-        const selectedBoxes = document.querySelectorAll('.number-box.selected');
-        selectedBoxes.forEach(box => box.classList.remove('selected'));
-    }
-
-    function updateNumberBoxes() {
-        const allBoxes = document.querySelectorAll('.number-box');
-        allBoxes.forEach(box => {
-            const num = parseInt(box.dataset.number);
-            if (assignedNumbers.has(num)) {
-                box.classList.add('assigned');
-                box.classList.remove('selected');
-            } else {
-                box.classList.remove('assigned');
-            }
-        });
-    }
-
-    function updateAllNumberBoxes() {
-        numbersContainer.innerHTML = '';
-        generateNumberBoxes(0, currentMaxNumber);
-        updateNumberBoxes();
-    }
-
-    function renderParticipants(participants) {
-        resultsList.innerHTML = '';
-        participants.forEach(person => {
-            const personEntry = document.createElement('div');
-            personEntry.classList.add('person-entry');
-            personEntry.dataset.id = person.id;
-            personEntry.innerHTML = `
-                <div class="person-info">
-                    <div class="person-name">${person.name}</div>
-                    <div class="person-numbers">${person.numbers.map(num => String(num).padStart(2, '0')).join(', ')}</div>
-                </div>
-                <div class="person-actions">
-                    <button class="action-button edit-button" onclick="editPerson(${person.id})">✏️</button>
-                    <button class="action-button delete-button" onclick="deletePerson(${person.id})">🗑️</button>
-                </div>
-            `;
-            resultsList.appendChild(personEntry);
-        });
-    }
-
-    function deletePerson(id) {
-        const personIndex = allParticipants.findIndex(p => p.id === id);
-        if (personIndex !== -1) {
-            const person = allParticipants[personIndex];
-            person.numbers.forEach(num => assignedNumbers.delete(num));
-            allParticipants.splice(personIndex, 1);
-            renderParticipants(allParticipants);
-            updateNumberBoxes();
-            saveStateToLocalStorage();
-        }
-    }
-
-    function editPerson(id) {
-        const personEntry = document.querySelector(`.person-entry[data-id='${id}']`);
-        personEntry.classList.add('edit-mode');
-        const person = allParticipants.find(p => p.id === id);
-        personEntry.innerHTML = `
-            <div class="person-info">
-                <input type="text" id="edit-name-${id}" value="${person.name}" class="person-name-input">
-                <div class="person-numbers-list" id="numbers-list-${id}">
-                    ${person.numbers.map(num => `
-                        <span class="person-number-chip">
-                            ${String(num).padStart(2, '0')}
-                            <button onclick="removeNumberFromPerson(${id}, ${num})">x</button>
-                        </span>
-                    `).join('')}
-                </div>
-                <div style="display: flex; align-items: center; margin-top: 10px;">
-                    <input type="text" id="add-number-input-${id}" placeholder="Agregar número" style="width: 100px; margin-right: 5px;">
-                    <button id="add-number-btn" onclick="addNumberToPerson(${id})">➕</button>
-                </div>
-            </div>
-            <div class="person-actions">
-                <button id="update-name-btn" onclick="updatePerson(${id})">Guardar</button>
-                <button class="action-button" onclick="cancelEdit(${id})">❌</button>
-            </div>
-        `;
-    }
-
-    function updatePerson(id) {
-        const nameInput = document.getElementById(`edit-name-${id}`);
-        const newName = nameInput.value.trim();
-        const person = allParticipants.find(p => p.id === id);
-        if (person) {
-            person.name = newName;
-            renderParticipants(allParticipants);
-            saveStateToLocalStorage();
-        }
-    }
-
-    function addNumberToPerson(id) {
-        const numberInput = document.getElementById(`add-number-input-${id}`);
-        const numberToAdd = parseInt(numberInput.value.trim());
-
-        if (!isNaN(numberToAdd) && numberToAdd >= 0 && numberToAdd <= currentMaxNumber) {
-            const numberString = String(numberToAdd).padStart(2, '0');
-            const person = allParticipants.find(p => p.id === id);
-
-            if (person && !person.numbers.includes(numberToAdd) && !assignedNumbers.has(numberToAdd)) {
-                person.numbers.push(numberToAdd);
-                person.numbers.sort((a, b) => a - b);
-                assignedNumbers.add(numberToAdd);
-                renderParticipants(allParticipants);
-                updateNumberBoxes();
-                saveStateToLocalStorage();
-            } else if (assignedNumbers.has(numberToAdd)) {
-                alert(`El número ${numberString} ya está asignado.`);
-            }
-        }
-        numberInput.value = '';
-    }
-
-    function removeNumberFromPerson(personId, numberToRemove) {
-        const person = allParticipants.find(p => p.id === personId);
-        if (person) {
-            const index = person.numbers.indexOf(numberToRemove);
-            if (index > -1) {
-                person.numbers.splice(index, 1);
-                assignedNumbers.delete(numberToRemove);
-                renderParticipants(allParticipants);
-                updateNumberBoxes();
-                saveStateToLocalStorage();
-                editPerson(personId);
-            }
-        }
-    }
-
-    function cancelEdit(id) {
-        renderParticipants(allParticipants);
-    }
-    
-    function startSorteo() {
-        ganadorContainer.style.display = 'block';
-        ganadorNombre.textContent = '';
-        ganadorNumero.textContent = '';
-        let availableNumbers = [];
-        allParticipants.forEach(p => {
-            availableNumbers.push(...p.numbers.filter(num => !p.alreadyWon));
-        });
-        
-        if (availableNumbers.length === 0) {
-            alert("No hay números disponibles para sortear. ¡Todos los participantes han ganado!");
-            ganadorContainer.style.display = 'none';
-            return;
-        }
-
-        const uniqueNumbers = [...new Set(availableNumbers)];
-        let count = 0;
-        let countdown = 5;
-
-        // Limpiar animaciones previas
-        ganadorNombre.classList.remove('ganador-zoom');
-        ganadorNumero.classList.remove('ganador-zoom');
-
-        sorteoButton.disabled = true;
-        
-        countdownTimer.textContent = countdown;
-        countdownTimer.style.display = 'block';
-        countdownSound.currentTime = 0;
-        countdownSound.play();
-
-        const countdownInterval = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                countdownTimer.textContent = countdown;
-            } else {
-                clearInterval(countdownInterval);
-                countdownTimer.style.display = 'none';
-                spinSound.currentTime = 0;
-                spinSound.play();
-                startSpinningAnimation(uniqueNumbers);
-            }
-        }, 1000);
-    }
-
-    function startSpinningAnimation(numbers) {
-        let spinning = true;
-        let spinInterval = setInterval(() => {
-            const randomIndex = Math.floor(Math.random() * numbers.length);
-            const randomNum = numbers[randomIndex];
-            ganadorNumero.textContent = String(randomNum).padStart(2, '0');
-            ganadorNumero.classList.add('sorteo-running');
-            ganadorNombre.textContent = '...';
-        }, 50);
-
-        setTimeout(() => {
-            clearInterval(spinInterval);
-            spinSound.pause();
-            spinSound.currentTime = 0;
-            ganadorNumero.classList.remove('sorteo-running');
-            determineWinner(numbers);
-        }, 3000);
-    }
-
-    function determineWinner(availableNumbers) {
-        const winningNumber = availableNumbers[Math.floor(Math.random() * availableNumbers.length)];
-        const winner = allParticipants.find(p => p.numbers.includes(winningNumber));
-        
-        ganadorNumero.textContent = String(winningNumber).padStart(2, '0');
-        ganadorNombre.textContent = winner ? winner.name : "Nadie";
-
-        ganadorNombre.classList.add('ganador-zoom');
-        ganadorNumero.classList.add('ganador-zoom');
-
-        if (winner) {
-            winnerSound.currentTime = 0;
-            winnerSound.play();
-            winner.alreadyWon = true; // Marca al participante como ganador
-            
-            // Crea y lanza confeti
-            for (let i = 0; i < 50; i++) {
-                createConfetti();
-            }
-        }
-        
-        sorteoButton.disabled = false;
-        
-        // Agregar el resultado al historial
-        addHistory(winner ? winner.name : "Nadie", winningNumber);
-
-        // Ocultar el ganador después de 10 segundos
-        setTimeout(() => {
-            ganadorContainer.style.display = 'none';
-        }, 10000);
-    }
-    
-    function createConfetti() {
-        const confetti = document.createElement('div');
-        confetti.classList.add('confetti');
-        confetti.style.left = `${Math.random() * 100}%`;
-        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-        confetti.style.animationDuration = `${Math.random() * 2 + 3}s`;
-        document.body.appendChild(confetti);
-
-        confetti.addEventListener('animationend', () => {
-            confetti.remove();
-        });
-    }
-
-    function clearAllData() {
-        allParticipants = [];
-        selectedNumbers = [];
-        assignedNumbers.clear();
-        currentMaxNumber = 99;
-        currentRaffleCode = null;
-        saveStateToLocalStorage();
-        numbersContainer.innerHTML = '';
-        resultsList.innerHTML = '';
-        ganadorContainer.style.display = 'none';
-        generateNumberBoxes(0, currentMaxNumber);
-        updateRangeLabel();
-        saveCodeContainer.style.display = 'none';
-        document.getElementById('history-container').innerHTML = '<h2>Historial de Sorteos</h2>';
-        alert('Todos los datos han sido limpiados y se ha iniciado un nuevo sorteo.');
-    }
-
-    function addHistory(winnerName, winnerNumber) {
-        const historyContainer = document.getElementById('history-container');
-        if (!historyContainer) {
-            console.error("No se encontró el contenedor de historial.");
-            return;
-        }
-
-        const historyEntry = document.createElement('div');
-        historyEntry.classList.add('history-entry');
-        historyEntry.innerHTML = `
-            <span>Ganador: <strong>${winnerName}</strong></span>
-            <span>Número: <strong>${String(winnerNumber).padStart(2, '0')}</strong></span>
-        `;
-        historyContainer.appendChild(historyEntry);
-    }
-    
-    function modifyNumberRange(amount) {
-        const newMax = currentMaxNumber + amount;
-        if (newMax < MIN_NUMBERS - 1) {
-            alert(`No puedes tener menos de ${MIN_NUMBERS} números.`);
-            return;
-        }
-        currentMaxNumber = newMax;
-        updateAllNumberBoxes();
-        updateRangeLabel();
-        saveStateToLocalStorage();
-    }
-    
-    function selectRange(amount) {
-        let startNumber = selectedNumbers.length > 0 ? selectedNumbers[selectedNumbers.length - 1] + 1 : 0;
-        let numbersToAdd = [];
-        for (let i = 0; i < amount; i++) {
-            const num = startNumber + i;
-            if (num <= currentMaxNumber && !assignedNumbers.has(num)) {
-                numbersToAdd.push(num);
-            } else if (num > currentMaxNumber) {
-                alert(`No hay suficientes números disponibles para seleccionar ${amount}.`);
-                break;
-            }
-        }
-        
-        if (numbersToAdd.length > 0) {
-            numbersToAdd.forEach(num => {
-                const box = document.querySelector(`.number-box[data-number="${num}"]`);
-                if (box) {
-                    box.classList.add('selected');
-                    if (!selectedNumbers.includes(num)) {
-                        selectedNumbers.push(num);
+                numberBox.addEventListener('click', () => {
+                    if (!assignedNumbers.has(num)) {
+                        if (selectedNumbers.has(num)) {
+                            selectedNumbers.delete(num);
+                            numberBox.classList.remove('selected');
+                        } else {
+                            selectedNumbers.add(num);
+                            numberBox.classList.add('selected');
+                        }
                     }
-                }
+                });
+                numbersContainer.appendChild(numberBox);
             });
-            selectedNumbers.sort((a, b) => a - b);
         }
-    }
 
-    function applyTheme(theme) {
-        body.className = '';
-        mainContainer.className = 'container';
-        if (theme !== 'default') {
-            body.classList.add(`${theme}-theme`);
-            mainContainer.classList.add(`${theme}-theme`);
+        function addParticipant() {
+            const name = personNameInput.value.trim();
+            if (name === '') {
+                alert('Por favor, introduce un nombre.');
+                return;
+            }
+            if (selectedNumbers.size === 0) {
+                alert('Por favor, selecciona al menos un número.');
+                return;
+            }
+
+            const newParticipant = {
+                name: name,
+                numbers: Array.from(selectedNumbers).sort((a, b) => a - b)
+            };
+
+            if (isEditing) {
+                const oldNumbers = participants[editingIndex].numbers;
+                oldNumbers.forEach(num => assignedNumbers.delete(num));
+                participants[editingIndex] = newParticipant;
+                isEditing = false;
+                editingIndex = -1;
+                document.body.classList.remove('edit-mode');
+                addButton.textContent = 'Añadir Participante';
+            } else {
+                participants.push(newParticipant);
+            }
+
+            selectedNumbers.forEach(num => assignedNumbers.add(num));
+            
+            personNameInput.value = '';
+            selectedNumbers.clear();
+            
+            renderNumbers();
+            renderParticipants();
+            saveToLocalStorage();
         }
-        localStorage.setItem('raffleTheme', theme);
-    }
 
-    // Event Listeners
-    addButton.addEventListener('click', addPerson);
-    sorteoButton.addEventListener('click', startSorteo);
-    clearButton.addEventListener('click', clearAllData);
-    add10Button.addEventListener('click', () => modifyNumberRange(10));
-    remove10Button.addEventListener('click', () => modifyNumberRange(-10));
-    selectRange10Button.addEventListener('click', () => selectRange(10));
-    themeSelector.addEventListener('change', (event) => {
-        applyTheme(event.target.value);
-    });
+        function renderParticipants() {
+            participantsList.innerHTML = '';
+            participants.forEach((person, index) => {
+                const personEntry = document.createElement('div');
+                personEntry.classList.add('person-entry');
 
-    // Cargar el tema guardado
-    const savedTheme = localStorage.getItem('raffleTheme');
-    if (savedTheme) {
-        applyTheme(savedTheme);
-        themeSelector.value = savedTheme;
-    }
-    
-    // Funcionalidad de búsqueda de números
-    searchNumberInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.padStart(2, '0');
-        const numberBoxes = document.querySelectorAll('.number-box');
-        
-        numberBoxes.forEach(box => {
-            box.classList.remove('resaltado');
-        });
-        
-        if (searchTerm.length >= 2) {
-            const foundBox = document.querySelector(`.number-box[data-number="${parseInt(searchTerm)}"]`);
-            if (foundBox) {
-                foundBox.classList.add('resaltado');
-                foundBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const personInfo = document.createElement('div');
+                personInfo.classList.add('person-info');
+                personInfo.innerHTML = `
+                    <div class="person-name">${person.name}</div>
+                    <div class="person-numbers">Números: ${person.numbers.join(', ')}</div>
+                `;
+                personEntry.appendChild(personInfo);
+
+                const personActions = document.createElement('div');
+                personActions.classList.add('person-actions');
+                
+                const editButton = document.createElement('button');
+                editButton.innerHTML = '✏️';
+                editButton.classList.add('action-button');
+                editButton.title = 'Editar';
+                editButton.addEventListener('click', () => editParticipant(index));
+                personActions.appendChild(editButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = '🗑️';
+                deleteButton.classList.add('action-button');
+                deleteButton.title = 'Eliminar';
+                deleteButton.addEventListener('click', () => deleteParticipant(index));
+                personActions.appendChild(deleteButton);
+
+                personEntry.appendChild(personActions);
+                participantsList.appendChild(personEntry);
+            });
+        }
+
+        function editParticipant(index) {
+            const personToEdit = participants[index];
+            personNameInput.value = personToEdit.name;
+            selectedNumbers.clear();
+            personToEdit.numbers.forEach(num => selectedNumbers.add(num));
+            renderNumbers();
+            
+            isEditing = true;
+            editingIndex = index;
+            addButton.textContent = 'Actualizar Participante';
+            document.body.classList.add('edit-mode');
+        }
+
+        function deleteParticipant(index) {
+            if (confirm('¿Estás seguro de que quieres eliminar a este participante?')) {
+                const personToDelete = participants[index];
+                personToDelete.numbers.forEach(num => assignedNumbers.delete(num));
+                participants.splice(index, 1);
+                
+                renderNumbers();
+                renderParticipants();
+                saveToLocalStorage();
             }
         }
-    });
 
-    // Funcionalidad de búsqueda de participantes
-    searchPersonInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const filteredParticipants = allParticipants.filter(p => 
-            p.name.toLowerCase().includes(searchTerm) || 
-            p.numbers.some(num => String(num).padStart(2, '0').includes(searchTerm))
-        );
-        renderParticipants(filteredParticipants);
-    });
-
-    // Eventos para guardar y cargar
-    saveButton.addEventListener('click', saveData);
-    loadButton.addEventListener('click', () => {
-        const code = loadCodeInput.value.trim();
-        if (code) {
-            currentRaffleCode = code;
-            loadDataFromFirebase();
-        } else {
-            alert('Por favor, ingresa un código de sorteo.');
+        function clearSelection() {
+            selectedNumbers.clear();
+            renderNumbers();
         }
-    });
 
-</script>
+        function selectRange(count) {
+            selectedNumbers.clear();
+            const unassignedNumbers = allNumbers.filter(num => !assignedNumbers.has(num));
+            for (let i = 0; i < Math.min(count, unassignedNumbers.length); i++) {
+                selectedNumbers.add(unassignedNumbers[i]);
+            }
+            renderNumbers();
+        }
 
+        async function realizarSorteo() {
+            if (participants.length === 0) {
+                alert('No hay participantes para el sorteo.');
+                return;
+            }
+            if (history.length > 0 && confirm('¿Deseas realizar otro sorteo? El historial será conservado.')) {
+                // Si el usuario confirma, no hacemos nada más que continuar con el sorteo.
+            } else if (history.length > 0) {
+                return; // Si el usuario cancela, no hacemos nada.
+            }
+            
+            const allAssignedNumbers = Array.from(assignedNumbers);
+            if (allAssignedNumbers.length === 0) {
+                alert('No hay números asignados para sortear.');
+                return;
+            }
+
+            sorteoButton.disabled = true;
+            clearButton.disabled = true;
+
+            ganadorNombre.textContent = '';
+            ganadorNumero.textContent = '';
+            countdownTimer.style.display = 'block';
+
+            let countdown = 3;
+            const countdownInterval = setInterval(() => {
+                countdownTimer.textContent = countdown;
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    countdownTimer.style.display = 'none';
+                    rollRandomNumber(allAssignedNumbers);
+                }
+                countdown--;
+            }, 1000);
+        }
+
+        function rollRandomNumber(numbersPool) {
+            let rollCount = 0;
+            const maxRolls = 100;
+            const rollInterval = 50;
+
+            const finalWinnerNumber = numbersPool[Math.floor(Math.random() * numbersPool.length)];
+
+            const rollingInterval = setInterval(() => {
+                const tempNumber = numbersPool[Math.floor(Math.random() * numbersPool.length)];
+                ganadorNumero.textContent = tempNumber;
+
+                // Animar el número mientras se "sortea"
+                ganadorNumero.classList.add('sorteo-running');
+
+                rollCount++;
+                if (rollCount >= maxRolls) {
+                    clearInterval(rollingInterval);
+                    ganadorNumero.classList.remove('sorteo-running');
+                    showWinner(finalWinnerNumber);
+                }
+            }, rollInterval);
+        }
+
+        function showWinner(winnerNumber) {
+            const winner = participants.find(p => p.numbers.includes(winnerNumber));
+            const winningPersonName = winner ? winner.name : 'Desconocido';
+
+            ganadorNombre.textContent = winningPersonName;
+            ganadorNumero.textContent = winnerNumber;
+            
+            ganadorNombre.classList.add('ganador-zoom');
+            ganadorNumero.classList.add('ganador-zoom');
+
+            setTimeout(() => {
+                ganadorNombre.classList.remove('ganador-zoom');
+                ganadorNumero.classList.remove('ganador-zoom');
+            }, 1000);
+
+            // Resaltar el número ganador
+            const winningNumberBox = document.querySelector(`.number-box[data-number="${winnerNumber}"]`);
+            if (winningNumberBox) {
+                winningNumberBox.classList.add('resaltado');
+            }
+
+            // Registrar en el historial
+            history.push({
+                winnerName: winningPersonName,
+                winnerNumber: winnerNumber,
+                timestamp: new Date().toLocaleString()
+            });
+
+            renderHistory();
+            createConfetti();
+
+            sorteoButton.disabled = false;
+            clearButton.disabled = false;
+            saveToLocalStorage();
+        }
+
+        function renderHistory() {
+            historyList.innerHTML = '';
+            history.forEach(entry => {
+                const historyEntry = document.createElement('div');
+                historyEntry.classList.add('history-entry');
+                historyEntry.innerHTML = `
+                    <div class="person-info">
+                        <div class="person-name">Ganador: ${entry.winnerName}</div>
+                        <div class="person-numbers">Número: ${entry.winnerNumber} (${entry.timestamp})</div>
+                    </div>
+                `;
+                historyList.appendChild(historyEntry);
+            });
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+
+                confetti.addEventListener('animationend', () => {
+                    confetti.remove();
+                });
+            }
+        }
+
+        // --- Funcionalidad de Guardado y Carga ---
+        function saveToLocalStorage() {
+            const data = {
+                participants: participants,
+                assignedNumbers: Array.from(assignedNumbers),
+                history: history,
+                theme: themeSelector.value
+            };
+            const compressedData = btoa(JSON.stringify(data));
+            localStorage.setItem('raffleData', compressedData);
+        }
+
+        function loadFromLocalStorage() {
+            const compressedData = localStorage.getItem('raffleData');
+            if (compressedData) {
+                const decompressedData = JSON.parse(atob(compressedData));
+                participants = decompressedData.participants;
+                assignedNumbers = new Set(decompressedData.assignedNumbers);
+                history = decompressedData.history;
+                
+                renderNumbers();
+                renderParticipants();
+                renderHistory();
+            }
+        }
+
+        function generateSaveCode() {
+            const data = {
+                participants: participants,
+                assignedNumbers: Array.from(assignedNumbers),
+                history: history,
+                theme: themeSelector.value
+            };
+            const compressedData = btoa(JSON.stringify(data));
+            savedCodeSpan.textContent = compressedData;
+            saveCodeContainer.style.display = 'block';
+        }
+
+        function loadFromCode() {
+            const code = prompt('Introduce el código de guardado:');
+            if (code) {
+                try {
+                    const decompressedData = JSON.parse(atob(code));
+                    participants = decompressedData.participants;
+                    assignedNumbers = new Set(decompressedData.assignedNumbers);
+                    history = decompressedData.history;
+                    
+                    renderNumbers();
+                    renderParticipants();
+                    renderHistory();
+                    
+                    if (decompressedData.theme) {
+                        themeSelector.value = decompressedData.theme;
+                        applyTheme(decompressedData.theme);
+                    }
+                } catch (e) {
+                    alert('Código inválido.');
+                }
+            }
+        }
+
+        // --- Manejo de Temas ---
+        function applyTheme(theme) {
+            document.body.className = '';
+            document.body.classList.add(`${theme}-theme`);
+            localStorage.setItem('selectedTheme', theme);
+        }
+
+        themeSelector.addEventListener('change', (event) => {
+            applyTheme(event.target.value);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+            themeSelector.value = savedTheme;
+            applyTheme(savedTheme);
+            loadFromLocalStorage();
+            generateNumbers(100);
+        });
+
+        // --- Event Listeners ---
+        addButton.addEventListener('click', addParticipant);
+        clearButton.addEventListener('click', clearSelection);
+        sorteoButton.addEventListener('click', realizarSorteo);
+        add10Button.addEventListener('click', () => selectRange(10));
+        add25Button.addEventListener('click', () => selectRange(25));
+        add50Button.addEventListener('click', () => selectRange(50));
+        saveDataButton.addEventListener('click', generateSaveCode);
+        loadDataButton.addEventListener('click', loadFromCode);
+    </script>
 </body>
 </html>
