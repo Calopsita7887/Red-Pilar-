@@ -30,6 +30,14 @@
             text-align: center;
             transition: color 0.5s ease;
         }
+        .logo {
+            display: block;
+            margin: 0 auto 10px;
+            max-width: 150px;
+            height: auto;
+            border-radius: 50%;
+            border: 2px solid #4CAF50;
+        }
         .form-group {
             margin-bottom: 15px;
         }
@@ -288,6 +296,10 @@
             color: #d495ff;
             text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
         }
+        .cosmic-theme .logo {
+            border-color: #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
         .cosmic-theme label {
             color: #b3a0d3;
         }
@@ -396,6 +408,10 @@
             text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
             font-family: 'Consolas', 'Courier New', monospace;
         }
+        .neon-theme .logo {
+            border-color: #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
         .neon-theme label {
             color: #f0f0f0;
         }
@@ -503,6 +519,10 @@
             color: #ff66a4;
             text-shadow: 1px 1px 5px rgba(255, 102, 164, 0.5);
             font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .pastel-theme .logo {
+            border-color: #b57edc;
+            box-shadow: 0 0 10px #b57edc;
         }
         .pastel-theme label {
             color: #9381ff;
@@ -710,6 +730,24 @@
             transform: scale(1.1);
         }
         /* Fin de los nuevos estilos */
+        
+        /* --- ESTILO DEL PIE DE PÁGINA --- */
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #aaa;
+            transition: color 0.5s ease;
+        }
+        .cosmic-theme .footer-text {
+            color: #b3a0d3;
+        }
+        .neon-theme .footer-text {
+            color: #64ffda;
+        }
+        .pastel-theme .footer-text {
+            color: #9381ff;
+        }
     </style>
 </head>
 <body>
@@ -722,9 +760,12 @@
         <label for="theme-selector" style="font-weight: normal;">Seleccionar tema:</label>
         <select id="theme-selector">
             <option value="pastel" selected>Pastel Dreams</option>
+            <option value="cosmic">Cosmic</option>
+            <option value="neon">Neon Party</option>
             <option value="default">Clásico</option>
         </select>
     </div>
+    <img src="https://placehold.co/150x150/4CAF50/fff?text=Logo" alt="Logo de Red Pilar" class="logo">
     <h1>Red Pilar</h1>
 
     <div class="form-group">
@@ -790,6 +831,11 @@
         <h2>¡Y el ganador es!</h2>
         <div id="ganador-nombre"></div>
     </div>
+    
+    <!-- NUEVO TEXTO DE PIE DE PÁGINA -->
+    <p class="footer-text">
+        &copy; Hecho con ❤ por Claudia Ibarra
+    </p>
 
 </div>
 
