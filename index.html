@@ -35,8 +35,6 @@
             margin: 0 auto 10px;
             max-width: 150px;
             height: auto;
-            border-radius: 50%;
-            border: 2px solid #4CAF50;
         }
         .form-group {
             margin-bottom: 15px;
@@ -120,6 +118,8 @@
         #add-button:hover { background-color: #45a049; }
         #clear-button { background-color: #f44336; }
         #clear-button:hover { background-color: #da190b; }
+        #clear-selection-button { background-color: #ff9800; }
+        #clear-selection-button:hover { background-color: #e68a00; }
         #sorteo-button { background-color: #007BFF; }
         #sorteo-button:hover { background-color: #0056b3; }
         .add-numbers-group button, .range-buttons button { background-color: #17a2b8; }
@@ -281,6 +281,33 @@
             }
         }
         
+        /* NUEVO: Contenedor de mensajes */
+        #message-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #message-box.show {
+            opacity: 1;
+        }
+        #message-box.error {
+            background-color: #e57373;
+            color: #fff;
+        }
+        #message-box.success {
+            background-color: #66bb6a;
+            color: #fff;
+        }
+        
         /* --- ESTILOS TEMA COSMIC --- */
         body.cosmic-theme {
             background: #00001a;
@@ -297,7 +324,6 @@
             text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
         }
         .cosmic-theme .logo {
-            border-color: #ff00ff;
             box-shadow: 0 0 10px #ff00ff;
         }
         .cosmic-theme label {
@@ -340,6 +366,8 @@
         .cosmic-theme #sorteo-button:hover { background-color: #b56eff; }
         .cosmic-theme #clear-button { background-color: #e30022; }
         .cosmic-theme #clear-button:hover { background-color: #a30019; }
+        .cosmic-theme #clear-selection-button { background-color: #ff6e40; }
+        .cosmic-theme #clear-selection-button:hover { background-color: #ff3d00; }
         .cosmic-theme .add-numbers-group button, .cosmic-theme .range-buttons button { background-color: #00aaff; }
         .cosmic-theme .add-numbers-group button:hover, .cosmic-theme .range-buttons button:hover { background-color: #0077cc; }
         .cosmic-theme #results-container, .cosmic-theme #history-container {
@@ -409,7 +437,6 @@
             font-family: 'Consolas', 'Courier New', monospace;
         }
         .neon-theme .logo {
-            border-color: #ff00ff;
             box-shadow: 0 0 10px #ff00ff;
         }
         .neon-theme label {
@@ -452,6 +479,8 @@
         .neon-theme #sorteo-button:hover { background-color: #cc00cc; }
         .neon-theme #clear-button { background-color: #e04040; }
         .neon-theme #clear-button:hover { background-color: #a02020; }
+        .neon-theme #clear-selection-button { background-color: #ff9800; }
+        .neon-theme #clear-selection-button:hover { background-color: #e68a00; }
         .neon-theme .add-numbers-group button, .neon-theme .range-buttons button { background-color: #64ffda; color: #000; }
         .neon-theme .add-numbers-group button:hover, .neon-theme .range-buttons button:hover { background-color: #00e6b8; }
         .neon-theme #results-container, .neon-theme #history-container {
@@ -521,7 +550,6 @@
             font-family: 'Comic Sans MS', cursive, sans-serif;
         }
         .pastel-theme .logo {
-            border-color: #b57edc;
             box-shadow: 0 0 10px #b57edc;
         }
         .pastel-theme label {
@@ -565,6 +593,8 @@
         .pastel-theme #sorteo-button:hover { background-color: #3b7ad6; }
         .pastel-theme #clear-button { background-color: #ff8c42; }
         .pastel-theme #clear-button:hover { background-color: #e67d35; }
+        .pastel-theme #clear-selection-button { background-color: #ff66a4; }
+        .pastel-theme #clear-selection-button:hover { background-color: #e65c92; }
         .pastel-theme .add-numbers-group button, .pastel-theme .range-buttons button { background-color: #72b9e6; }
         .pastel-theme .add-numbers-group button:hover, .pastel-theme .range-buttons button:hover { background-color: #61a9d4; }
         .pastel-theme #results-container, .pastel-theme #history-container {
@@ -755,6 +785,8 @@
 <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
+<div id="message-box" class="hide"></div>
+
 <div class="container" id="main-container">
     <div id="theme-toggle-group">
         <label for="theme-selector" style="font-weight: normal;">Seleccionar tema:</label>
@@ -765,7 +797,8 @@
             <option value="default">Clásico</option>
         </select>
     </div>
-    <img src="https://placehold.co/150x150/4CAF50/fff?text=Logo" alt="Logo de Red Pilar" class="logo">
+    <!-- Logo actualizado a "logo.png" -->
+    <img src="logo.png" alt="Logo de Red Pilar" class="logo">
     <h1>Red Pilar</h1>
 
     <div class="form-group">
@@ -789,6 +822,7 @@
     <label>Selección de rango:</label>
     <div class="range-buttons">
         <button id="select-range-10-button">Seleccionar +10</button>
+        <button id="clear-selection-button">Limpiar selección</button>
     </div>
 
     <div class="button-group">
@@ -857,6 +891,7 @@
     const personNameInput = document.getElementById('person-name');
     const addButton = document.getElementById('add-button');
     const clearButton = document.getElementById('clear-button');
+    const clearSelectionButton = document.getElementById('clear-selection-button');
     const sorteoButton = document.getElementById('sorteo-button');
     const add10Button = document.getElementById('add-10-button');
     const remove10Button = document.getElementById('remove-10-button');
@@ -876,6 +911,7 @@
     const loadCodeInput = document.getElementById('load-code-input');
     const saveCodeContainer = document.getElementById('save-code-container');
     const savedCodeElement = document.getElementById('saved-code');
+    const messageBox = document.getElementById('message-box');
     
     // Campo de búsqueda de números
     const searchNumberInput = document.getElementById('search-number');
@@ -895,6 +931,14 @@
     let currentRaffleCode = null; // Variable para almacenar el código del sorteo cargado
 
     loadData();
+
+    function showMessage(message, type = 'success') {
+        messageBox.textContent = message;
+        messageBox.className = `show ${type}`;
+        setTimeout(() => {
+            messageBox.className = '';
+        }, 3000);
+    }
 
     function updateRangeLabel() {
         numbersRangeLabel.textContent = `Selecciona los números (00 a ${currentMaxNumber}):`;
@@ -917,6 +961,8 @@
                 } else {
                     selectedNumbers.push(num);
                 }
+            } else {
+                showMessage('Ese número ya está asignado a otro participante.', 'error');
             }
         });
     }
@@ -1021,7 +1067,7 @@
     function updateParticipantName(index) {
         const newName = document.getElementById(`edit-name-${index}`).value.trim();
         if (newName === '') {
-            alert('El nombre no puede estar vacío.');
+            showMessage('El nombre no puede estar vacío.', 'error');
             return;
         }
 
@@ -1058,18 +1104,18 @@
 
         const num = parseInt(number);
         if (isNaN(num) || num < 0 || num > currentMaxNumber) {
-            alert(`Número inválido. Debe estar entre 00 y ${currentMaxNumber}.`);
+            showMessage(`Número inválido. Debe estar entre 00 y ${currentMaxNumber}.`, 'error');
             return;
         }
 
         if (assignedNumbers.has(num)) {
-            alert('Ese número ya está asignado a otro participante.');
+            showMessage('Ese número ya está asignado a otro participante.', 'error');
             return;
         }
 
         const participant = allParticipants[index];
         if (participant.numbers.includes(num)) {
-            alert('Ese número ya está asignado a este participante.');
+            showMessage('Ese número ya está asignado a este participante.', 'error');
             return;
         }
         
@@ -1105,11 +1151,11 @@
     addButton.addEventListener('click', () => {
         const personName = personNameInput.value.trim();
         if (personName === '') {
-            alert('Por favor, escribe el nombre de la persona.');
+            showMessage('Por favor, escribe el nombre de la persona.', 'error');
             return;
         }
         if (selectedNumbers.length === 0) {
-            alert('Por favor, selecciona al menos un número.');
+            showMessage('Por favor, selecciona al menos un número.', 'error');
             return;
         }
 
@@ -1130,12 +1176,22 @@
         saveData();
         updateParticipantsList();
         filtrarParticipantes(); // Llama a la función de filtro después de agregar un participante
+        showMessage('Participante agregado con éxito.', 'success');
+    });
+    
+    // NUEVO: Limpiar solo la selección
+    clearSelectionButton.addEventListener('click', () => {
+        document.querySelectorAll('.number-box.selected').forEach(box => {
+            box.classList.remove('selected');
+        });
+        selectedNumbers = [];
+        showMessage('Selección de números limpiada.', 'success');
     });
 
     sorteoButton.addEventListener('click', () => {
         const allAssignedNumbersArray = allParticipants.flatMap(p => p.numbers);
         if (allAssignedNumbersArray.length === 0) {
-            alert('No hay números asignados para realizar el sorteo.');
+            showMessage('No hay números asignados para realizar el sorteo.', 'error');
             return;
         }
         
@@ -1238,7 +1294,7 @@
         const currentMaxNumberCopy = currentMaxNumber;
 
         if (currentMaxNumberCopy < 99) {
-            alert(`No se pueden eliminar más números. El mínimo es el 99.`);
+            showMessage(`No se pueden eliminar más números. El mínimo es el 99.`, 'error');
             return;
         }
 
@@ -1340,10 +1396,11 @@
             saveCodeContainer.style.display = 'block';
 
             currentRaffleCode = codeToSave; // Actualiza la variable con el código que se acaba de usar
+            showMessage('¡Sorteo guardado con éxito!', 'success');
 
         } catch (e) {
             console.error("Error al guardar el documento: ", e);
-            alert("Error al guardar el sorteo. Intenta de nuevo.");
+            showMessage("Error al guardar el sorteo. Intenta de nuevo.", 'error');
         }
     });
 
@@ -1351,7 +1408,7 @@
     loadButton.addEventListener('click', async () => {
         const code = loadCodeInput.value.trim().toUpperCase();
         if (code === '') {
-            alert('Por favor, ingresa un código.');
+            showMessage('Por favor, ingresa un código.', 'error');
             return;
         }
         try {
@@ -1374,13 +1431,13 @@
                 
                 currentRaffleCode = code; // Guarda el código cargado
 
-                alert('Sorteo cargado con éxito!');
+                showMessage('Sorteo cargado con éxito!', 'success');
             } else {
-                alert('No se encontró ningún sorteo con ese código.');
+                showMessage('No se encontró ningún sorteo con ese código.', 'error');
             }
         } catch (e) {
             console.error("Error al cargar el documento: ", e);
-            alert("Error al cargar el sorteo. Intenta de nuevo.");
+            showMessage("Error al cargar el sorteo. Intenta de nuevo.", 'error');
         }
     });
     
