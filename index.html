@@ -246,8 +246,13 @@
             margin-bottom: 10px;
             transition: color 0.5s ease;
         }
-        .sorteo-running {
-            animation: spin 0.025s linear infinite;
+        /* Nueva animación de ruleta */
+        .roulette-spin {
+            animation: spin 0.05s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .ganador-zoom {
             animation: winnerZoom 1s ease-in-out;
@@ -647,6 +652,115 @@
             border-color: #b57edc;
         }
 
+        /* --- ESTILOS TEMA NATURE'S HARMONY --- */
+        body.nature-theme {
+            background-color: #e9f5e9;
+            color: #4f634f;
+            font-family: 'Georgia', serif;
+        }
+        .container.nature-theme {
+            background-color: #f8fcf8;
+            box-shadow: 0 4px 15px rgba(85, 139, 85, 0.4);
+            border: 2px solid #558b2f;
+        }
+        .nature-theme h1 {
+            color: #2e7d32;
+            text-shadow: 1px 1px 3px rgba(46, 125, 50, 0.5);
+        }
+        .nature-theme .logo {
+            box-shadow: 0 0 10px #558b2f;
+        }
+        .nature-theme label {
+            color: #558b2f;
+        }
+        .nature-theme input[type="text"] {
+            background-color: #f0f8f0;
+            color: #4f634f;
+            border: 1px solid #558b2f;
+        }
+        .nature-theme #numbers-container {
+            background-color: #f0f8f0;
+            border: 1px solid #558b2f;
+        }
+        .nature-theme .number-box {
+            background-color: #dcedc8;
+            color: #4f634f;
+            border: 1px solid #aed581;
+        }
+        .nature-theme .number-box:hover {
+            background-color: #c5e1a5;
+            color: #2e7d32;
+        }
+        .nature-theme .number-box.selected {
+            background-color: #558b2f;
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 5px #558b2f;
+        }
+        .nature-theme .number-box.assigned {
+            background-color: #e0e6e0;
+            color: #99a099;
+        }
+        .nature-theme #add-button { background-color: #558b2f; }
+        .nature-theme #add-button:hover { background-color: #4a752b; }
+        .nature-theme #sorteo-button { background-color: #388e3c; }
+        .nature-theme #sorteo-button:hover { background-color: #2e7d32; }
+        .nature-theme #clear-button { background-color: #e67e22; }
+        .nature-theme #clear-button:hover { background-color: #d35400; }
+        .nature-theme #clear-selection-button { background-color: #ffc107; color: #000; }
+        .nature-theme #clear-selection-button:hover { background-color: #fbc02d; }
+        .nature-theme .add-numbers-group button, .nature-theme .range-buttons button { background-color: #aed581; color: #4f634f; }
+        .nature-theme .add-numbers-group button:hover, .nature-theme .range-buttons button:hover { background-color: #9ccc65; }
+        .nature-theme #results-container, .nature-theme #history-container {
+            background-color: #f0f8f0;
+            border: 1px solid #558b2f;
+        }
+        .nature-theme .person-entry, .nature-theme .history-entry {
+            border-bottom: 1px solid #aed581;
+        }
+        .nature-theme .person-name {
+            color: #2e7d32;
+        }
+        .nature-theme .action-button {
+            color: #558b2f;
+        }
+        .nature-theme .action-button:hover {
+            color: #4a752b;
+        }
+        .nature-theme .edit-mode input[type="text"] {
+            background-color: #f0f8f0;
+            color: #4f634f;
+            border-color: #558b2f;
+        }
+        .nature-theme .edit-mode .person-number-chip {
+            background-color: #dcedc8;
+            color: #4f634f;
+        }
+        .nature-theme .edit-mode .person-number-chip button {
+            color: #e67e22;
+        }
+        .nature-theme .edit-mode #add-number-btn { background-color: #558b2f; color: #fff; }
+        .nature-theme .edit-mode #add-number-btn:hover { background-color: #4a752b; }
+        .nature-theme .edit-mode #update-name-btn { background-color: #388e3c; color: #fff; }
+        .nature-theme .edit-mode #update-name-btn:hover { background-color: #2e7d32; }
+        .nature-theme #ganador-container h2 {
+            color: #e67e22;
+        }
+        .nature-theme #ganador-nombre {
+            color: #388e3c;
+        }
+        .nature-theme #ganador-numero {
+            color: #558b2f;
+        }
+        .nature-theme #countdown-timer {
+            color: #e67e22;
+        }
+        .nature-theme #theme-selector {
+            background-color: #f0f8f0;
+            color: #4f634f;
+            border-color: #558b2f;
+        }
+
         #theme-toggle-group {
             margin-top: 0;
             justify-content: flex-end;
@@ -673,6 +787,11 @@
             color: #5e548e;
             border-color: #b57edc;
         }
+        .nature-theme #theme-selector {
+            background-color: #f0f8f0;
+            color: #4f634f;
+            border-color: #558b2f;
+        }
 
         .hide-on-edit-mode {
             display: none;
@@ -698,6 +817,11 @@
         .pastel-theme #save-data-button:hover { background-color: #a06ac9; }
         .pastel-theme #load-data-button { background-color: #72b9e6; }
         .pastel-theme #load-data-button:hover { background-color: #61a9d4; }
+        
+        .nature-theme #save-data-button { background-color: #558b2f; }
+        .nature-theme #save-data-button:hover { background-color: #4a752b; }
+        .nature-theme #load-data-button { background-color: #388e3c; }
+        .nature-theme #load-data-button:hover { background-color: #2e7d32; }
         
         #save-code-container {
             margin-top: 15px;
@@ -753,6 +877,17 @@
         .pastel-theme #saved-code {
             color: #b57edc;
         }
+        
+        .nature-theme #save-code-container {
+            background-color: #f0f8f0;
+            border-color: #558b2f;
+        }
+        .nature-theme #save-code-container h4 {
+            color: #4f634f;
+        }
+        .nature-theme #saved-code {
+            color: #2e7d32;
+        }
 
         /* --- NUEVO ESTILO PARA EL BORDE DE RESALTE --- */
         .number-box.resaltado {
@@ -778,6 +913,9 @@
         .pastel-theme .footer-text {
             color: #9381ff;
         }
+        .nature-theme .footer-text {
+            color: #558b2f;
+        }
     </style>
 </head>
 <body>
@@ -791,10 +929,11 @@
     <div id="theme-toggle-group">
         <label for="theme-selector" style="font-weight: normal;">Seleccionar tema:</label>
         <select id="theme-selector">
-            <option value="pastel" selected>Pastel Dreams</option>
+            <option value="default">Clásico</option>
+            <option value="pastel">Pastel Dreams</option>
             <option value="cosmic">Cosmic</option>
             <option value="neon">Neon Party</option>
-            <option value="default">Clásico</option>
+            <option value="nature">Nature's Harmony</option>
         </select>
     </div>
     <!-- Logo actualizado a "logo.png" -->
@@ -1005,8 +1144,8 @@
             themeSelector.value = savedTheme;
             applyTheme(savedTheme);
         } else {
-            themeSelector.value = 'pastel';
-            applyTheme('pastel');
+            themeSelector.value = 'default';
+            applyTheme('default');
         }
     }
 
@@ -1201,8 +1340,7 @@
 
         ganadorNumero.textContent = '';
         ganadorNombre.textContent = '';
-        ganadorNumero.classList.remove('sorteo-running');
-        ganadorNombre.classList.remove('sorteo-running');
+        ganadorNumero.classList.remove('ganador-zoom');
         ganadorNombre.classList.remove('ganador-zoom');
         countdownTimer.style.display = 'block';
 
@@ -1222,8 +1360,8 @@
                 spinSound.loop = true;
                 spinSound.play();
 
-                ganadorNumero.classList.add('sorteo-running');
-                ganadorNombre.classList.add('sorteo-running');
+                ganadorNumero.classList.add('roulette-spin');
+                ganadorNombre.classList.add('roulette-spin');
 
                 const spinInterval = setInterval(() => {
                     const randomNum = allAssignedNumbersArray[Math.floor(Math.random() * allAssignedNumbersArray.length)];
@@ -1238,8 +1376,8 @@
                     spinSound.currentTime = 0;
                     winnerSound.play();
 
-                    ganadorNumero.classList.remove('sorteo-running');
-                    ganadorNombre.classList.remove('sorteo-running');
+                    ganadorNumero.classList.remove('roulette-spin');
+                    ganadorNombre.classList.remove('roulette-spin');
                     
                     const winningNumber = allAssignedNumbersArray[Math.floor(Math.random() * allAssignedNumbersArray.length)];
                     const winner = allParticipants.find(p => p.numbers.includes(winningNumber));
@@ -1372,6 +1510,10 @@
                 body.classList.add('pastel-theme');
                 mainContainer.classList.add('pastel-theme');
                 break;
+            case 'nature':
+                body.classList.add('nature-theme');
+                mainContainer.classList.add('nature-theme');
+                break;
             default:
                 break;
         }
@@ -1481,6 +1623,9 @@
     // Agrega "escuchadores" a los campos de búsqueda
     searchNumberInput.addEventListener('input', buscarNumero);
     searchPersonInput.addEventListener('input', filtrarParticipantes);
+    
+    // Carga inicial al cargar la página
+    loadData();
 
 </script>
 
