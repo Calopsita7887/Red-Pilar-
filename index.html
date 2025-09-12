@@ -1122,6 +1122,10 @@
     }
 
     function loadData() {
+        // Generate the initial grid unconditionally to ensure it's always present.
+        generateNumberBoxes(0, 99);
+        currentMaxNumber = 99;
+
         const savedData = localStorage.getItem('raffleData');
         if (savedData) {
             const data = JSON.parse(savedData);
@@ -1129,24 +1133,13 @@
             assignedNumbers = new Set(data.assignedNumbers);
             currentMaxNumber = data.currentMaxNumber;
 
+            // If there's saved data, clear the container and regenerate with the correct numbers.
             numbersContainer.innerHTML = '';
             generateNumberBoxes(0, currentMaxNumber);
             updateParticipantsList();
-        } else {
-            generateNumberBoxes(0, 99);
-            currentMaxNumber = 99;
         }
 
         updateRangeLabel();
-
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            themeSelector.value = savedTheme;
-            applyTheme(savedTheme);
-        } else {
-            themeSelector.value = 'default';
-            applyTheme('default');
-        }
     }
 
     function updateParticipantsList() {
@@ -1489,10 +1482,24 @@
         }
     }
 
-    themeSelector.addEventListener('change', (event) => {
-        applyTheme(event.target.value);
-        localStorage.setItem('theme', event.target.value);
-    });
+    // --- Theme Switcher Logic ---
+    try {
+        themeSelector.addEventListener('change', (event) => {
+            applyTheme(event.target.value);
+            localStorage.setItem('theme', event.target.value);
+        });
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            themeSelector.value = savedTheme;
+            applyTheme(savedTheme);
+        } else {
+            themeSelector.value = 'default';
+            applyTheme('default');
+        }
+    } catch (e) {
+        console.error("Could not initialize theme switcher", e);
+    }
 
     function applyTheme(themeName) {
         body.className = '';
