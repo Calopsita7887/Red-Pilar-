@@ -338,6 +338,7 @@
             <button id="sorteo-button">Realizar Sorteo</button>
             <button id="delete-unsold-button">Eliminar Libres</button>
             <button id="save-data-button">Guardar Datos</button>
+            <button id="qr-code-button">Generar QR</button>
             <button id="load-data-button">Cargar Datos</button>
         </div>
 
@@ -377,7 +378,19 @@
         </div>
     </div>
 
+    <!-- Modal para QR -->
+    <div id="qr-code-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Escanea para Cargar los Datos</h3>
+            <div id="qr-code-container" style="padding: 20px; background: white; display: inline-block; margin: 10px 0;"></div>
+            <div class="button-group">
+                <button id="qr-modal-close-button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
     <script>
         const personNameInput = document.getElementById('person-name');
         const numbersContainer = document.getElementById('numbers-container');
@@ -398,6 +411,12 @@
         const loadDataButton = document.getElementById('load-data-button');
         const savedCodeSpan = document.getElementById('saved-code');
         const deleteUnsoldButton = document.getElementById('delete-unsold-button');
+        const qrCodeButton = document.getElementById('qr-code-button');
+
+        // QR Modal Elements
+        const qrCodeModal = document.getElementById('qr-code-modal');
+        const qrCodeContainer = document.getElementById('qr-code-container');
+        const qrModalCloseButton = document.getElementById('qr-modal-close-button');
 
         // Search Elements
         const searchInput = document.getElementById('search-input');
@@ -993,15 +1012,49 @@
             }
         }
 
+        function compressNumbers(numbers) {
+            if (!numbers || numbers.length === 0) return '';
+            const sorted = [...new Set(numbers)].sort((a, b) => a - b);
+            let result = [];
+            let rangeStart = sorted[0];
+
+            for (let i = 0; i < sorted.length; i++) {
+                const current = sorted[i];
+                const next = sorted[i + 1];
+                if (next !== current + 1) {
+                    if (current === rangeStart) {
+                        result.push(`${current}`);
+                    } else {
+                        result.push(`${rangeStart}-${current}`);
+                    }
+                    if (next) rangeStart = next;
+                }
+            }
+            return result.join(',');
+        }
+
+        function decompressNumbers(str) {
+            if (!str) return [];
+            const numbers = [];
+            str.split(',').forEach(part => {
+                if (part.includes('-')) {
+                    const [start, end] = part.split('-').map(Number);
+                    for (let i = start; i <= end; i++) numbers.push(i);
+                } else {
+                    numbers.push(Number(part));
+                }
+            });
+            return numbers;
+        }
+
         function generateSaveCode() {
-            // Format: maxNumbers|name1:num1,num2;name2:num3,num4
             const participantData = participants.map(p => {
-                const cleanName = p.name.replace(/[:;|]/g, ''); // Remove special characters from name
-                return `${cleanName}:${p.numbers.join(',')}`;
+                const cleanName = p.name.replace(/[:;|]/g, '');
+                const compressedNumbers = compressNumbers(p.numbers);
+                return `${cleanName}:${compressedNumbers}`;
             }).join(';');
 
             const dataString = `${allNumbers.length}|${participantData}`;
-
             savedCodeSpan.textContent = dataString;
             document.getElementById('save-code-container').style.display = 'block';
         }
@@ -1011,15 +1064,12 @@
             if (code && code.trim() !== '') {
                 try {
                     const parts = code.split('|');
-                    if (parts.length < 2) throw new Error("Invalid format");
+                    if (parts.length < 2) throw new Error("Formato inválido: falta el separador '|'");
 
                     const maxNum = parseInt(parts[0], 10);
-                    if (isNaN(maxNum) || maxNum <= 0) throw new Error("Invalid number count");
+                    if (isNaN(maxNum) || maxNum <= 0) throw new Error("Cantidad de números inválida");
 
-                    // Generate the numbers grid based on the loaded count
                     allNumbers = Array.from({ length: maxNum }, (_, i) => i + 1);
-
-                    // Reset current state
                     participants = [];
                     assignedNumbers.clear();
 
@@ -1027,10 +1077,10 @@
                     if (participantData) {
                         participantData.split(';').forEach(pString => {
                             if (!pString) return;
-                            const [name, numbersStr] = pString.split(':');
-                            if (!name || !numbersStr) return;
+                            const [name, compressedNumbersStr] = pString.split(':');
+                            if (!name || !compressedNumbersStr) return;
 
-                            const numbers = numbersStr.split(',').map(n => parseInt(n.trim(), 10));
+                            const numbers = decompressNumbers(compressedNumbersStr);
                             participants.push({ name: name, numbers: numbers });
                             numbers.forEach(num => assignedNumbers.add(num));
                         });
@@ -1038,13 +1088,34 @@
                     
                     renderNumbers();
                     renderParticipants();
-                    saveToLocalStorage(); // Update localStorage with the new data
+                    saveToLocalStorage();
                     alert('Datos cargados correctamente.');
 
                 } catch (e) {
                     console.error("Error al cargar desde el código:", e);
-                    alert('Código inválido o dañado. Por favor, comprueba el formato.');
+                    alert(`Código inválido o dañado. ${e.message}`);
                 }
+            }
+        }
+
+        function generateQRCode() {
+            const participantData = participants.map(p => {
+                const cleanName = p.name.replace(/[:;|]/g, '');
+                const compressedNumbers = compressNumbers(p.numbers);
+                return `${cleanName}:${compressedNumbers}`;
+            }).join(';');
+            const dataString = `${allNumbers.length}|${participantData}`;
+
+            qrCodeContainer.innerHTML = '';
+            try {
+                const qr = qrcode(0, 'L');
+                qr.addData(dataString);
+                qr.make();
+                qrCodeContainer.innerHTML = qr.createImgTag(4, 10); // (cellSize, margin)
+                qrCodeModal.style.display = 'flex';
+            } catch (e) {
+                alert("Error al generar el código QR. El texto puede ser demasiado largo.");
+                console.error("QR generation error:", e);
             }
         }
 
@@ -1210,6 +1281,14 @@
         // --- Event Listeners ---
         if(themeSelector) {
             themeSelector.addEventListener('change', (e) => applyTheme(e.target.value));
+        }
+        if (qrCodeButton) {
+            qrCodeButton.addEventListener('click', generateQRCode);
+        }
+        if (qrModalCloseButton) {
+            qrModalCloseButton.addEventListener('click', () => {
+                qrCodeModal.style.display = 'none';
+            });
         }
         addButton.addEventListener('click', addParticipant);
         clearButton.addEventListener('click', clearSelection);
