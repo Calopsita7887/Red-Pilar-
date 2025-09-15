@@ -295,7 +295,7 @@
             <select id="theme-selector" style="padding: 5px; border: 1px solid #0f0; background-color: #000; color: #0f0; border-radius: 4px;">
                 <option value="hacker">Matrix</option>
                 <option value="shooting-stars">Estrellas Fugaces</option>
-                <option value="clean-blue">Azul Limpio</option>
+                <option value="usa-style">Estilo USA</option>
             </select>
         </div>
         <div id="form-container">
@@ -1150,7 +1150,10 @@
             } else if (themeName === 'shooting-stars') {
                 matrixCanvas.style.display = 'block';
                 startShootingStarsAnimation();
-            } else { // This will now include 'clean-blue'
+            } else if (themeName === 'usa-style') {
+                matrixCanvas.style.display = 'block';
+                startUsaStyleAnimation();
+            } else {
                 matrixCanvas.style.display = 'none';
             }
         }
@@ -1268,11 +1271,75 @@
             animationInterval = setInterval(drawAnimation, 20);
         }
 
+        function startUsaStyleAnimation() {
+            if (animationInterval) clearInterval(animationInterval);
+
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            const ctx = matrixCtx;
+
+            const particles = [];
+            const numParticles = 100;
+
+            for (let i = 0; i < numParticles; i++) {
+                const isStar = Math.random() > 0.3; // 70% chance of being a star
+                particles.push({
+                    x: Math.random() * matrixCanvas.width,
+                    y: Math.random() * matrixCanvas.height,
+                    speed: Math.random() * 1 + 0.5,
+                    radius: Math.random() * 1.5 + 0.5,
+                    color: isStar ? '#FFFFFF' : '#B22234', // White or Old Glory Red
+                    isStar: isStar
+                });
+            }
+
+            function drawUsaAnimation() {
+                ctx.fillStyle = 'rgba(60, 59, 110, 0.25)'; // Fading Old Glory Blue
+                ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+                particles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+
+                    if (p.isStar) {
+                        // Draw a 5-point star
+                        ctx.moveTo(p.x, p.y - p.radius);
+                        for (let i = 0; i < 5; i++) {
+                            const outerX = p.x + Math.cos((18 + i * 72) * Math.PI / 180) * p.radius;
+                            const outerY = p.y - Math.sin((18 + i * 72) * Math.PI / 180) * p.radius;
+                            ctx.lineTo(outerX, outerY);
+                            const innerX = p.x + Math.cos((54 + i * 72) * Math.PI / 180) * p.radius * 0.5;
+                            const innerY = p.y - Math.sin((54 + i * 72) * Math.PI / 180) * p.radius * 0.5;
+                            ctx.lineTo(innerX, innerY);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                    } else {
+                        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    // Move particle
+                    p.y += p.speed;
+
+                    // Reset particle when it goes off-screen
+                    if (p.y > matrixCanvas.height + p.radius) {
+                        p.x = Math.random() * matrixCanvas.width;
+                        p.y = -p.radius;
+                    }
+                });
+            }
+
+            animationInterval = setInterval(drawUsaAnimation, 33);
+        }
+
         window.addEventListener('resize', () => {
             if (currentTheme === 'hacker') {
                 startMatrixAnimation();
             } else if (currentTheme === 'shooting-stars') {
                 startShootingStarsAnimation();
+            } else if (currentTheme === 'usa-style') {
+                startUsaStyleAnimation();
             }
         });
 

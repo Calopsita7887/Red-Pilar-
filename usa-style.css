@@ -1,0 +1,116 @@
+/* --- TEMA ESTILO USA --- */
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #3C3B6E; /* Old Glory Blue */
+    color: #FFFFFF;
+}
+.container {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid #FFFFFF;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+h1, #main-title {
+    color: #FFFFFF;
+    text-shadow: 2px 2px 4px #B22234; /* Old Glory Red shadow */
+}
+label {
+    color: #FFFFFF;
+}
+input[type="text"], select {
+    border: 1px solid #B22234;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+}
+#numbers-container {
+    border: 1px solid #FFFFFF;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.number-box {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+}
+.number-box:hover {
+    background-color: #FFFFFF;
+    color: #3C3B6E;
+}
+.number-box.selected {
+    background-color: #B22234;
+    color: #FFFFFF;
+    border-color: #FFFFFF;
+    box-shadow: 0 0 10px #B22234;
+}
+.number-box.assigned {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #aaa;
+    text-decoration-color: #B22234;
+}
+button {
+    border: 1px solid #FFFFFF;
+    background-color: #B22234;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+button:hover {
+    background-color: #FFFFFF;
+    color: #B22234;
+}
+#results-container {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid #FFFFFF;
+}
+.person-entry {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.person-name {
+    color: #FFFFFF;
+}
+.action-button {
+    color: #FFFFFF;
+}
+.action-button:hover {
+    color: #B22234;
+}
+.person-entry.highlight {
+    background-color: #B22234;
+    color: #FFFFFF !important;
+}
+.person-entry.highlight .person-name,
+.person-entry.highlight .person-numbers,
+.person-entry.highlight .action-button {
+    color: #FFFFFF;
+}
+#ganador-container h2 {
+    color: #FFFFFF;
+}
+#animation-container {
+    border: 1px dashed #FFFFFF;
+}
+#ganador-nombre, #ganador-numero {
+    color: #FFFFFF;
+}
+#countdown-timer {
+    color: #FFFFFF;
+}
+.footer a {
+    color: #FFFFFF;
+}
+.modal-content {
+    background-color: #3C3B6E;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 20px rgba(178, 34, 52, 0.7);
+}
+.modal-content h3 {
+    color: #FFFFFF;
+}
+.modal-content select {
+    border: 1px solid #B22234;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+}
+#theme-selector {
+    border: 1px solid #B22234;
+    background-color: #3C3B6E;
+    color: #FFFFFF;
+}
