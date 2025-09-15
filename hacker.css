@@ -1,78 +1,113 @@
-@import url("default.css");
-
-/* --- HACKER THEME --- */
+/* --- TEMA HACKER (MATRIX) --- */
 body {
+    font-family: 'Courier New', Courier, monospace;
     background-color: #000;
     color: #0f0;
-    font-family: 'Courier New', Courier, monospace;
 }
-
-#matrix-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    display: block;
-}
-
 .container {
-    background-color: rgba(0, 20, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     border: 1px solid #0f0;
-    box-shadow: 0 0 25px rgba(0, 255, 0, 0.5);
+    box-shadow: 0 0 15px #0f0;
 }
-h1, h2, label {
+h1, #main-title {
     color: #0f0;
     text-shadow: 0 0 5px #0f0;
 }
-h2 {
-    border-bottom-color: #0f0;
+label {
+    color: #0f0;
 }
-input, #theme-selector {
+input[type="text"], select {
+    border: 1px solid #0f0;
     background-color: #000;
     color: #0f0;
-    border: 1px solid #0f0;
 }
-button {
-    background-color: #0f0;
-    color: #000;
+#numbers-container {
     border: 1px solid #0f0;
-}
-button:hover {
-    background-color: #000;
-    color: #0f0;
+    background-color: #050505;
 }
 .number-box {
-    background-color: #000;
-    color: #0f0;
+    background-color: #111;
     border: 1px solid #0a0;
+    color: #0f0;
+}
+.number-box:hover {
+    background-color: #0f0;
+    color: #000;
 }
 .number-box.selected {
     background-color: #0f0;
     color: #000;
+    box-shadow: 0 0 10px #0f0;
 }
 .number-box.assigned {
-    background-color: #222;
-    color: #555;
-    text-decoration-color: #555;
+    background-color: #080808;
+    color: #050;
+    text-decoration-color: #050;
+}
+button {
+    border: 1px solid #0f0;
+    background-color: #000;
+    color: #0f0;
+}
+button:hover {
+    background-color: #0f0;
+    color: #000;
+}
+#results-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid #0f0;
 }
 .person-entry {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-color: #0f0;
+    border-bottom: 1px solid #0f0;
 }
-.person-name, .person-numbers {
+.person-name {
     color: #0f0;
 }
-#winner-display {
-    background-color: rgba(0, 20, 0, 0.85);
-}
-#winner-name, #winner-list-top3 li .winner-name {
+.action-button {
     color: #0f0;
 }
-#winner-number, #winner-list-top3 li .winner-number {
+.action-button:hover {
     color: #fff;
 }
-#winner-list-top3 li {
+.person-entry.highlight {
+    background-color: #0f0;
+    color: #000 !important;
+}
+.person-entry.highlight .person-name,
+.person-entry.highlight .person-numbers,
+.person-entry.highlight .action-button {
+    color: #000;
+}
+#ganador-container h2 {
+    color: #0f0;
+}
+#animation-container {
+    border: 1px dashed #0f0;
+}
+#ganador-nombre, #ganador-numero {
+    color: #0f0;
+}
+#countdown-timer {
+    color: #0f0;
+}
+.footer a {
+    color: #0f0;
+}
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.85);
+    border: 1px solid #0f0;
+    box-shadow: 0 0 20px #0f0;
+}
+.modal-content h3 {
+    color: #0f0;
+}
+.modal-content select {
+    border: 1px solid #0f0;
     background-color: #000;
+    color: #0f0;
+}
+#theme-selector {
+    border: 1px solid #0f0;
+    background-color: #000;
+    color: #0f0;
 }

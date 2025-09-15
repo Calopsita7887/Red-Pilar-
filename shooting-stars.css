@@ -1,0 +1,113 @@
+/* --- TEMA ESTRELLAS FUGACES --- */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0c0c2c; /* Azul oscuro noche */
+    color: #fff;
+}
+.container {
+    background-color: rgba(20, 20, 50, 0.75);
+    border: 1px solid #7a7aed;
+    box-shadow: 0 0 15px #7a7aed;
+}
+h1, #main-title {
+    color: #fff;
+    text-shadow: 0 0 5px #7a7aed;
+}
+label {
+    color: #fff;
+}
+input[type="text"], select {
+    border: 1px solid #7a7aed;
+    background-color: #141432;
+    color: #fff;
+}
+#numbers-container {
+    border: 1px solid #7a7aed;
+    background-color: #10102a;
+}
+.number-box {
+    background-color: #1f1f4b;
+    border: 1px solid #4d4dae;
+    color: #fff;
+}
+.number-box:hover {
+    background-color: #7a7aed;
+    color: #000;
+}
+.number-box.selected {
+    background-color: #7a7aed;
+    color: #000;
+    box-shadow: 0 0 10px #7a7aed;
+}
+.number-box.assigned {
+    background-color: #1a1a3a;
+    color: #555;
+    text-decoration-color: #555;
+}
+button {
+    border: 1px solid #7a7aed;
+    background-color: #1f1f4b;
+    color: #fff;
+}
+button:hover {
+    background-color: #7a7aed;
+    color: #000;
+}
+#results-container {
+    background-color: rgba(20, 20, 50, 0.6);
+    border: 1px solid #7a7aed;
+}
+.person-entry {
+    border-bottom: 1px solid #7a7aed;
+}
+.person-name {
+    color: #fff;
+}
+.action-button {
+    color: #7a7aed;
+}
+.action-button:hover {
+    color: #fff;
+}
+.person-entry.highlight {
+    background-color: #7a7aed;
+    color: #000 !important;
+}
+.person-entry.highlight .person-name,
+.person-entry.highlight .person-numbers,
+.person-entry.highlight .action-button {
+    color: #000;
+}
+#ganador-container h2 {
+    color: #fff;
+}
+#animation-container {
+    border: 1px dashed #7a7aed;
+}
+#ganador-nombre, #ganador-numero {
+    color: #fff;
+}
+#countdown-timer {
+    color: #fff;
+}
+.footer a {
+    color: #7a7aed;
+}
+.modal-content {
+    background-color: rgba(20, 20, 50, 0.85);
+    border: 1px solid #7a7aed;
+    box-shadow: 0 0 20px #7a7aed;
+}
+.modal-content h3 {
+    color: #fff;
+}
+.modal-content select {
+    border: 1px solid #7a7aed;
+    background-color: #141432;
+    color: #fff;
+}
+#theme-selector {
+    border: 1px solid #7a7aed;
+    background-color: #141432;
+    color: #fff;
+}

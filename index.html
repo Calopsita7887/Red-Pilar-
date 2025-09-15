@@ -3,24 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo Red Pilar - Tema Matrix</title>
+    <title>Sorteo Red Pilar</title>
+    <link id="theme-stylesheet" rel="stylesheet" href="">
     <style>
-        /* --- ESTILOS GENERALES --- */
+        /* --- ESTILOS GENERALES (COMPARTIDOS) --- */
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #000;
-            color: #0f0;
             margin: 0;
             padding: 20px;
         }
         .container {
             max-width: 600px;
             margin: auto;
-            background-color: rgba(0, 0, 0, 0.75);
             padding: 20px;
             border-radius: 8px;
-            border: 1px solid #0f0;
-            box-shadow: 0 0 15px #0f0;
             position: relative;
             overflow: hidden;
         }
@@ -34,8 +29,6 @@
             filter: invert(1);
         }
         h1 {
-            color: #0f0;
-            text-shadow: 0 0 5px #0f0;
             text-align: center;
         }
         .form-group {
@@ -45,16 +38,12 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #0f0;
         }
         input[type="text"] {
             width: calc(100% - 22px);
             padding: 10px;
-            border: 1px solid #0f0;
             border-radius: 4px;
             font-size: 16px;
-            background-color: #000;
-            color: #0f0;
         }
         #numbers-container {
             display: grid;
@@ -62,16 +51,11 @@
             gap: 5px;
             margin-top: 10px;
             padding: 10px;
-            border: 1px solid #0f0;
             border-radius: 4px;
             max-height: 250px;
             overflow-y: auto;
-            background-color: #050505;
         }
         .number-box {
-            background-color: #111;
-            border: 1px solid #0a0;
-            color: #0f0;
             text-align: center;
             padding: 8px 0;
             border-radius: 4px;
@@ -80,21 +64,11 @@
             font-size: 14px;
             font-weight: bold;
         }
-        .number-box:hover {
-            background-color: #0f0;
-            color: #000;
-        }
         .number-box.selected {
-            background-color: #0f0;
-            color: #000;
             transform: scale(1.05);
-            box-shadow: 0 0 10px #0f0;
         }
         .number-box.assigned {
-            background-color: #080808;
-            color: #050;
             text-decoration: line-through;
-            text-decoration-color: #050;
             cursor: not-allowed;
         }
         .button-group, .add-numbers-group {
@@ -112,10 +86,7 @@
         }
         button {
             padding: 10px 20px;
-            border: 1px solid #0f0;
             border-radius: 4px;
-            background-color: #000;
-            color: #0f0;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.2s;
@@ -123,21 +94,14 @@
             margin: 0 5px;
             font-weight: bold;
         }
-        button:hover {
-            background-color: #0f0;
-            color: #000;
-        }
         button:first-child { margin-left: 0; }
         button:last-child { margin-right: 0; }
         #results-container {
             margin-top: 30px;
             padding: 15px;
-            background-color: rgba(0, 0, 0, 0.6);
             border-radius: 8px;
-            border: 1px solid #0f0;
         }
         .person-entry {
-            border-bottom: 1px solid #0f0;
             padding: 10px 0;
             display: flex;
             justify-content: space-between;
@@ -151,7 +115,6 @@
         }
         .person-name {
             font-weight: bold;
-            color: #0f0;
             margin-bottom: 5px;
         }
         .person-numbers {
@@ -166,70 +129,43 @@
             cursor: pointer;
             font-size: 1.2em;
             margin-left: 5px;
-            color: #0f0;
-        }
-        .action-button:hover {
-            color: #fff;
         }
         .person-entry.highlight {
-            background-color: #0f0;
-            color: #000 !important;
             border-radius: 4px;
             padding: 10px;
             margin: 5px 0;
             transition: all 0.3s ease;
-        }
-        .person-entry.highlight .person-name,
-        .person-entry.highlight .person-numbers {
-            color: #000;
-        }
-        .person-entry.highlight .action-button {
-            color: #000;
-        }
-        .person-entry.highlight .action-button:hover {
-            color: #333;
         }
         #ganador-container {
             margin-top: 20px;
             text-align: center;
             position: relative;
         }
-        #ganador-container h2 {
-            color: #0f0;
-        }
-
         #animation-container {
             position: relative;
             height: 150px;
             margin-bottom: 20px;
-            border: 1px dashed #0f0;
             overflow: hidden;
         }
-
         .animated-number {
             position: absolute;
             width: 50px;
             height: 50px;
-            background-color: #0f0;
-            color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
             font-weight: bold;
             border-radius: 50%;
-            box-shadow: 0 0 10px #0f0;
             animation-name: shuffle, spin;
             animation-duration: 0.5s, 1s;
             animation-iteration-count: infinite, infinite;
             animation-timing-function: linear, linear;
         }
-
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
         @keyframes shuffle {
             0% { top: 50px; left: 50px; }
             25% { top: 0px; left: 200px; }
@@ -240,7 +176,6 @@
         #ganador-nombre, #ganador-numero {
             font-size: 2em;
             font-weight: bold;
-            color: #0f0;
             min-height: 1.5em;
             display: flex;
             align-items: center;
@@ -257,7 +192,6 @@
         #countdown-timer {
             font-size: 3em;
             font-weight: bold;
-            color: #0f0;
             margin-top: 20px;
         }
         .confetti {
@@ -287,7 +221,6 @@
             text-align: center;
             margin-top: 20px;
             font-size: 0.9em;
-            color: #0f0;
         }
         #matrix-canvas {
             position: fixed;
@@ -297,7 +230,6 @@
             height: 100%;
             z-index: -1;
         }
-
         /* --- RESPONSIVE DESIGN --- */
         @media (min-width: 768px) {
             .container {
@@ -307,7 +239,6 @@
                 grid-template-columns: repeat(15, 1fr);
             }
         }
-
         /* --- ESTILOS PARA EL MODAL --- */
         .modal-overlay {
             position: fixed;
@@ -322,18 +253,14 @@
             z-index: 1000;
         }
         .modal-content {
-            background-color: rgba(0, 0, 0, 0.85);
             padding: 25px;
             border-radius: 8px;
-            border: 1px solid #0f0;
-            box-shadow: 0 0 20px #0f0;
             width: 90%;
             max-width: 400px;
             text-align: center;
         }
         .modal-content h3 {
             margin-top: 0;
-            color: #0f0;
         }
         .modal-content .form-group {
             margin-bottom: 20px;
@@ -341,11 +268,8 @@
         .modal-content select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #0f0;
             border-radius: 4px;
             font-size: 16px;
-            background-color: #000;
-            color: #0f0;
         }
         .modal-content .button-group {
             margin-top: 20px;
@@ -366,6 +290,13 @@
             <img src="logo.png" alt="Logo de CeluApuestas" class="logo">
         </div>
         <h1 id="main-title">Sorteo Red Pilar</h1>
+        <div class="form-group" style="text-align: center; margin-bottom: 20px;">
+            <label for="theme-selector" style="display: inline-block; margin-right: 10px;">Tema:</label>
+            <select id="theme-selector" style="padding: 5px; border: 1px solid #0f0; background-color: #000; color: #0f0; border-radius: 4px;">
+                <option value="hacker">Matrix</option>
+                <option value="shooting-stars">Estrellas Fugaces</option>
+            </select>
+        </div>
         <div id="form-container">
             <div class="form-group">
                 <label for="person-name">Nombre del Participante:</label>
@@ -1063,38 +994,90 @@
         }
 
         function generateSaveCode() {
-            const data = {
-                participants: participants,
-                assignedNumbers: Array.from(assignedNumbers)
-            };
-            const compressedData = btoa(JSON.stringify(data));
-            savedCodeSpan.textContent = compressedData;
+            // Format: maxNumbers|name1:num1,num2;name2:num3,num4
+            const participantData = participants.map(p => {
+                const cleanName = p.name.replace(/[:;|]/g, ''); // Remove special characters from name
+                return `${cleanName}:${p.numbers.join(',')}`;
+            }).join(';');
+
+            const dataString = `${allNumbers.length}|${participantData}`;
+
+            savedCodeSpan.textContent = dataString;
             document.getElementById('save-code-container').style.display = 'block';
         }
 
         function loadFromCode() {
             const code = prompt('Introduce el código de guardado:');
-            if (code) {
+            if (code && code.trim() !== '') {
                 try {
-                    const decompressedData = JSON.parse(atob(code));
-                    participants = decompressedData.participants;
-                    assignedNumbers = new Set(decompressedData.assignedNumbers);
+                    const parts = code.split('|');
+                    if (parts.length < 2) throw new Error("Invalid format");
+
+                    const maxNum = parseInt(parts[0], 10);
+                    if (isNaN(maxNum) || maxNum <= 0) throw new Error("Invalid number count");
+
+                    // Generate the numbers grid based on the loaded count
+                    allNumbers = Array.from({ length: maxNum }, (_, i) => i + 1);
+
+                    // Reset current state
+                    participants = [];
+                    assignedNumbers.clear();
+
+                    const participantData = parts[1];
+                    if (participantData) {
+                        participantData.split(';').forEach(pString => {
+                            if (!pString) return;
+                            const [name, numbersStr] = pString.split(':');
+                            if (!name || !numbersStr) return;
+
+                            const numbers = numbersStr.split(',').map(n => parseInt(n.trim(), 10));
+                            participants.push({ name: name, numbers: numbers });
+                            numbers.forEach(num => assignedNumbers.add(num));
+                        });
+                    }
                     
                     renderNumbers();
                     renderParticipants();
+                    saveToLocalStorage(); // Update localStorage with the new data
+                    alert('Datos cargados correctamente.');
+
                 } catch (e) {
-                    alert('Código inválido.');
+                    console.error("Error al cargar desde el código:", e);
+                    alert('Código inválido o dañado. Por favor, comprueba el formato.');
                 }
             }
         }
 
-        // --- Lógica del Tema Matrix ---
+        // --- Lógica de Temas y Animaciones ---
+        const themeSelector = document.getElementById('theme-selector');
+        const themeStylesheet = document.getElementById('theme-stylesheet');
         const matrixCanvas = document.getElementById('matrix-canvas');
         const matrixCtx = matrixCanvas.getContext('2d');
-        let matrixAnimationInterval;
+        let animationInterval;
+        let currentTheme = 'hacker';
+
+        function applyTheme(themeName) {
+            currentTheme = themeName;
+            themeStylesheet.setAttribute('href', `${themeName}.css`);
+            localStorage.setItem('raffleTheme', themeName);
+
+            if (animationInterval) clearInterval(animationInterval);
+
+            matrixCtx.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+            if (themeName === 'hacker') {
+                matrixCanvas.style.display = 'block';
+                startMatrixAnimation();
+            } else if (themeName === 'shooting-stars') {
+                matrixCanvas.style.display = 'block';
+                startShootingStarsAnimation();
+            } else {
+                matrixCanvas.style.display = 'none';
+            }
+        }
 
         function startMatrixAnimation() {
-            if (matrixAnimationInterval) clearInterval(matrixAnimationInterval);
+            if (animationInterval) clearInterval(animationInterval);
 
             matrixCanvas.width = window.innerWidth;
             matrixCanvas.height = window.innerHeight;
@@ -1125,21 +1108,109 @@
                     drops[i]++;
                 }
             }
+            animationInterval = setInterval(drawMatrix, 33);
+        }
 
-            matrixAnimationInterval = setInterval(drawMatrix, 33);
+        function startShootingStarsAnimation() {
+            if (animationInterval) clearInterval(animationInterval);
+
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            const ctx = matrixCtx;
+
+            // Static background stars
+            const staticStars = [];
+            for(let i=0; i<150; i++) {
+                staticStars.push({
+                    x: Math.random() * matrixCanvas.width,
+                    y: Math.random() * matrixCanvas.height,
+                    radius: Math.random() * 1.2 + 0.5,
+                    opacity: Math.random() * 0.7 + 0.1
+                });
+            }
+
+            // Shooting stars
+            const shootingStars = [];
+            const numShootingStars = 15;
+            for (let i = 0; i < numShootingStars; i++) {
+                shootingStars.push({
+                    x: Math.random() * matrixCanvas.width,
+                    y: Math.random() * matrixCanvas.height,
+                    len: Math.random() * 40 + 20,
+                    speed: Math.random() * 2 + 3,
+                    opacity: Math.random() * 0.6 + 0.2
+                });
+            }
+
+            function drawAnimation() {
+                // Fading background
+                ctx.fillStyle = 'rgba(12, 12, 44, 0.25)';
+                ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+                // Draw static stars
+                staticStars.forEach(star => {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                    ctx.fill();
+                });
+
+                // Draw and update shooting stars
+                shootingStars.forEach(star => {
+                    const tailX = star.x - star.len;
+                    const tailY = star.y - star.len;
+
+                    const gradient = ctx.createLinearGradient(star.x, star.y, tailX, tailY);
+                    gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`);
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(star.x, star.y);
+                    ctx.lineTo(tailX, tailY);
+                    ctx.stroke();
+
+                    // Move the star
+                    star.x += star.speed;
+                    star.y += star.speed;
+
+                    // Reset star when it goes off-screen
+                    if (star.x > matrixCanvas.width + star.len || star.y > matrixCanvas.height + star.len) {
+                        star.x = Math.random() * matrixCanvas.width - 300;
+                        star.y = Math.random() * matrixCanvas.height - 300;
+                        star.len = Math.random() * 40 + 20;
+                        star.speed = Math.random() * 2 + 3;
+                        star.opacity = Math.random() * 0.6 + 0.2;
+                    }
+                });
+            }
+
+            animationInterval = setInterval(drawAnimation, 20);
         }
 
         window.addEventListener('resize', () => {
-            startMatrixAnimation();
+            if (currentTheme === 'hacker') {
+                startMatrixAnimation();
+            } else if (currentTheme === 'shooting-stars') {
+                startShootingStarsAnimation();
+            }
         });
 
         // --- Inicialización ---
         document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('raffleTheme') || 'hacker';
+            if(themeSelector) {
+                themeSelector.value = savedTheme;
+            }
+            applyTheme(savedTheme);
             loadFromLocalStorage();
-            startMatrixAnimation();
         });
 
         // --- Event Listeners ---
+        if(themeSelector) {
+            themeSelector.addEventListener('change', (e) => applyTheme(e.target.value));
+        }
         addButton.addEventListener('click', addParticipant);
         clearButton.addEventListener('click', clearSelection);
         sorteoButton.addEventListener('click', realizarSorteo);
