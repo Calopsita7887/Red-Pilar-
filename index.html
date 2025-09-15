@@ -295,6 +295,7 @@
             <select id="theme-selector" style="padding: 5px; border: 1px solid #0f0; background-color: #000; color: #0f0; border-radius: 4px;">
                 <option value="hacker">Matrix</option>
                 <option value="shooting-stars">Estrellas Fugaces</option>
+                <option value="clean-blue">Azul Limpio</option>
             </select>
         </div>
         <div id="form-container">
@@ -1047,14 +1048,17 @@
             return numbers;
         }
 
-        function generateSaveCode() {
+        function getSaveDataString() {
             const participantData = participants.map(p => {
                 const cleanName = p.name.replace(/[:;|]/g, '');
                 const compressedNumbers = compressNumbers(p.numbers);
                 return `${cleanName}:${compressedNumbers}`;
             }).join(';');
+            return `${allNumbers.length}|${participantData}`;
+        }
 
-            const dataString = `${allNumbers.length}|${participantData}`;
+        function generateSaveCode() {
+            const dataString = getSaveDataString();
             savedCodeSpan.textContent = dataString;
             document.getElementById('save-code-container').style.display = 'block';
         }
@@ -1099,22 +1103,26 @@
         }
 
         function generateQRCode() {
-            const participantData = participants.map(p => {
-                const cleanName = p.name.replace(/[:;|]/g, '');
-                const compressedNumbers = compressNumbers(p.numbers);
-                return `${cleanName}:${compressedNumbers}`;
-            }).join(';');
-            const dataString = `${allNumbers.length}|${participantData}`;
+            if (typeof qrcode === 'undefined') {
+                alert("La librería para generar QR no se ha cargado. Por favor, revisa tu conexión a internet y refresca la página.");
+                return;
+            }
+            if (participants.length === 0) {
+                alert("Añade al menos un participante antes de generar un código QR.");
+                return;
+            }
 
+            const dataString = getSaveDataString();
             qrCodeContainer.innerHTML = '';
+
             try {
                 const qr = qrcode(0, 'L');
                 qr.addData(dataString);
                 qr.make();
-                qrCodeContainer.innerHTML = qr.createImgTag(4, 10); // (cellSize, margin)
+                qrCodeContainer.innerHTML = qr.createImgTag(4, 10);
                 qrCodeModal.style.display = 'flex';
             } catch (e) {
-                alert("Error al generar el código QR. El texto puede ser demasiado largo.");
+                alert("Error al generar el código QR. El texto de los datos es demasiado largo.");
                 console.error("QR generation error:", e);
             }
         }
@@ -1142,7 +1150,7 @@
             } else if (themeName === 'shooting-stars') {
                 matrixCanvas.style.display = 'block';
                 startShootingStarsAnimation();
-            } else {
+            } else { // This will now include 'clean-blue'
                 matrixCanvas.style.display = 'none';
             }
         }
