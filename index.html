@@ -182,12 +182,21 @@
             justify-content: center;
         }
         .ganador-zoom {
-            animation: winnerZoom 1s ease-in-out;
+            animation: winnerAnimation 2s ease-in-out;
         }
-        @keyframes winnerZoom {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); }
+        @keyframes winnerAnimation {
+            0% { transform: scale(0.1) rotate(-360deg); opacity: 0; text-shadow: 0 0 2px #fff; }
+            25% { color: #ff0; text-shadow: 0 0 10px #ff0; }
+            50% { transform: scale(1.5) rotate(15deg); opacity: 1; color: #0f0; text-shadow: 0 0 20px #0f0; }
+            75% { transform: scale(0.9) rotate(-10deg); color: #f0f; text-shadow: 0 0 15px #f0f; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; text-shadow: none; }
+        }
+        .winner-background-flash {
+            animation: backgroundFlash 0.5s 4;
+        }
+        @keyframes backgroundFlash {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(255, 255, 0, 0.3); }
         }
         #countdown-timer {
             font-size: 3em;
@@ -337,15 +346,13 @@
         
         <div class="button-group">
             <button id="sorteo-button">Realizar Sorteo</button>
-            <button id="delete-unsold-button">Eliminar Libres</button>
             <button id="save-data-button">Guardar Datos</button>
-            <button id="qr-code-button">Generar QR</button>
             <button id="load-data-button">Cargar Datos</button>
         </div>
 
-        <div id="save-code-container" style="display: none;">
+        <div id="save-code-container" style="display: none; margin-top: 15px;">
             <h4>Código de guardado:</h4>
-            <span id="saved-code"></span>
+            <p id="saved-code" style="word-break: break-all; background: #222; padding: 10px; border-radius: 4px;"></p>
         </div>
         
         <div id="ganador-container">
@@ -373,25 +380,13 @@
             </div>
             <div class="button-group">
                 <button id="modal-assign-button">Asignar</button>
-                <button id="modal-delete-button">Eliminar Número</button>
                 <button id="modal-cancel-button">Cancelar</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal para QR -->
-    <div id="qr-code-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <h3>Escanea para Cargar los Datos</h3>
-            <div id="qr-code-container" style="padding: 20px; background: white; display: inline-block; margin: 10px 0;"></div>
-            <div class="button-group">
-                <button id="qr-modal-close-button">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <script>
         const personNameInput = document.getElementById('person-name');
         const numbersContainer = document.getElementById('numbers-container');
@@ -411,13 +406,6 @@
         const saveDataButton = document.getElementById('save-data-button');
         const loadDataButton = document.getElementById('load-data-button');
         const savedCodeSpan = document.getElementById('saved-code');
-        const deleteUnsoldButton = document.getElementById('delete-unsold-button');
-        const qrCodeButton = document.getElementById('qr-code-button');
-
-        // QR Modal Elements
-        const qrCodeModal = document.getElementById('qr-code-modal');
-        const qrCodeContainer = document.getElementById('qr-code-container');
-        const qrModalCloseButton = document.getElementById('qr-modal-close-button');
 
         // Search Elements
         const searchInput = document.getElementById('search-input');
@@ -429,7 +417,6 @@
         const modalNumberSpan = document.getElementById('modal-number');
         const assignToParticipantSelect = document.getElementById('assign-to-participant-select');
         const modalAssignButton = document.getElementById('modal-assign-button');
-        const modalDeleteButton = document.getElementById('modal-delete-button');
         const modalCancelButton = document.getElementById('modal-cancel-button');
 
         let currentNumberInModal = null;
@@ -463,7 +450,6 @@
                 return;
             }
             
-            // Verificar que no estamos eliminando números asignados
             const numbersToRemove = allNumbers.slice(-count);
             const hasAssignedNumbers = numbersToRemove.some(num => assignedNumbers.has(num));
             
@@ -472,7 +458,6 @@
                 return;
             }
             
-            // Eliminar los últimos 'count' números
             allNumbers = allNumbers.slice(0, -count);
             renderNumbers();
             saveToLocalStorage();
@@ -488,23 +473,6 @@
         function closeFreeNumberModal() {
             currentNumberInModal = null;
             freeNumberModal.style.display = 'none';
-        }
-
-        function deleteSingleNumber() {
-            if (currentNumberInModal === null) return;
-
-            if (confirm(`¿Estás seguro de que quieres eliminar el número ${currentNumberInModal}? Esta acción no se puede deshacer.`)) {
-                const numberToDelete = currentNumberInModal;
-
-                allNumbers = allNumbers.filter(num => num !== numberToDelete);
-                assignedNumbers.delete(numberToDelete);
-                selectedNumbers.delete(numberToDelete);
-
-                renderNumbers();
-                saveToLocalStorage();
-                closeFreeNumberModal();
-                alert(`El número ${numberToDelete} ha sido eliminado.`);
-            }
         }
 
         function populateParticipantsDropdown() {
@@ -788,15 +756,20 @@
                 Bodies.rectangle(containerWidth - 5, containerHeight / 2, 10, containerHeight, wallOptions) // Right
             ]);
 
+            function getRandomColor() {
+                const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#FFFF33'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
             // Helper function to create a texture with the number
-            function createBallTexture(number) {
+            function createBallTexture(number, color) {
                 const canvas = document.createElement('canvas');
                 canvas.width = 50;
                 canvas.height = 50;
                 const context = canvas.getContext('2d');
                 context.beginPath();
                 context.arc(25, 25, 25, 0, 2 * Math.PI);
-                context.fillStyle = '#0f0'; // Green ball
+                context.fillStyle = color;
                 context.fill();
                 context.fillStyle = '#000'; // Black text
                 context.font = 'bold 24px "Courier New"';
@@ -808,7 +781,7 @@
 
             // Create balls
             const balls = [];
-            const numBalls = Math.min(numbersPool.length, 30); // Limit to 30 balls for performance
+            const numBalls = Math.min(numbersPool.length, 50); // Increased from 30 to 50
             let usedNumbers = new Set();
 
             for (let i = 0; i < numBalls; i++) {
@@ -828,7 +801,7 @@
                         frictionAir: 0,
                         render: {
                             sprite: {
-                                texture: createBallTexture(number),
+                                texture: createBallTexture(number, getRandomColor()),
                                 xScale: 1,
                                 yScale: 1
                             }
@@ -889,11 +862,14 @@
             
             ganadorNombre.classList.add('ganador-zoom');
             ganadorNumero.classList.add('ganador-zoom');
+            document.querySelector('.container').classList.add('winner-background-flash');
+
 
             setTimeout(() => {
                 ganadorNombre.classList.remove('ganador-zoom');
                 ganadorNumero.classList.remove('ganador-zoom');
-            }, 1000);
+                document.querySelector('.container').classList.remove('winner-background-flash');
+            }, 2000);
 
             const winningNumberBox = document.querySelector(`.number-box[data-number="${winnerNumber}"]`);
             if (winningNumberBox) {
@@ -908,27 +884,19 @@
         }
 
         function createConfetti() {
-            for (let i = 0; i < 50; i++) {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 200; i++) { // Increased from 50 to 200
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
                 confetti.style.left = `${Math.random() * 100}%`;
                 confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
                 confetti.style.animationDelay = `${Math.random() * 0.5}s`;
                 confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                document.body.appendChild(confetti);
+                container.appendChild(confetti);
 
                 confetti.addEventListener('animationend', () => {
                     confetti.remove();
                 });
-            }
-        }
-
-        function deleteUnassignedNumbers() {
-            if (confirm('¿Estás seguro de que quieres eliminar todos los números libres? Esta acción no se puede deshacer y solo conservará los números ya vendidos.')) {
-                allNumbers = allNumbers.filter(num => assignedNumbers.has(num));
-                renderNumbers();
-                saveToLocalStorage();
-                alert('Se han eliminado todos los números libres.');
             }
         }
 
@@ -941,7 +909,7 @@
         }
 
         function searchByNumber() {
-            clearHighlight(); // Corrected: only clears previous highlight
+            clearHighlight();
             const numberToFind = parseInt(searchInput.value.trim(), 10);
 
             if (isNaN(numberToFind)) {
@@ -1013,82 +981,46 @@
             }
         }
 
-        function compressNumbers(numbers) {
-            if (!numbers || numbers.length === 0) return '';
-            const sorted = [...new Set(numbers)].sort((a, b) => a - b);
-            let result = [];
-            let rangeStart = sorted[0];
-
-            for (let i = 0; i < sorted.length; i++) {
-                const current = sorted[i];
-                const next = sorted[i + 1];
-                if (next !== current + 1) {
-                    if (current === rangeStart) {
-                        result.push(`${current}`);
-                    } else {
-                        result.push(`${rangeStart}-${current}`);
-                    }
-                    if (next) rangeStart = next;
-                }
-            }
-            return result.join(',');
-        }
-
-        function decompressNumbers(str) {
-            if (!str) return [];
-            const numbers = [];
-            str.split(',').forEach(part => {
-                if (part.includes('-')) {
-                    const [start, end] = part.split('-').map(Number);
-                    for (let i = start; i <= end; i++) numbers.push(i);
-                } else {
-                    numbers.push(Number(part));
-                }
-            });
-            return numbers;
-        }
-
         function getSaveDataString() {
-            const participantData = participants.map(p => {
-                const cleanName = p.name.replace(/[:;|]/g, '');
-                const compressedNumbers = compressNumbers(p.numbers);
-                return `${cleanName}:${compressedNumbers}`;
-            }).join(';');
-            return `${allNumbers.length}|${participantData}`;
+             const data = {
+                allNumbersCount: allNumbers.length,
+                participants: participants
+            };
+            return JSON.stringify(data);
         }
 
         function generateSaveCode() {
+            if (typeof pako === 'undefined') {
+                alert("La librería de compresión no se ha cargado. Por favor, revisa tu conexión a internet y refresca la página.");
+                return;
+            }
             const dataString = getSaveDataString();
-            savedCodeSpan.textContent = dataString;
+            const compressed = pako.deflate(dataString, { to: 'string' });
+            const encoded = btoa(compressed);
+            savedCodeSpan.textContent = encoded;
             document.getElementById('save-code-container').style.display = 'block';
         }
 
         function loadFromCode() {
+             if (typeof pako === 'undefined') {
+                alert("La librería de compresión no se ha cargado. Por favor, revisa tu conexión a internet y refresca la página.");
+                return;
+            }
             const code = prompt('Introduce el código de guardado:');
             if (code && code.trim() !== '') {
                 try {
-                    const parts = code.split('|');
-                    if (parts.length < 2) throw new Error("Formato inválido: falta el separador '|'");
+                    const decoded = atob(code);
+                    const decompressed = pako.inflate(decoded, { to: 'string' });
+                    const data = JSON.parse(decompressed);
 
-                    const maxNum = parseInt(parts[0], 10);
-                    if (isNaN(maxNum) || maxNum <= 0) throw new Error("Cantidad de números inválida");
+                    if (!data.allNumbersCount || !data.participants) throw new Error("Datos corruptos o en formato incorrecto.");
 
-                    allNumbers = Array.from({ length: maxNum }, (_, i) => i + 1);
-                    participants = [];
+                    allNumbers = Array.from({ length: data.allNumbersCount }, (_, i) => i + 1);
+                    participants = data.participants;
                     assignedNumbers.clear();
-
-                    const participantData = parts[1];
-                    if (participantData) {
-                        participantData.split(';').forEach(pString => {
-                            if (!pString) return;
-                            const [name, compressedNumbersStr] = pString.split(':');
-                            if (!name || !compressedNumbersStr) return;
-
-                            const numbers = decompressNumbers(compressedNumbersStr);
-                            participants.push({ name: name, numbers: numbers });
-                            numbers.forEach(num => assignedNumbers.add(num));
-                        });
-                    }
+                    participants.forEach(p => {
+                        p.numbers.forEach(num => assignedNumbers.add(num));
+                    });
                     
                     renderNumbers();
                     renderParticipants();
@@ -1099,31 +1031,6 @@
                     console.error("Error al cargar desde el código:", e);
                     alert(`Código inválido o dañado. ${e.message}`);
                 }
-            }
-        }
-
-        function generateQRCode() {
-            if (typeof qrcode === 'undefined') {
-                alert("La librería para generar QR no se ha cargado. Por favor, revisa tu conexión a internet y refresca la página.");
-                return;
-            }
-            if (participants.length === 0) {
-                alert("Añade al menos un participante antes de generar un código QR.");
-                return;
-            }
-
-            const dataString = getSaveDataString();
-            qrCodeContainer.innerHTML = '';
-
-            try {
-                const qr = qrcode(0, 'L');
-                qr.addData(dataString);
-                qr.make();
-                qrCodeContainer.innerHTML = qr.createImgTag(4, 10);
-                qrCodeModal.style.display = 'flex';
-            } catch (e) {
-                alert("Error al generar el código QR. El texto de los datos es demasiado largo.");
-                console.error("QR generation error:", e);
             }
         }
 
@@ -1357,14 +1264,6 @@
         if(themeSelector) {
             themeSelector.addEventListener('change', (e) => applyTheme(e.target.value));
         }
-        if (qrCodeButton) {
-            qrCodeButton.addEventListener('click', generateQRCode);
-        }
-        if (qrModalCloseButton) {
-            qrModalCloseButton.addEventListener('click', () => {
-                qrCodeModal.style.display = 'none';
-            });
-        }
         addButton.addEventListener('click', addParticipant);
         clearButton.addEventListener('click', clearSelection);
         sorteoButton.addEventListener('click', realizarSorteo);
@@ -1375,9 +1274,7 @@
         removeRangeButton.addEventListener('click', () => removeNumbers(10));
         saveDataButton.addEventListener('click', generateSaveCode);
         loadDataButton.addEventListener('click', loadFromCode);
-        deleteUnsoldButton.addEventListener('click', deleteUnassignedNumbers);
         modalCancelButton.addEventListener('click', closeFreeNumberModal);
-        modalDeleteButton.addEventListener('click', deleteSingleNumber);
         modalAssignButton.addEventListener('click', assignNumberToParticipant);
         searchButton.addEventListener('click', searchByNumber);
         clearSearchButton.addEventListener('click', clearSearch);
