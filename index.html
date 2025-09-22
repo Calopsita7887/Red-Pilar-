@@ -119,9 +119,9 @@
         }
         .person-numbers {
             font-size: 14px;
-            line-height: 1.8; /* Improve spacing for deletable numbers */
+            line-height: 1.8;
         }
-        .deletable-number {
+        .participant-number-tag {
             display: inline-block;
             padding: 2px 8px;
             margin: 2px;
@@ -140,7 +140,13 @@
         }
         .delete-number-icon:hover {
             transform: scale(1.3);
-            color: #ff8a80; /* A light red for hover */
+            color: #ff8a80;
+        }
+        .person-entry.is-editing {
+            background-color: rgba(255, 255, 150, 0.15);
+            border-radius: 4px;
+            padding-left: 10px;
+            padding-right: 10px;
         }
         .person-actions {
             margin-left: 10px;
@@ -637,15 +643,22 @@
                 const personEntry = document.createElement('div');
                 personEntry.classList.add('person-entry');
 
+                const isCurrentlyEditing = isEditing && editingIndex === index;
+                if (isCurrentlyEditing) {
+                    personEntry.classList.add('is-editing');
+                }
+
                 const personInfo = document.createElement('div');
                 personInfo.classList.add('person-info');
 
-                const numbersHTML = person.numbers.map(num => `
-                    <span class="deletable-number">
-                        ${num}
-                        <span class="delete-number-icon" title="Eliminar número" onclick="deleteNumberFromParticipant(${index}, ${num})">🗑️</span>
-                    </span>
-                `).join('');
+                const numbersHTML = person.numbers.map(num => {
+                    const isCurrentlyEditing = isEditing && editingIndex === index;
+                    const deleteIconHTML = isCurrentlyEditing
+                        ? `<span class="delete-number-icon" title="Eliminar número" onclick="deleteNumberFromParticipant(${index}, ${num})">🗑️</span>`
+                        : '';
+
+                    return `<span class="participant-number-tag">${num}${deleteIconHTML}</span>`;
+                }).join(' ');
 
                 personInfo.innerHTML = `
                     <div class="person-name">${person.name}</div>
@@ -666,7 +679,7 @@
                 const deleteButton = document.createElement('button');
                 deleteButton.innerHTML = '🗑️';
                 deleteButton.classList.add('action-button');
-                deleteButton.title = 'Eliminar Participante Completo';
+                deleteButton.title = 'Eliminar Participante';
                 deleteButton.addEventListener('click', () => deleteParticipant(index));
                 personActions.appendChild(deleteButton);
 
@@ -685,6 +698,7 @@
             isEditing = true;
             editingIndex = index;
             addButton.textContent = 'Actualizar Participante';
+            renderParticipants(); // Re-render to show delete icons
         }
 
         function deleteParticipant(index) {
